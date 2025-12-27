@@ -1,0 +1,18 @@
+{
+  "item.upgrading.swift_feet_disk": "Swift Feet Disk",
+
+  "_comment0": "Disk names",
+  "disk.upgrading.swift_feet": "Swift Feet",
+
+  "_comment1": "Disk descriptions will be added here later",
+
+  "_comment2": "GUI elements",
+  "gui.upgrading.disk_menu.title": "Upgrade Disks",
+  "gui.upgrading.disk_menu.upgrade": "UPGRADE!",
+  "gui.upgrading.disk_menu.cost": "Cost: %s XP",
+  "gui.upgrading.disk_menu.level": "Lv. %s",
+
+  "_comment3": "Messages",
+  "message.upgrading.already_unlocked": "You already have this disk unlocked!",
+  "message.upgrading.disk_unlocked": "Unlocked: %s"
+}
