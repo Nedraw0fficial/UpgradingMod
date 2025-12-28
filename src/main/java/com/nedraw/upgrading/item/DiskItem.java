@@ -11,19 +11,17 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 
 public class DiskItem extends Item {
     private final String diskId;
 
-    public DiskItem(String diskId) {
-        super(new Properties()
-                .stacksTo(1) // Disks don't stack
-                .rarity(getRarityForDisk(diskId))
-        );
+    public DiskItem(String diskId, Properties properties) {
+        super(properties);
         this.diskId = diskId;
     }
+
+    // ... rest of the code stays the same
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
@@ -55,18 +53,18 @@ public class DiskItem extends Item {
 
             // Show success message
             UpgradeDisk disk = DiskRegistry.getDisk(diskId);
-            player.displayClientMessage(
-                    Component.translatable("message.upgrading.disk_unlocked", disk.getDisplayName())
-                            .withStyle(style -> style.withColor(0x55FF55)),
-                    true
-            );
+            if (disk != null) {
+                player.displayClientMessage(
+                        Component.translatable("message.upgrading.disk_unlocked", disk.getDisplayName())
+                                .withStyle(style -> style.withColor(0x55FF55)),
+                        true
+                );
+            }
 
             // Play success sound
             level.playSound(null, player.blockPosition(),
                     SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS,
                     1.0f, 1.5f);
-
-            // TODO: Grant advancement here
 
             // Consume the item
             stack.shrink(1);
@@ -75,17 +73,5 @@ public class DiskItem extends Item {
         }
 
         return InteractionResult.CONSUME;
-    }
-
-    private static Rarity getRarityForDisk(String diskId) {
-        UpgradeDisk disk = DiskRegistry.getDisk(diskId);
-        if (disk == null) return Rarity.COMMON;
-
-        return switch (disk.getRarity()) {
-            case BASIC -> Rarity.COMMON;
-            case RARE -> Rarity.UNCOMMON;
-            case EPIC -> Rarity.RARE;
-            case LEGENDARY, MYTHIC -> Rarity.EPIC;
-        };
     }
 }

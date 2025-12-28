@@ -7,15 +7,11 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModItems {
-    public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(Registries.ITEM, UpgradingMod.MODID);
+    public static final DeferredRegister.Items ITEMS =
+            DeferredRegister.createItems(UpgradingMod.MODID);
 
-    // Register disk items for each disk type
-    public static final DeferredHolder<Item, Item> SWIFT_FEET_DISK = ITEMS.register(
+    public static final DeferredHolder<Item, DiskItem> SWIFT_FEET_DISK = ITEMS.registerItem(
             "swift_feet_disk",
-            () -> new DiskItem("swift_feet")
+            properties -> new DiskItem("swift_feet", properties)
     );
-
-    // We'll add more disks here later:
-    // public static final DeferredHolder<Item, Item> GARDENER_DISK = ...
 }

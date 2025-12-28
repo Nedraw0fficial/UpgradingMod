@@ -19,6 +19,11 @@ public class UpgradingMod {
     public UpgradingMod(IEventBus modEventBus, ModContainer modContainer) {
         LOGGER.info("UPGRADING! Mod initializing...");
 
+        // Register disks FIRST (before items need them)
+        LOGGER.info("Registering Upgrade Disks...");
+        DiskRegistry.register(new SwiftFeetDisk());
+        LOGGER.info("Registered {} disks", DiskRegistry.getAllDisks().size());
+
         // Register items
         ModItems.ITEMS.register(modEventBus);
 
@@ -30,11 +35,6 @@ public class UpgradingMod {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        // Register all disks here
-        LOGGER.info("Registering Upgrade Disks...");
-
-        DiskRegistry.register(new SwiftFeetDisk());
-
-        LOGGER.info("Registered {} disks", DiskRegistry.getAllDisks().size());
+        // Common setup tasks (currently empty)
     }
 }
