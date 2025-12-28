@@ -37,9 +37,9 @@ public class DiskItem extends Item {
             if (diskData.isDiskUnlocked(diskId)) {
                 // Show error message
                 player.displayClientMessage(
-                        Component.literal("You already have this disk unlocked!")
-                                .withStyle(style -> style.withColor(0xFF5555)), // Red
-                        true // Show in hotbar
+                        Component.translatable("message.upgrading.already_unlocked")
+                                .withStyle(style -> style.withColor(0xFF5555)),
+                        true
                 );
 
                 // Play error sound
@@ -56,9 +56,8 @@ public class DiskItem extends Item {
             // Show success message
             UpgradeDisk disk = DiskRegistry.getDisk(diskId);
             player.displayClientMessage(
-                    Component.literal("Unlocked: ")
-                            .append(Component.literal(disk.getDisplayName())
-                                    .withStyle(style -> style.withColor(disk.getRarity().getColor()))),
+                    Component.translatable("message.upgrading.disk_unlocked", disk.getDisplayName())
+                            .withStyle(style -> style.withColor(0x55FF55)),
                     true
             );
 
