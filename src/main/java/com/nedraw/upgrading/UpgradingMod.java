@@ -1,6 +1,7 @@
 package com.nedraw.upgrading;
 
 import com.mojang.logging.LogUtils;
+import com.nedraw.upgrading.client.ClientSetup;
 import com.nedraw.upgrading.data.ModAttachments;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.SwiftFeetDisk;
@@ -19,7 +20,7 @@ public class UpgradingMod {
     public UpgradingMod(IEventBus modEventBus, ModContainer modContainer) {
         LOGGER.info("UPGRADING! Mod initializing...");
 
-        // Register disks FIRST (before items need them)
+        // Register disks FIRST
         LOGGER.info("Registering Upgrade Disks...");
         DiskRegistry.register(new SwiftFeetDisk());
         LOGGER.info("Registered {} disks", DiskRegistry.getAllDisks().size());

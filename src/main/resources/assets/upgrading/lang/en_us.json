@@ -14,5 +14,8 @@
 
   "_comment3": "Messages",
   "message.upgrading.already_unlocked": "You already have this disk unlocked!",
-  "message.upgrading.disk_unlocked": "Unlocked: %s"
+  "message.upgrading.disk_unlocked": "Unlocked: %s",
+
+  "key.categories.upgrading": "UPGRADING! Mod",
+  "key.upgrading.open_disk_menu": "Open Disk Menu"
 }
