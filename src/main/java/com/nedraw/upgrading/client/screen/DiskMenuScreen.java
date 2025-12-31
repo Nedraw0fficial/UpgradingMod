@@ -5,14 +5,18 @@ import com.nedraw.upgrading.UpgradingMod;
 import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.UpgradeDisk;
+import com.nedraw.upgrading.network.packet.EquipDiskPacket;
+import com.nedraw.upgrading.network.packet.UpgradeDiskPacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class DiskMenuScreen extends Screen {
     // Layout constants - POLISHED
@@ -27,7 +31,7 @@ public class DiskMenuScreen extends Screen {
     private static final int DISK_SPACING = 8;
 
     // CENTERED SLOTS
-    private static final int SLOT_START_X = 150; // Changed from 200
+    private static final int SLOT_START_X = 150;
     private static final int SLOT_Y = 40;
     private static final int SLOT_SIZE = 56;
     private static final int SLOT_SPACING = 12;
@@ -122,7 +126,7 @@ public class DiskMenuScreen extends Screen {
             if (diskY + DISK_SIZE >= y && diskY <= y + DISK_LIST_HEIGHT) {
                 renderDiskAt(graphics, diskId, diskX, diskY, DISK_SIZE);
 
-                // Hover highlight
+                // Check if mouse is over THIS disk - UPDATE hoveredDiskId
                 if (isMouseOver(mouseX, mouseY, diskX, diskY, DISK_SIZE, DISK_SIZE)) {
                     hoveredDiskId = diskId;
                     graphics.fill(diskX - 2, diskY - 2, diskX + DISK_SIZE + 2, diskY + DISK_SIZE + 2, 0x80FFFFFF);
@@ -151,6 +155,11 @@ public class DiskMenuScreen extends Screen {
             String equippedDiskId = diskData.getEquippedDisk(slot);
             if (equippedDiskId != null && !equippedDiskId.equals(heldDiskId)) {
                 renderDiskAt(graphics, equippedDiskId, slotX + 4, slotY + 4, DISK_SIZE);
+
+                // Check if hovering equipped disk - UPDATE hoveredDiskId
+                if (isMouseOver(mouseX, mouseY, slotX, slotY, SLOT_SIZE, SLOT_SIZE)) {
+                    hoveredDiskId = equippedDiskId;
+                }
             }
 
             // Hover highlight
@@ -217,8 +226,16 @@ public class DiskMenuScreen extends Screen {
             graphics.drawCenteredString(this.font, "UPGRADE!", buttonX + buttonWidth/2, buttonY + 6, 0xFFFFFF);
 
             int xpCost = disk.getRarity().getXpCostForLevel(level);
+            int playerXP = diskData.getTotalXP(minecraft.player);
+
             String costText = "Cost: " + xpCost + " XP";
-            graphics.drawString(this.font, costText, buttonX + buttonWidth + 10, buttonY + 6, 0xFFFF55);
+            int costColor = playerXP >= xpCost ? 0x55FF55 : 0xFF5555;
+
+            graphics.drawString(this.font, costText, buttonX + buttonWidth + 10, buttonY + 6, costColor);
+
+            // Show player's current XP below
+            String currentXP = "You have: " + playerXP + " XP";
+            graphics.drawString(this.font, currentXP, buttonX, buttonY + 22, 0xAAAAA);
         }
     }
 
@@ -253,7 +270,15 @@ public class DiskMenuScreen extends Screen {
 
         // Upgrade button
         if (hoveringUpgradeButton && hoveredDiskId != null) {
-            // TODO: Send upgrade packet
+            PacketDistributor.sendToServer(new UpgradeDiskPacket(hoveredDiskId));
+
+            minecraft.getSoundManager().play(
+                    net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(
+                            net.minecraft.sounds.SoundEvents.UI_BUTTON_CLICK,
+                            1.0f
+                    )
+            );
+
             return true;
         }
 
@@ -281,20 +306,33 @@ public class DiskMenuScreen extends Screen {
 
             if (isMouseOver(mx, my, slotX, slotY, SLOT_SIZE, SLOT_SIZE)) {
                 if (heldDiskId != null) {
-                    diskData.equipDisk(heldDiskId, slot);
+                    PacketDistributor.sendToServer(new EquipDiskPacket(heldDiskId, slot, false));
                     heldDiskId = null;
+
+                    minecraft.getSoundManager().play(
+                            net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(
+                                    net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_GENERIC.value(),
+                                    1.2f
+                            )
+                    );
                 } else {
                     String equippedDisk = diskData.getEquippedDisk(slot);
                     if (equippedDisk != null) {
+                        PacketDistributor.sendToServer(new EquipDiskPacket(equippedDisk, slot, true));
                         heldDiskId = equippedDisk;
-                        diskData.unequipSlot(slot);
+
+                        minecraft.getSoundManager().play(
+                                net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(
+                                        net.minecraft.sounds.SoundEvents.ITEM_PICKUP,
+                                        0.8f
+                                )
+                        );
                     }
                 }
                 return true;
             }
         }
 
-        // Drop held disk
         heldDiskId = null;
         return super.mouseClicked(mouseX, mouseY, button);
     }
@@ -309,5 +347,22 @@ public class DiskMenuScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (minecraft != null && minecraft.player != null) {
+            diskData = PlayerDiskData.get(minecraft.player);
+
+            Set<String> currentUnlocked = diskData.getUnlockedDisks();
+            if (unlockedDiskIds.size() != currentUnlocked.size() || !unlockedDiskIds.containsAll(currentUnlocked)) {
+                unlockedDiskIds = new ArrayList<>(currentUnlocked);
+
+                int totalHeight = unlockedDiskIds.size() * (DISK_SIZE + DISK_SPACING);
+                maxScroll = Math.max(0, totalHeight - DISK_LIST_HEIGHT);
+            }
+        }
     }
 }

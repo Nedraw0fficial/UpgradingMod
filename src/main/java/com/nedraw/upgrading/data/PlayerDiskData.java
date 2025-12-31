@@ -160,4 +160,41 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
             }
         }
     }
+
+    // === XP MANAGEMENT ===
+
+    public int getTotalXP(Player player) {
+        int points = 0;
+        int level = player.experienceLevel;
+
+        // XP from completed levels
+        if (level >= 32) {
+            points = (int) (4.5 * level * level - 162.5 * level + 2220);
+        } else if (level >= 17) {
+            points = (int) (2.5 * level * level - 40.5 * level + 360);
+        } else {
+            points = level * level + 6 * level;
+        }
+
+        // XP from current progress
+        points += (int) (player.experienceProgress * player.getXpNeededForNextLevel());
+
+        return points;
+    }
+
+    public boolean hasEnoughXP(Player player, int cost) {
+        return getTotalXP(player) >= cost;
+    }
+
+    public void consumeXP(Player player, int amount) {
+        int totalXP = getTotalXP(player);
+        int remaining = totalXP - amount;
+
+        player.experienceLevel = 0;
+        player.experienceProgress = 0.0f;
+        player.totalExperience = 0;
+
+        // Re-add remaining XP
+        player.giveExperiencePoints(remaining);
+    }
 }

@@ -1,7 +1,9 @@
 package com.nedraw.upgrading.network;
 
 import com.nedraw.upgrading.UpgradingMod;
+import com.nedraw.upgrading.network.packet.EquipDiskPacket;
 import com.nedraw.upgrading.network.packet.SyncDiskDataPacket;
+import com.nedraw.upgrading.network.packet.UpgradeDiskPacket;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
@@ -15,5 +17,18 @@ public class ModNetwork {
                 SyncDiskDataPacket.STREAM_CODEC,
                 SyncDiskDataPacket::handle
         );
+
+        registrar.playToServer(
+                UpgradeDiskPacket.TYPE,
+                UpgradeDiskPacket.STREAM_CODEC,
+                UpgradeDiskPacket::handle
+        );
+
+        registrar.playToServer(
+                EquipDiskPacket.TYPE,
+                EquipDiskPacket.STREAM_CODEC,
+                EquipDiskPacket::handle
+        );
     }
+
 }

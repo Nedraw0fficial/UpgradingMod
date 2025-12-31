@@ -51,6 +51,11 @@ public class UpgradeDisk {
         // Override this in specific disk implementations
     }
 
+    // Add this method to UpgradeDisk class
+    public void removeEffect(Player player) {
+        // Override in specific disks to remove their effects
+    }
+
     // Check if this disk can be upgraded
     public boolean canUpgrade(int currentLevel) {
         return currentLevel < 12;
