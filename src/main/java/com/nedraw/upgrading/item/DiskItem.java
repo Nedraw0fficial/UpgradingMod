@@ -1,5 +1,6 @@
 package com.nedraw.upgrading.item;
 
+import com.nedraw.upgrading.ServerEvents;
 import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.UpgradeDisk;
@@ -33,14 +34,12 @@ public class DiskItem extends Item {
 
             // Check if already unlocked
             if (diskData.isDiskUnlocked(diskId)) {
-                // Show error message
                 player.displayClientMessage(
                         Component.translatable("message.upgrading.already_unlocked")
                                 .withStyle(style -> style.withColor(0xFF5555)),
                         true
                 );
 
-                // Play error sound
                 level.playSound(null, player.blockPosition(),
                         SoundEvents.VILLAGER_NO, SoundSource.PLAYERS,
                         1.0f, 1.0f);
@@ -50,6 +49,11 @@ public class DiskItem extends Item {
 
             // Unlock the disk
             diskData.unlockDisk(diskId);
+
+            // SYNC TO CLIENT
+            if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                ServerEvents.syncDiskData(serverPlayer);
+            }
 
             // Show success message
             UpgradeDisk disk = DiskRegistry.getDisk(diskId);
@@ -61,12 +65,10 @@ public class DiskItem extends Item {
                 );
             }
 
-            // Play success sound
             level.playSound(null, player.blockPosition(),
                     SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS,
                     1.0f, 1.5f);
 
-            // Consume the item
             stack.shrink(1);
 
             return InteractionResult.SUCCESS;

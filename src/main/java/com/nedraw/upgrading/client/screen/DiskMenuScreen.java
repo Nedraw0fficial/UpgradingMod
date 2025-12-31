@@ -15,110 +15,124 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DiskMenuScreen extends Screen {
-    // Layout constants
-    private static final int SCREEN_WIDTH = 300;
-    private static final int SCREEN_HEIGHT = 200;
+    // Layout constants - POLISHED
+    private static final int SCREEN_WIDTH = 400;
+    private static final int SCREEN_HEIGHT = 240;
 
-    private static final int DISK_LIST_X = 10;
-    private static final int DISK_LIST_Y = 20;
-    private static final int DISK_LIST_WIDTH = 80;
+    private static final int DISK_LIST_X = 15;
+    private static final int DISK_LIST_Y = 30;
+    private static final int DISK_LIST_WIDTH = 70;
+    private static final int DISK_LIST_HEIGHT = 180;
     private static final int DISK_SIZE = 48;
-    private static final int DISK_SPACING = 4;
+    private static final int DISK_SPACING = 8;
 
-    private static final int SLOT_START_X = 120;
-    private static final int SLOT_Y = 20;
-    private static final int SLOT_SIZE = 64;
-    private static final int SLOT_SPACING = 10;
+    // CENTERED SLOTS
+    private static final int SLOT_START_X = 150; // Changed from 200
+    private static final int SLOT_Y = 40;
+    private static final int SLOT_SIZE = 56;
+    private static final int SLOT_SPACING = 12;
 
     private static final int HOVER_PANEL_X = 100;
-    private static final int HOVER_PANEL_Y = 120;
-    private static final int HOVER_PANEL_WIDTH = 180;
-    private static final int HOVER_PANEL_HEIGHT = 70;
+    private static final int HOVER_PANEL_Y = 140;
+    private static final int HOVER_PANEL_WIDTH = 280;
+    private static final int HOVER_PANEL_HEIGHT = 85;
 
     // State
     private PlayerDiskData diskData;
     private List<String> unlockedDiskIds;
     private int scrollOffset = 0;
-    private String heldDiskId = null; // Disk being moved
+    private int maxScroll = 0;
+    private String heldDiskId = null;
     private String hoveredDiskId = null;
     private boolean hoveringUpgradeButton = false;
 
-    // Calculated positions
     private int leftPos;
     private int topPos;
 
     public DiskMenuScreen() {
-        super(Component.translatable("gui.upgrading.disk_menu.title"));
+        super(Component.literal("Upgrade Disks"));
     }
 
     @Override
     protected void init() {
         super.init();
 
-        // Center the screen
         this.leftPos = (this.width - SCREEN_WIDTH) / 2;
         this.topPos = (this.height - SCREEN_HEIGHT) / 2;
 
-        // Load player data
         if (minecraft != null && minecraft.player != null) {
             diskData = PlayerDiskData.get(minecraft.player);
             unlockedDiskIds = new ArrayList<>(diskData.getUnlockedDisks());
 
-            // DEBUG: Print unlocked disks
-            System.out.println("=== DISK MENU DEBUG ===");
-            System.out.println("Unlocked disks: " + unlockedDiskIds);
-            System.out.println("Number of disks: " + unlockedDiskIds.size());
+            // Calculate max scroll
+            int totalHeight = unlockedDiskIds.size() * (DISK_SIZE + DISK_SPACING);
+            maxScroll = Math.max(0, totalHeight - DISK_LIST_HEIGHT);
         }
     }
 
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        // Render dark background
-        this.renderBackground(graphics, mouseX, mouseY, partialTick);
+        super.render(graphics, mouseX, mouseY, partialTick);
 
-        // Render main panel background
-        graphics.fill(leftPos, topPos, leftPos + SCREEN_WIDTH, topPos + SCREEN_HEIGHT, 0xDD000000);
+        // Main panel
+        int panelColor = 0xE0101010;
+        graphics.fill(leftPos, topPos, leftPos + SCREEN_WIDTH, topPos + SCREEN_HEIGHT, panelColor);
+
+        // Border
+        graphics.fill(leftPos, topPos, leftPos + SCREEN_WIDTH, topPos + 2, 0xFF444444);
+        graphics.fill(leftPos, topPos + SCREEN_HEIGHT - 2, leftPos + SCREEN_WIDTH, topPos + SCREEN_HEIGHT, 0xFF444444);
+        graphics.fill(leftPos, topPos, leftPos + 2, topPos + SCREEN_HEIGHT, 0xFF444444);
+        graphics.fill(leftPos + SCREEN_WIDTH - 2, topPos, leftPos + SCREEN_WIDTH, topPos + SCREEN_HEIGHT, 0xFF444444);
+
+        // Title
+        graphics.drawString(this.font, this.title, leftPos + 10, topPos + 8, 0xFFFFFF);
 
         // Render components
         renderDiskList(graphics, mouseX, mouseY);
         renderEquipmentSlots(graphics, mouseX, mouseY);
         renderHoverInfo(graphics, mouseX, mouseY);
 
-        // Render held disk on top of everything
+        // Render held disk last
         if (heldDiskId != null) {
-            renderDiskAt(graphics, heldDiskId, mouseX - 24, mouseY - 24, 48);
+            renderDiskAt(graphics, heldDiskId, mouseX - DISK_SIZE/2, mouseY - DISK_SIZE/2, DISK_SIZE);
         }
-
-        super.render(graphics, mouseX, mouseY, partialTick);
     }
 
     private void renderDiskList(GuiGraphics graphics, int mouseX, int mouseY) {
         int x = leftPos + DISK_LIST_X;
         int y = topPos + DISK_LIST_Y;
 
-        // Draw scrollable list background
-        graphics.fill(x - 2, y - 2, x + DISK_LIST_WIDTH + 2, topPos + SCREEN_HEIGHT - 10, 0x88222222);
+        // List background
+        graphics.fill(x - 4, y - 4, x + DISK_LIST_WIDTH + 4, y + DISK_LIST_HEIGHT + 4, 0x80000000);
 
-        // Render each unlocked disk
+        // Enable scissor (clipping) so disks don't render outside
+        graphics.enableScissor(x - 2, y - 2, x + DISK_LIST_WIDTH + 2, y + DISK_LIST_HEIGHT + 2);
+
         int index = 0;
         for (String diskId : unlockedDiskIds) {
-            if (diskId.equals(heldDiskId)) continue; // Don't render if being held
+            if (diskId.equals(heldDiskId)) {
+                index++;
+                continue;
+            }
 
+            int diskX = x + (DISK_LIST_WIDTH - DISK_SIZE) / 2;
             int diskY = y + (index * (DISK_SIZE + DISK_SPACING)) - scrollOffset;
 
-            // Only render if visible
-            if (diskY + DISK_SIZE > y - DISK_SIZE && diskY < topPos + SCREEN_HEIGHT) {
-                renderDiskAt(graphics, diskId, x + 16, diskY, DISK_SIZE);
+            // Only render if in visible area
+            if (diskY + DISK_SIZE >= y && diskY <= y + DISK_LIST_HEIGHT) {
+                renderDiskAt(graphics, diskId, diskX, diskY, DISK_SIZE);
 
-                // Check if hovered
-                if (isMouseOver(mouseX, mouseY, x, diskY, DISK_SIZE, DISK_SIZE)) {
+                // Hover highlight
+                if (isMouseOver(mouseX, mouseY, diskX, diskY, DISK_SIZE, DISK_SIZE)) {
                     hoveredDiskId = diskId;
-                    graphics.fill(x, diskY, x + DISK_SIZE, diskY + DISK_SIZE, 0x44FFFFFF);
+                    graphics.fill(diskX - 2, diskY - 2, diskX + DISK_SIZE + 2, diskY + DISK_SIZE + 2, 0x80FFFFFF);
                 }
             }
 
             index++;
         }
+
+        graphics.disableScissor();
     }
 
     private void renderEquipmentSlots(GuiGraphics graphics, int mouseX, int mouseY) {
@@ -126,18 +140,22 @@ public class DiskMenuScreen extends Screen {
             int slotX = leftPos + SLOT_START_X + (slot * (SLOT_SIZE + SLOT_SPACING));
             int slotY = topPos + SLOT_Y;
 
-            // Draw slot background
-            graphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, 0x88444444);
+            // Slot background
+            graphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, 0x80333333);
+            graphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + 1, 0xFF555555);
+            graphics.fill(slotX, slotY + SLOT_SIZE - 1, slotX + SLOT_SIZE, slotY + SLOT_SIZE, 0xFF555555);
+            graphics.fill(slotX, slotY, slotX + 1, slotY + SLOT_SIZE, 0xFF555555);
+            graphics.fill(slotX + SLOT_SIZE - 1, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, 0xFF555555);
 
-            // Draw equipped disk
+            // Equipped disk
             String equippedDiskId = diskData.getEquippedDisk(slot);
             if (equippedDiskId != null && !equippedDiskId.equals(heldDiskId)) {
-                renderDiskAt(graphics, equippedDiskId, slotX, slotY, SLOT_SIZE);
+                renderDiskAt(graphics, equippedDiskId, slotX + 4, slotY + 4, DISK_SIZE);
             }
 
-            // Highlight if hovered
+            // Hover highlight
             if (isMouseOver(mouseX, mouseY, slotX, slotY, SLOT_SIZE, SLOT_SIZE)) {
-                graphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, 0x44FFFFFF);
+                graphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, 0x4066FF66);
             }
         }
     }
@@ -151,9 +169,14 @@ public class DiskMenuScreen extends Screen {
         int x = leftPos + HOVER_PANEL_X;
         int y = topPos + HOVER_PANEL_Y;
 
-        // Background
-        graphics.fill(x, y, x + HOVER_PANEL_WIDTH, y + HOVER_PANEL_HEIGHT, 0xDD000000);
-        graphics.fill(x, y, x + HOVER_PANEL_WIDTH, y + 1, 0xFFFFFFFF); // Top border
+        // Get rarity color for border
+        int rarityColor = disk.getRarity().getColor();
+
+        // Panel background
+        graphics.fill(x, y, x + HOVER_PANEL_WIDTH, y + HOVER_PANEL_HEIGHT, 0xE0000000);
+
+        // COLORED TOP BORDER (rarity color)
+        graphics.fill(x, y, x + HOVER_PANEL_WIDTH, y + 2, 0xFF000000 | rarityColor);
 
         // Disk name
         graphics.drawString(this.font, disk.getDisplayName(), x + 5, y + 5, 0xFFFFFF);
@@ -163,34 +186,39 @@ public class DiskMenuScreen extends Screen {
         String rarityText = disk.getRarity().name();
         String levelText = "Lv. " + level;
 
-        graphics.drawString(this.font, rarityText, x + 5, y + 18, disk.getRarity().getColor());
-        graphics.drawString(this.font, levelText, x + HOVER_PANEL_WIDTH - 40, y + 18, 0xFFFF55);
+        // Draw rarity with underline
+        int rarityTextX = x + 5;
+        int rarityTextY = y + 18;
+        graphics.drawString(this.font, rarityText, rarityTextX, rarityTextY, rarityColor);
+
+        // Draw underline for rarity
+        int rarityTextWidth = this.font.width(rarityText);
+        graphics.fill(rarityTextX, rarityTextY + 9, rarityTextX + rarityTextWidth, rarityTextY + 10, 0xFF000000 | rarityColor);
+
+        graphics.drawString(this.font, levelText, x + HOVER_PANEL_WIDTH - 45, y + 18, 0xFFFF55);
 
         // Description
         String description = disk.getDescriptionForLevel(level);
         graphics.drawString(this.font, description, x + 5, y + 32, 0xCCCCCC);
 
-        // Upgrade button (if can upgrade)
+        // Upgrade button
         if (disk.canUpgrade(level)) {
             int buttonX = x + 5;
-            int buttonY = y + 50;
+            int buttonY = y + 55;
             int buttonWidth = 80;
-            int buttonHeight = 15;
+            int buttonHeight = 20;
 
-            boolean hoveringButton = isMouseOver(mouseX, mouseY, buttonX, buttonY, buttonWidth, buttonHeight);
-            hoveringUpgradeButton = hoveringButton;
+            boolean hovering = isMouseOver(mouseX, mouseY, buttonX, buttonY, buttonWidth, buttonHeight);
+            hoveringUpgradeButton = hovering;
 
-            // Button background
             graphics.fill(buttonX, buttonY, buttonX + buttonWidth, buttonY + buttonHeight,
-                    hoveringButton ? 0xFF55AA55 : 0xFF338833);
+                    hovering ? 0xFF55AA55 : 0xFF338833);
 
-            // Button text
-            graphics.drawString(this.font, "UPGRADE!", buttonX + 5, buttonY + 4, 0xFFFFFF);
+            graphics.drawCenteredString(this.font, "UPGRADE!", buttonX + buttonWidth/2, buttonY + 6, 0xFFFFFF);
 
-            // XP cost
             int xpCost = disk.getRarity().getXpCostForLevel(level);
             String costText = "Cost: " + xpCost + " XP";
-            graphics.drawString(this.font, costText, buttonX + buttonWidth + 10, buttonY + 4, 0xFFFF55);
+            graphics.drawString(this.font, costText, buttonX + buttonWidth + 10, buttonY + 6, 0xFFFF55);
         }
     }
 
@@ -218,48 +246,44 @@ public class DiskMenuScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button != 0) return super.mouseClicked(mouseX, mouseY, button); // Left click only
+        if (button != 0) return super.mouseClicked(mouseX, mouseY, button);
 
         int mx = (int) mouseX;
         int my = (int) mouseY;
 
-        // Check if clicking upgrade button
+        // Upgrade button
         if (hoveringUpgradeButton && hoveredDiskId != null) {
-            // TODO: Implement upgrade logic
+            // TODO: Send upgrade packet
             return true;
         }
 
-        // Check if clicking a disk in the list
-        int listX = leftPos + DISK_LIST_X;
+        // Disk list clicks
+        int listX = leftPos + DISK_LIST_X + (DISK_LIST_WIDTH - DISK_SIZE) / 2;
         int listY = topPos + DISK_LIST_Y;
         int index = 0;
 
         for (String diskId : unlockedDiskIds) {
             int diskY = listY + (index * (DISK_SIZE + DISK_SPACING)) - scrollOffset;
 
-            if (isMouseOver(mx, my, listX, diskY, DISK_SIZE, DISK_SIZE)) {
-                if (heldDiskId == null) {
-                    heldDiskId = diskId; // Pick up disk
-                } else {
-                    // TODO: Swap logic if needed
+            if (diskY >= listY && diskY + DISK_SIZE <= listY + DISK_LIST_HEIGHT) {
+                if (isMouseOver(mx, my, listX, diskY, DISK_SIZE, DISK_SIZE)) {
+                    heldDiskId = (heldDiskId == null) ? diskId : null;
+                    return true;
                 }
-                return true;
             }
             index++;
         }
 
-        // Check if clicking an equipment slot
+        // Equipment slot clicks
         for (int slot = 0; slot < 3; slot++) {
             int slotX = leftPos + SLOT_START_X + (slot * (SLOT_SIZE + SLOT_SPACING));
             int slotY = topPos + SLOT_Y;
 
             if (isMouseOver(mx, my, slotX, slotY, SLOT_SIZE, SLOT_SIZE)) {
                 if (heldDiskId != null) {
-                    // Place disk in slot
                     diskData.equipDisk(heldDiskId, slot);
                     heldDiskId = null;
                 } else {
-                    // Pick up from slot
                     String equippedDisk = diskData.getEquippedDisk(slot);
                     if (equippedDisk != null) {
                         heldDiskId = equippedDisk;
@@ -270,24 +294,20 @@ public class DiskMenuScreen extends Screen {
             }
         }
 
-        // Clicked empty space - drop held disk
-        if (heldDiskId != null) {
-            heldDiskId = null;
-        }
-
+        // Drop held disk
+        heldDiskId = null;
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-        // Scroll the disk list
-        scrollOffset -= (int) (scrollY * 10);
-        scrollOffset = Math.max(0, scrollOffset);
+        scrollOffset -= (int) (scrollY * (DISK_SIZE + DISK_SPACING));
+        scrollOffset = Math.max(0, Math.min(scrollOffset, maxScroll));
         return true;
     }
 
     @Override
     public boolean isPauseScreen() {
-        return false; // Don't pause the game
+        return false;
     }
 }

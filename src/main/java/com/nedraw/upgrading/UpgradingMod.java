@@ -6,6 +6,7 @@ import com.nedraw.upgrading.data.ModAttachments;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.SwiftFeetDisk;
 import com.nedraw.upgrading.item.ModItems;
+import com.nedraw.upgrading.network.ModNetwork;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -30,6 +31,9 @@ public class UpgradingMod {
 
         // Register data attachments
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
+
+        // Register network packets
+        modEventBus.addListener(ModNetwork::register);
 
         // Register common setup
         modEventBus.addListener(this::commonSetup);
