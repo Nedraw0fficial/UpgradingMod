@@ -21,4 +21,9 @@ public class ModItems {
             "sea_fish_disk",
             properties -> new DiskItem("sea_fish", properties)
     );
+
+    public static final DeferredHolder<Item, DiskItem> MAGNET_DISK = ITEMS.registerItem(
+            "magnet_disk",
+            properties -> new DiskItem("magnet", properties)
+    );
 }
