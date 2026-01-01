@@ -22,6 +22,9 @@ public class SeaFishDisk extends UpgradeDisk {
     // Track which level is currently applied to each player
     private static final Map<UUID, Integer> APPLIED_LEVELS = new HashMap<>();
 
+    // Track if bonus air has been used (reset when player surfaces)
+    private static final Map<UUID, Boolean> BONUS_AIR_USED = new HashMap<>();
+
     public SeaFishDisk() {
         super("sea_fish", "Sea Fish", DiskRarity.BASIC);
 
@@ -44,13 +47,13 @@ public class SeaFishDisk extends UpgradeDisk {
         UUID playerId = player.getUUID();
         Integer appliedLevel = APPLIED_LEVELS.get(playerId);
 
-        // Only update if level changed
+        // Only update attributes if level changed
         if (appliedLevel == null || appliedLevel != level) {
             var speedAttribute = player.getAttribute(Attributes.MOVEMENT_SPEED);
             var swimSpeedAttribute = player.getAttribute(net.neoforged.neoforge.common.NeoForgeMod.SWIM_SPEED);
 
             if (level < 12) {
-                // Levels 1-11: Penalty on land, water breathing
+                // Levels 1-11: Penalty on land
                 if (speedAttribute != null) {
                     speedAttribute.removeModifier(SPEED_MODIFIER_ID);
 
@@ -62,26 +65,11 @@ public class SeaFishDisk extends UpgradeDisk {
                     );
                     speedAttribute.addPermanentModifier(speedModifier);
                 }
-
-                // Water breathing based on level
-                int airBonus = Math.toIntExact(2 + round(level * level * 0.1)); // (represented as ticks * 20)
-                player.setAirSupply(Math.min(player.getAirSupply() + airBonus, player.getMaxAirSupply()));
-
             } else {
-                // Level 12: Remove penalty, add water breathing and swim speed
+                // Level 12: Remove penalty, add swim speed
                 if (speedAttribute != null) {
                     speedAttribute.removeModifier(SPEED_MODIFIER_ID);
                 }
-
-                // Give water breathing effect
-                player.addEffect(new MobEffectInstance(
-                        MobEffects.WATER_BREATHING,
-                        100, // 5 seconds duration, will be refreshed
-                        0,
-                        false,
-                        false,
-                        false
-                ));
 
                 // Add swim speed using NeoForge attribute
                 if (swimSpeedAttribute != null) {
@@ -99,9 +87,43 @@ public class SeaFishDisk extends UpgradeDisk {
 
             APPLIED_LEVELS.put(playerId, level);
         }
+    }
 
-        // Level 12: Continuously refresh water breathing
-        if (level >= 12) {
+    @Override
+    public void applyTickEffect(Player player, int level) {
+        // Server-side only
+        if (player.level().isClientSide) return;
+
+        UUID playerId = player.getUUID();
+
+        if (level < 12) {
+            // Check if player is underwater
+            if (player.isUnderWater()) {
+                // Check if player has full air (just went underwater or surfaced)
+                if (player.getAirSupply() >= player.getMaxAirSupply()) {
+                    // Reset bonus air availability
+                    BONUS_AIR_USED.put(playerId, false);
+                }
+
+                // Check if player is about to drown (air <= 0) and hasn't used bonus yet
+                boolean bonusUsed = BONUS_AIR_USED.getOrDefault(playerId, false);
+                if (player.getAirSupply() <= 0 && !bonusUsed) {
+                    // Calculate bonus air based on level
+                    int airBonus = Math.toIntExact(2 + round(level * level * 0.1)); // In seconds
+                    int airBonusTicks = airBonus * 20; // Convert to ticks
+
+                    // Add bonus air
+                    player.setAirSupply(airBonusTicks);
+
+                    // Mark bonus as used
+                    BONUS_AIR_USED.put(playerId, true);
+                }
+            } else {
+                // Player not underwater - reset bonus availability
+                BONUS_AIR_USED.put(playerId, false);
+            }
+        } else {
+            // Level 12: Infinite water breathing effect
             if (!player.hasEffect(MobEffects.WATER_BREATHING)) {
                 player.addEffect(new MobEffectInstance(
                         MobEffects.WATER_BREATHING,
@@ -130,6 +152,8 @@ public class SeaFishDisk extends UpgradeDisk {
         // Remove water breathing effect
         player.removeEffect(MobEffects.WATER_BREATHING);
 
-        APPLIED_LEVELS.remove(player.getUUID());
+        UUID playerId = player.getUUID();
+        APPLIED_LEVELS.remove(playerId);
+        BONUS_AIR_USED.remove(playerId);
     }
 }

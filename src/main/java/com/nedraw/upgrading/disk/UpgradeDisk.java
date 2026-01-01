@@ -46,12 +46,20 @@ public class UpgradeDisk {
         return descriptions.get(level - 1);
     }
 
-    // This will be called every tick for equipped disks
+    // Called when disk is equipped OR when level changes
+    // Use this for one-time setup (attributes, etc.)
     public void applyEffect(Player player, int level) {
         // Override this in specific disk implementations
     }
 
-    // Add this method to UpgradeDisk class
+    // Called EVERY TICK for continuous effects (magnet pull, air bonus, dash detection, etc.)
+    // Only override this if your disk needs tick-based logic
+    // Leave empty by default for performance
+    public void applyTickEffect(Player player, int level) {
+        // Override this in specific disk implementations that need tick updates
+    }
+
+    // Called when disk is unequipped
     public void removeEffect(Player player) {
         // Override in specific disks to remove their effects
     }

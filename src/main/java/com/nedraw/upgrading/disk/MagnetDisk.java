@@ -36,11 +36,15 @@ public class MagnetDisk extends UpgradeDisk {
         UUID playerId = player.getUUID();
         Integer appliedLevel = APPLIED_LEVELS.get(playerId);
 
-        // Only update tracking if level changed
+        // Update tracking when level changes
         if (appliedLevel == null || appliedLevel != level) {
             APPLIED_LEVELS.put(playerId, level);
         }
+        // No one-time setup needed for magnet
+    }
 
+    @Override
+    public void applyTickEffect(Player player, int level) {
         // Server-side only
         if (player.level().isClientSide) return;
 

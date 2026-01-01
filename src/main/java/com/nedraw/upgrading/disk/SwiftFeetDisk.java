@@ -69,7 +69,10 @@ public class SwiftFeetDisk extends UpgradeDisk {
             // Mark this level as applied
             APPLIED_LEVELS.put(playerId, level);
         }
+    }
 
+    @Override
+    public void applyTickEffect(Player player, int level) {
         // ONLY check for dash if level 12+ (to minimize performance impact)
         if (level >= 12) {
             handleDashDetection(player);
