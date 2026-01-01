@@ -3,7 +3,6 @@ package com.nedraw.upgrading.disk;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
@@ -14,9 +13,9 @@ public class SwiftFeetDisk extends UpgradeDisk {
     private static final ResourceLocation SPEED_MODIFIER_ID =
             ResourceLocation.fromNamespaceAndPath("upgrading", "swift_feet_speed");
 
-    // Per-player cooldown tracking
+    // Per-player cooldown and state tracking
     private static final Map<UUID, Long> DASH_COOLDOWNS = new HashMap<>();
-    private static final Map<UUID, Boolean> WAS_SPRINTING = new HashMap<>();
+    private static final Map<UUID, Boolean> WAS_JUMPING = new HashMap<>();
     private static final long DASH_COOLDOWN = 10000; // 10 seconds
 
     public SwiftFeetDisk() {
@@ -76,27 +75,41 @@ public class SwiftFeetDisk extends UpgradeDisk {
         long currentTime = System.currentTimeMillis();
         long lastDash = DASH_COOLDOWNS.getOrDefault(playerId, 0L);
 
-        boolean isSprinting = player.isSprinting();
-        boolean wasSprinting = WAS_SPRINTING.getOrDefault(playerId, false);
+        // Check if player is trying to jump by checking vertical velocity
+        // When player presses jump while in air, there's a small upward velocity spike
+        double verticalVelocity = player.getDeltaMovement().y;
 
-        // Detect sprint key press (transition from not sprinting to sprinting)
-        boolean justStartedSprinting = isSprinting && !wasSprinting;
+        // Detect jump attempt: positive Y velocity while in air (trying to jump)
+        boolean isTryingToJump = verticalVelocity > 0.0 && verticalVelocity < 0.42; // Jump gives ~0.42 velocity
 
-        // Update sprint state
-        WAS_SPRINTING.put(playerId, isSprinting);
+        // Get previous jump state
+        boolean wasTryingToJump = WAS_JUMPING.getOrDefault(playerId, false);
 
-        // Check if player just started sprinting while in air and cooldown ready
-        if (!player.onGround() && justStartedSprinting && (currentTime - lastDash) >= DASH_COOLDOWN) {
-            // Get horizontal direction only
+        // Detect jump key press (transition)
+        boolean jumpKeyPressed = isTryingToJump && !wasTryingToJump;
+
+        // Update tracking for next tick
+        WAS_JUMPING.put(playerId, isTryingToJump);
+
+        // Dash conditions:
+        // 1. Player is in the air
+        // 2. Player pressed jump key (detected via velocity spike)
+        // 3. Cooldown is ready
+        if (!player.onGround() && jumpKeyPressed && (currentTime - lastDash) >= DASH_COOLDOWN) {
+            // Get player's look direction (horizontal only)
             float yaw = player.getYRot();
             double yawRadians = Math.toRadians(yaw);
 
-            double dashPower = 1.7;
+            // Dash in the direction player is looking
+            double dashPower = 1.0; // Strong forward boost
             double motionX = -Math.sin(yawRadians) * dashPower;
             double motionZ = Math.cos(yawRadians) * dashPower;
 
-            // Apply dash with upward boost
-            player.setDeltaMovement(motionX, 0.8, motionZ);
+            // Apply strong velocity boost with slight upward component
+            player.setDeltaMovement(motionX, 0.4, motionZ);
+
+            // Mark velocity changed for proper sync
+            player.hurtMarked = true;
 
             // Update cooldown
             DASH_COOLDOWNS.put(playerId, currentTime);
@@ -107,8 +120,8 @@ public class SwiftFeetDisk extends UpgradeDisk {
                     player.blockPosition(),
                     net.minecraft.sounds.SoundEvents.ENDER_DRAGON_FLAP,
                     net.minecraft.sounds.SoundSource.PLAYERS,
-                    0.5f,
-                    2.0f
+                    0.7f,
+                    1.8f
             );
         }
     }

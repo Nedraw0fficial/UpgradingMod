@@ -78,6 +78,13 @@ public class DiskMenuScreen extends Screen {
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         super.render(graphics, mouseX, mouseY, partialTick);
 
+        // Store previous hovered disk
+        String previousHoveredDisk = hoveredDiskId;
+
+        // Reset hover state each frame
+        hoveredDiskId = null;
+        hoveringUpgradeButton = false;
+
         // Main panel
         int panelColor = 0xE0101010;
         graphics.fill(leftPos, topPos, leftPos + SCREEN_WIDTH, topPos + SCREEN_HEIGHT, panelColor);
@@ -94,6 +101,16 @@ public class DiskMenuScreen extends Screen {
         // Render components
         renderDiskList(graphics, mouseX, mouseY);
         renderEquipmentSlots(graphics, mouseX, mouseY);
+
+        // If mouse is over hover panel area and if we had a hovered disk, keep it
+        int panelX = leftPos + HOVER_PANEL_X;
+        int panelY = topPos + HOVER_PANEL_Y;
+        if (hoveredDiskId == null && previousHoveredDisk != null) {
+            if (isMouseOver(mouseX, mouseY, panelX, panelY, HOVER_PANEL_WIDTH, HOVER_PANEL_HEIGHT)) {
+                hoveredDiskId = previousHoveredDisk;
+            }
+        }
+
         renderHoverInfo(graphics, mouseX, mouseY);
 
         // Render held disk last
@@ -190,7 +207,7 @@ public class DiskMenuScreen extends Screen {
         // Disk name
         graphics.drawString(this.font, disk.getDisplayName(), x + 5, y + 5, 0xFFFFFF);
 
-        // Rarity and level
+        // Rarity and level - REFRESH FROM CURRENT DATA
         int level = diskData.getDiskLevel(hoveredDiskId);
         String rarityText = disk.getRarity().name();
         String levelText = "Lv. " + level;
@@ -206,7 +223,7 @@ public class DiskMenuScreen extends Screen {
 
         graphics.drawString(this.font, levelText, x + HOVER_PANEL_WIDTH - 45, y + 18, 0xFFFF55);
 
-        // Description
+        // Description - REFRESH FROM CURRENT LEVEL
         String description = disk.getDescriptionForLevel(level);
         graphics.drawString(this.font, description, x + 5, y + 32, 0xCCCCCC);
 
