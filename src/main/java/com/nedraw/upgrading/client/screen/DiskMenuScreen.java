@@ -98,19 +98,32 @@ public class DiskMenuScreen extends Screen {
         // Title
         graphics.drawString(this.font, this.title, leftPos + 10, topPos + 8, 0xFFFFFF);
 
-        // Render components
+        // Render disk list and equipment slots (these set hoveredDiskId if hovering a disk)
         renderDiskList(graphics, mouseX, mouseY);
         renderEquipmentSlots(graphics, mouseX, mouseY);
 
-        // If mouse is over hover panel area and if we had a hovered disk, keep it
-        int panelX = leftPos + HOVER_PANEL_X;
-        int panelY = topPos + HOVER_PANEL_Y;
+        // CRITICAL FIX: Keep the hovered disk visible when mouse moves toward/in the hover panel area
+        // We expand the zone to include the space between the slots and the panel
         if (hoveredDiskId == null && previousHoveredDisk != null) {
-            if (isMouseOver(mouseX, mouseY, panelX, panelY, HOVER_PANEL_WIDTH, HOVER_PANEL_HEIGHT)) {
+            int panelX = leftPos + HOVER_PANEL_X;
+            int panelY = topPos + HOVER_PANEL_Y;
+
+            // Expanded zone: from top of equipment slots down to bottom of panel, full width of panel
+            int zoneTop = topPos + SLOT_Y; // Start from equipment slots
+            int zoneBottom = panelY + HOVER_PANEL_HEIGHT; // End at bottom of panel
+
+            // Check if mouse is in the expanded zone
+            boolean inExpandedZone = mouseX >= panelX &&
+                    mouseX <= panelX + HOVER_PANEL_WIDTH &&
+                    mouseY >= zoneTop &&
+                    mouseY <= zoneBottom;
+
+            if (inExpandedZone) {
                 hoveredDiskId = previousHoveredDisk;
             }
         }
 
+        // Now render the hover info (which includes the upgrade button)
         renderHoverInfo(graphics, mouseX, mouseY);
 
         // Render held disk last
@@ -225,7 +238,14 @@ public class DiskMenuScreen extends Screen {
 
         // Description - REFRESH FROM CURRENT LEVEL
         String description = disk.getDescriptionForLevel(level);
-        graphics.drawString(this.font, description, x + 5, y + 32, 0xCCCCCC);
+
+        // Support multi-line descriptions (split by \n)
+        String[] lines = description.split("\n");
+        int lineY = y + 32;
+        for (String line : lines) {
+            graphics.drawString(this.font, line, x + 5, lineY, 0xCCCCCC);
+            lineY += 10; // Move down for next line
+        }
 
         // Upgrade button
         if (disk.canUpgrade(level)) {
@@ -287,14 +307,44 @@ public class DiskMenuScreen extends Screen {
 
         // Upgrade button
         if (hoveringUpgradeButton && hoveredDiskId != null) {
-            PacketDistributor.sendToServer(new UpgradeDiskPacket(hoveredDiskId));
+            // Get current level and check if we can upgrade
+            int currentLevel = diskData.getDiskLevel(hoveredDiskId);
+            UpgradeDisk disk = DiskRegistry.getDisk(hoveredDiskId);
 
-            minecraft.getSoundManager().play(
-                    net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(
-                            net.minecraft.sounds.SoundEvents.UI_BUTTON_CLICK,
-                            1.0f
-                    )
-            );
+            if (disk != null && disk.canUpgrade(currentLevel)) {
+                int xpCost = disk.getRarity().getXpCostForLevel(currentLevel);
+                int playerXP = diskData.getTotalXP(minecraft.player);
+
+                // Only proceed if player has enough XP
+                if (playerXP >= xpCost) {
+                    // Send packet to server
+                    PacketDistributor.sendToServer(new UpgradeDiskPacket(hoveredDiskId));
+
+                    // OPTIMISTIC UPDATE: Immediately update local data
+                    // This prevents the 1-2 tick delay before server sync
+                    diskData.upgradeDisk(hoveredDiskId);
+
+                    minecraft.getSoundManager().play(
+                            net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(
+                                    net.minecraft.sounds.SoundEvents.UI_BUTTON_CLICK,
+                                    1.0f
+                            )
+                    );
+                } else {
+                    // Not enough XP - show message
+                    minecraft.player.displayClientMessage(
+                            Component.literal("Not enough XP!").withStyle(style -> style.withColor(0xFF5555)),
+                            true
+                    );
+
+                    minecraft.getSoundManager().play(
+                            net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(
+                                    net.minecraft.sounds.SoundEvents.VILLAGER_NO,
+                                    1.0f
+                            )
+                    );
+                }
+            }
 
             return true;
         }
@@ -371,6 +421,7 @@ public class DiskMenuScreen extends Screen {
         super.tick();
 
         if (minecraft != null && minecraft.player != null) {
+            // ALWAYS refresh diskData to catch server updates (like upgrades)
             diskData = PlayerDiskData.get(minecraft.player);
 
             Set<String> currentUnlocked = diskData.getUnlockedDisks();

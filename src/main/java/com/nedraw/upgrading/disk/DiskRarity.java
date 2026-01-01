@@ -1,11 +1,11 @@
 package com.nedraw.upgrading.disk;
 
 public enum DiskRarity {
-    BASIC(1, 5, 0x8CC8CF),      // Blue-Gray
-    RARE(4, 10, 0xFFA538),       // Orange
-    EPIC(7, 20, 0xA142C9),       // Purple
-    LEGENDARY(9, 40, 0xD3F224),  // Lime-Yellow
-    MYTHIC(11, 80, 0x2A139E);    // Deep Purplish-Blue
+    BASIC(1, 7, 0x8CC8CF),      // Blue-Gray
+    RARE(4, 15, 0xFFA538),       // Orange
+    EPIC(7, 30, 0xA142C9),       // Purple
+    LEGENDARY(9, 65, 0xD3F224),  // Lime-Yellow
+    MYTHIC(11, 110, 0x2A139E);    // Deep Purplish-Blue
 
     private final int startLevel;
     private final int baseXpCost;
