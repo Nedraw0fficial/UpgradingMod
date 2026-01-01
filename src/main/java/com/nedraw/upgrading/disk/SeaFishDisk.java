@@ -16,8 +16,8 @@ import static java.lang.Math.round;
 public class SeaFishDisk extends UpgradeDisk {
     private static final ResourceLocation SPEED_MODIFIER_ID =
             ResourceLocation.fromNamespaceAndPath("upgrading", "sea_fish_speed");
-    private static final ResourceLocation WATER_SPEED_MODIFIER_ID =
-            ResourceLocation.fromNamespaceAndPath("upgrading", "sea_fish_water_speed");
+    private static final ResourceLocation SWIM_SPEED_MODIFIER_ID =
+            ResourceLocation.fromNamespaceAndPath("upgrading", "sea_fish_swim_speed");
 
     // Track which level is currently applied to each player
     private static final Map<UUID, Integer> APPLIED_LEVELS = new HashMap<>();
@@ -36,7 +36,7 @@ public class SeaFishDisk extends UpgradeDisk {
                 .withDescription(9, "+10s of air underwater but\n-4% movement speed on land")
                 .withDescription(10, "+12s of air underwater but\n-2% movement speed on land")
                 .withDescription(11, "+14s of air underwater")
-                .withDescription(12, "Infinite water breathing but\n+8% swim speed");
+                .withDescription(12, "Infinite water breathing\n+8% swim speed");
     }
 
     @Override
@@ -47,14 +47,14 @@ public class SeaFishDisk extends UpgradeDisk {
         // Only update if level changed
         if (appliedLevel == null || appliedLevel != level) {
             var speedAttribute = player.getAttribute(Attributes.MOVEMENT_SPEED);
-            var waterSpeedAttribute = player.getAttribute(Attributes.WATER_MOVEMENT_EFFICIENCY);
+            var swimSpeedAttribute = player.getAttribute(net.neoforged.neoforge.common.NeoForgeMod.SWIM_SPEED);
 
             if (level < 12) {
                 // Levels 1-11: Penalty on land, water breathing
                 if (speedAttribute != null) {
                     speedAttribute.removeModifier(SPEED_MODIFIER_ID);
 
-                    double speedPenalty = 22 -(level * 2) / 100.0; // Starts at -20% and +2% per level
+                    double speedPenalty = - (22 - (level * 2)) / 100.0; // Starts at -20% and +2% per level
                     AttributeModifier speedModifier = new AttributeModifier(
                             SPEED_MODIFIER_ID,
                             speedPenalty,
@@ -83,17 +83,17 @@ public class SeaFishDisk extends UpgradeDisk {
                         false
                 ));
 
-                // Add swim speed
-                if (waterSpeedAttribute != null) {
-                    waterSpeedAttribute.removeModifier(WATER_SPEED_MODIFIER_ID);
+                // Add swim speed using NeoForge attribute
+                if (swimSpeedAttribute != null) {
+                    swimSpeedAttribute.removeModifier(SWIM_SPEED_MODIFIER_ID);
 
                     double swimBoost = 0.08; // 8% faster
-                    AttributeModifier waterModifier = new AttributeModifier(
-                            WATER_SPEED_MODIFIER_ID,
+                    AttributeModifier swimModifier = new AttributeModifier(
+                            SWIM_SPEED_MODIFIER_ID,
                             swimBoost,
                             AttributeModifier.Operation.ADD_MULTIPLIED_BASE
                     );
-                    waterSpeedAttribute.addPermanentModifier(waterModifier);
+                    swimSpeedAttribute.addPermanentModifier(swimModifier);
                 }
             }
 
@@ -118,13 +118,13 @@ public class SeaFishDisk extends UpgradeDisk {
     @Override
     public void removeEffect(Player player) {
         var speedAttribute = player.getAttribute(Attributes.MOVEMENT_SPEED);
-        var waterSpeedAttribute = player.getAttribute(Attributes.WATER_MOVEMENT_EFFICIENCY);
+        var swimSpeedAttribute = player.getAttribute(net.neoforged.neoforge.common.NeoForgeMod.SWIM_SPEED);
 
         if (speedAttribute != null) {
             speedAttribute.removeModifier(SPEED_MODIFIER_ID);
         }
-        if (waterSpeedAttribute != null) {
-            waterSpeedAttribute.removeModifier(WATER_SPEED_MODIFIER_ID);
+        if (swimSpeedAttribute != null) {
+            swimSpeedAttribute.removeModifier(SWIM_SPEED_MODIFIER_ID);
         }
 
         // Remove water breathing effect
