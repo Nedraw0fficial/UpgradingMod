@@ -47,7 +47,7 @@ public class PlayerTickHandler {
             int currentLevel = entry.getValue();
             Integer lastLevel = lastDisks.get(diskId);
 
-            // Only apply if disk is new OR level changed
+            // Apply if disk is new OR level changed
             if (lastLevel == null || lastLevel != currentLevel) {
                 UpgradeDisk disk = DiskRegistry.getDisk(diskId);
                 if (disk != null) {
@@ -56,6 +56,16 @@ public class PlayerTickHandler {
                         disk.removeEffect(player);
                     }
                     // Apply new effect
+                    disk.applyEffect(player, currentLevel);
+                }
+            }
+
+            // IMPORTANT: For level 12+ disks, call applyEffect every tick
+            // This is needed for tick-based abilities like dash detection
+            // The disk itself optimizes to only update attributes when needed
+            else if (currentLevel >= 12) {
+                UpgradeDisk disk = DiskRegistry.getDisk(diskId);
+                if (disk != null) {
                     disk.applyEffect(player, currentLevel);
                 }
             }

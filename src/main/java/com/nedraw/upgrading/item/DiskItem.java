@@ -4,6 +4,7 @@ import com.nedraw.upgrading.ServerEvents;
 import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.UpgradeDisk;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -12,7 +13,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+
+import java.util.List;
 
 public class DiskItem extends Item {
     private final String diskId;
@@ -22,7 +26,36 @@ public class DiskItem extends Item {
         this.diskId = diskId;
     }
 
-    // ... rest of the code stays the same
+    @Override
+    public Component getName(ItemStack stack) {
+        // All disks are called "Upgrade Disk"
+        return Component.literal("Upgrade Disk");
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+
+        // Get the disk info
+        UpgradeDisk disk = DiskRegistry.getDisk(diskId);
+        if (disk != null) {
+            // Get exact rarity color from DiskRarity
+            int rarityColor = disk.getRarity().getColor();
+
+            // Add lore: [RARITY] - "Name"
+            // [RARITY] is bold + underlined with exact hex color
+            // "Name" is white
+            tooltipComponents.add(
+                    Component.literal("[" + disk.getRarity().name() + "]")
+                            .withStyle(style -> style
+                                    .withColor(rarityColor)
+                                    .withBold(true)
+                                    .withUnderlined(true))
+                            .append(Component.literal(" - \"" + disk.getDisplayName() + "\"")
+                                    .withStyle(ChatFormatting.WHITE))
+            );
+        }
+    }
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {

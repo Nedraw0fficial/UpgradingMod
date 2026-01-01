@@ -103,8 +103,12 @@ public class SwiftFeetDisk extends UpgradeDisk {
             double currentYVel = player.getDeltaMovement().y;
             Double lastYVel = LAST_Y_VELOCITY.get(playerId);
 
+            // Debug logging
+            System.out.println("Player in air - Current Y vel: " + currentYVel + ", Last Y vel: " + lastYVel);
+
             // Detect jump: sudden upward velocity change
             if (lastYVel != null && currentYVel > 0.3 && lastYVel < 0.3) {
+                System.out.println("DASH TRIGGERED!");
                 performDash(player);
             }
 
@@ -123,7 +127,7 @@ public class SwiftFeetDisk extends UpgradeDisk {
         double yawRadians = Math.toRadians(yaw);
 
         // Dash in the direction player is looking
-        double dashPower = 2.5;
+        double dashPower = 1.0;
         double motionX = -Math.sin(yawRadians) * dashPower;
         double motionZ = Math.cos(yawRadians) * dashPower;
 
