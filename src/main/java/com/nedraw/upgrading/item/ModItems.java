@@ -10,8 +10,15 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS =
             DeferredRegister.createItems(UpgradingMod.MODID);
 
+    // REGISTRY
+
     public static final DeferredHolder<Item, DiskItem> SWIFT_FEET_DISK = ITEMS.registerItem(
             "swift_feet_disk",
             properties -> new DiskItem("swift_feet", properties)
+    );
+
+    public static final DeferredHolder<Item, DiskItem> SEA_FISH_DISK = ITEMS.registerItem(
+            "sea_fish_disk",
+            properties -> new DiskItem("sea_fish", properties)
     );
 }

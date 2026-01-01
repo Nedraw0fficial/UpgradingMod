@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.nedraw.upgrading.client.ClientSetup;
 import com.nedraw.upgrading.data.ModAttachments;
 import com.nedraw.upgrading.disk.DiskRegistry;
+import com.nedraw.upgrading.disk.SeaFishDisk;
 import com.nedraw.upgrading.disk.SwiftFeetDisk;
 import com.nedraw.upgrading.item.ModItems;
 import com.nedraw.upgrading.network.ModNetwork;
@@ -23,7 +24,10 @@ public class UpgradingMod {
 
         // Register disks FIRST
         LOGGER.info("Registering Upgrade Disks...");
+        // --- DISKS ---
         DiskRegistry.register(new SwiftFeetDisk());
+        DiskRegistry.register(new SeaFishDisk());
+        // - - - - - - -
         LOGGER.info("Registered {} disks", DiskRegistry.getAllDisks().size());
 
         // Register items
