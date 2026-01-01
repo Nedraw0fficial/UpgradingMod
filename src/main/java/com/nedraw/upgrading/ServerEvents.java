@@ -8,7 +8,9 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 @EventBusSubscriber(modid = UpgradingMod.MODID)
 public class ServerEvents {
@@ -27,8 +29,15 @@ public class ServerEvents {
         String slot1 = data.getEquippedDisk(1);
         String slot2 = data.getEquippedDisk(2);
 
+        // Build disk levels map
+        Map<String, Integer> diskLevels = new HashMap<>();
+        for (String diskId : data.getUnlockedDisks()) {
+            diskLevels.put(diskId, data.getDiskLevel(diskId));
+        }
+
         SyncDiskDataPacket packet = new SyncDiskDataPacket(
                 new HashSet<>(data.getUnlockedDisks()),
+                diskLevels,  // Include levels now
                 slot0 != null ? slot0 : "",
                 slot1 != null ? slot1 : "",
                 slot2 != null ? slot2 : ""

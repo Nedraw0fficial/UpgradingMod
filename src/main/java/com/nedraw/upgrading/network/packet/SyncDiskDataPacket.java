@@ -9,11 +9,14 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public record SyncDiskDataPacket(
         Set<String> unlockedDisks,
+        Map<String, Integer> diskLevels,  // NEW: Include levels
         String slot0,
         String slot1,
         String slot2
@@ -25,6 +28,8 @@ public record SyncDiskDataPacket(
     public static final StreamCodec<ByteBuf, SyncDiskDataPacket> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.collection(HashSet::new, ByteBufCodecs.STRING_UTF8),
             SyncDiskDataPacket::unlockedDisks,
+            ByteBufCodecs.map(HashMap::new, ByteBufCodecs.STRING_UTF8, ByteBufCodecs.INT),
+            SyncDiskDataPacket::diskLevels,
             ByteBufCodecs.STRING_UTF8,
             SyncDiskDataPacket::slot0,
             ByteBufCodecs.STRING_UTF8,
@@ -46,12 +51,14 @@ public record SyncDiskDataPacket(
                 if (player != null) {
                     PlayerDiskData data = PlayerDiskData.get(player);
 
-                    // We need to manually sync by recreating the internal sets
-                    // Can't use clear() because it returns unmodifiable collection
-
-                    // Sync unlocked disks - unlock all from packet
+                    // Sync unlocked disks
                     for (String diskId : packet.unlockedDisks()) {
                         data.unlockDisk(diskId);
+                    }
+
+                    // Sync disk levels
+                    for (Map.Entry<String, Integer> entry : packet.diskLevels().entrySet()) {
+                        data.setDiskLevel(entry.getKey(), entry.getValue());
                     }
 
                     // Sync equipped slots
