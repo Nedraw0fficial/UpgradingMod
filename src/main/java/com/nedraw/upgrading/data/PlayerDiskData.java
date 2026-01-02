@@ -30,8 +30,17 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
     public void unlockDisk(String diskId) {
         if (!unlockedDisks.contains(diskId)) {
             unlockedDisks.add(diskId);
-            // Start at level 1 by default (we'll adjust based on rarity later)
-            diskLevels.put(diskId, 1);
+
+            // Get the disk to check its rarity
+            var disk = com.nedraw.upgrading.disk.DiskRegistry.getDisk(diskId);
+            if (disk != null) {
+                // Set starting level based on rarity
+                int startLevel = disk.getRarity().getStartLevel();
+                diskLevels.put(diskId, startLevel);
+            } else {
+                // Fallback to level 1 if disk not found
+                diskLevels.put(diskId, 1);
+            }
         }
     }
 

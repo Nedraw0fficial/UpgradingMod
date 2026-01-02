@@ -24,10 +24,13 @@ public class UpgradingMod {
         // Register disks FIRST
         LOGGER.info("Registering Upgrade Disks...");
         // --- DISKS ---
+        // - BASIC -
         DiskRegistry.register(new SwiftFeetDisk());
         DiskRegistry.register(new SeaFishDisk());
         DiskRegistry.register(new MagnetDisk());
         DiskRegistry.register(new MightyMinerDisk());
+        // - RARE -
+        DiskRegistry.register(new FlameWalkerDisk());
         // - - - - - - -
         LOGGER.info("Registered {} disks", DiskRegistry.getAllDisks().size());
 
