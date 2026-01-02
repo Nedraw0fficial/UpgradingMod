@@ -101,12 +101,6 @@ public class SeaFishDisk extends UpgradeDisk {
 
         // All levels use the same bonus air system
         if (player.isUnderWater()) {
-            // Check if player has full air (just went underwater or surfaced)
-            if (player.getAirSupply() >= player.getMaxAirSupply()) {
-                // Reset bonus air availability
-                BONUS_AIR_USED.put(playerId, false);
-            }
-
             // Check if player is about to drown (air <= 0) and hasn't used bonus yet
             boolean bonusUsed = BONUS_AIR_USED.getOrDefault(playerId, false);
             if (player.getAirSupply() <= 0 && !bonusUsed) {
@@ -119,14 +113,14 @@ public class SeaFishDisk extends UpgradeDisk {
                 }
                 int airBonusTicks = airBonus * 20; // Convert to ticks
 
-                // Add bonus air
+                // Add bonus air (CAN exceed max!)
                 player.setAirSupply(airBonusTicks);
 
                 // Mark bonus as used
                 BONUS_AIR_USED.put(playerId, true);
             }
         } else {
-            // Player not underwater - reset bonus availability
+            // Player NOT underwater (surfaced) - reset bonus availability
             BONUS_AIR_USED.put(playerId, false);
         }
     }
