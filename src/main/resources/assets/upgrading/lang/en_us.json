@@ -1,10 +1,15 @@
 {
   "item.upgrading.swift_feet_disk": "Upgrade Disk",
   "item.upgrading.sea_fish_disk": "Upgrade Disk",
+  "item.upgrading.magnet_disk": "Upgrade Disk",
+  "item.upgrading.mighty_miner_disk": "Upgrade Disk",
+
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Swift Feet",
   "disk.upgrading.sea_fish": "Sea Fish",
+  "disk.upgrading.magnet": "Magnet",
+  "disk.upgrading.mighty_miner": "Mighty Miner",
 
   "_comment1": "Disk descriptions will be added here later",
 

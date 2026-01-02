@@ -26,4 +26,9 @@ public class ModItems {
             "magnet_disk",
             properties -> new DiskItem("magnet", properties)
     );
+
+    public static final DeferredHolder<Item, DiskItem> MIGHTY_MINER_DISK = ITEMS.registerItem(
+            "mighty_miner_disk",
+            properties -> new DiskItem("mighty_miner", properties)
+    );
 }
