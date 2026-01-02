@@ -22,9 +22,10 @@ public class BlockBreakHandler {
 
         PlayerDiskData diskData = PlayerDiskData.get(player);
 
-        // Check all equipped disks for Mighty Miner
+        // Check all equipped disks
         for (int slot = 0; slot < 3; slot++) {
             String diskId = diskData.getEquippedDisk(slot);
+
             if ("mighty_miner".equals(diskId)) {
                 UpgradeDisk disk = DiskRegistry.getDisk(diskId);
                 if (disk instanceof MightyMinerDisk mightyMiner) {
@@ -38,7 +39,19 @@ public class BlockBreakHandler {
                             level
                     );
                 }
-                break; // Only one Mighty Miner can be equipped
+            } else if ("harvester".equals(diskId)) {
+                UpgradeDisk disk = DiskRegistry.getDisk(diskId);
+                if (disk instanceof com.nedraw.upgrading.disk.HarvesterDisk harvester) {
+                    int level = diskData.getDiskLevel(diskId);
+
+                    // Handle crop duplication
+                    harvester.handleCropBreak(
+                            player,
+                            event.getState(),
+                            event.getPos(),
+                            level
+                    );
+                }
             }
         }
     }

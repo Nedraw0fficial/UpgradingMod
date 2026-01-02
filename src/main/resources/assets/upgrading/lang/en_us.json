@@ -5,6 +5,7 @@
   "item.upgrading.mighty_miner_disk": "Upgrade Disk",
   "item.upgrading.flame_walker_disk": "Upgrade Disk",
   "item.upgrading.step_assist_disk": "Upgrade Disk",
+  "item.upgrading.harvester_disk": "Upgrade Disk",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Swift Feet",
@@ -13,6 +14,7 @@
   "disk.upgrading.mighty_miner": "Mighty Miner",
   "disk.upgrading.flame_walker": "Flame Walker",
   "disk.upgrading.step_assist": "Step Assist",
+  "disk.upgrading.harvester": "Harvester",
 
   "_comment1": "Disk descriptions will be added here later",
 
@@ -27,5 +29,13 @@
   "message.upgrading.disk_unlocked": "Unlocked: %s",
 
   "key.categories.upgrading": "UPGRADING! Mod",
-  "key.upgrading.open_disk_menu": "Open Disk Menu"
+  "key.upgrading.open_disk_menu": "Open Disk Menu",
+
+
+
+  "item.upgrading.golden_wheat": "Golden Wheat",
+  "item.upgrading.golden_potato": "Golden Potato",
+  "item.upgrading.golden_beetroot": "Golden Beetroot",
+  "item.upgrading.golden_nether_wart": "Golden Nether Wart",
+  "item.upgrading.golden_sweet_berries": "Golden Sweet Berries"
 }

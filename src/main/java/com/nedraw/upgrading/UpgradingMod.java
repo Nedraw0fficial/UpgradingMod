@@ -32,6 +32,7 @@ public class UpgradingMod {
         // - RARE -
         DiskRegistry.register(new FlameWalkerDisk());
         DiskRegistry.register(new StepAssistDisk());
+        DiskRegistry.register(new HarvesterDisk());
         // - - - - - - -
         LOGGER.info("Registered {} disks", DiskRegistry.getAllDisks().size());
 
