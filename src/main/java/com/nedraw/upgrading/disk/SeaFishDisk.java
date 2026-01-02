@@ -4,8 +4,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,6 +63,11 @@ public class SeaFishDisk extends UpgradeDisk {
                     );
                     speedAttribute.addPermanentModifier(speedModifier);
                 }
+
+                // Remove swim speed bonus if it exists
+                if (swimSpeedAttribute != null) {
+                    swimSpeedAttribute.removeModifier(SWIM_SPEED_MODIFIER_ID);
+                }
             } else {
                 // Level 12: Remove penalty, add swim speed
                 if (speedAttribute != null) {
@@ -75,7 +78,7 @@ public class SeaFishDisk extends UpgradeDisk {
                 if (swimSpeedAttribute != null) {
                     swimSpeedAttribute.removeModifier(SWIM_SPEED_MODIFIER_ID);
 
-                    double swimBoost = 0.12; // 8% faster
+                    double swimBoost = 0.12; // 12% faster
                     AttributeModifier swimModifier = new AttributeModifier(
                             SWIM_SPEED_MODIFIER_ID,
                             swimBoost,
@@ -96,44 +99,35 @@ public class SeaFishDisk extends UpgradeDisk {
 
         UUID playerId = player.getUUID();
 
-        if (level < 12) {
-            // Check if player is underwater
-            if (player.isUnderWater()) {
-                // Check if player has full air (just went underwater or surfaced)
-                if (player.getAirSupply() >= player.getMaxAirSupply()) {
-                    // Reset bonus air availability
-                    BONUS_AIR_USED.put(playerId, false);
-                }
-
-                // Check if player is about to drown (air <= 0) and hasn't used bonus yet
-                boolean bonusUsed = BONUS_AIR_USED.getOrDefault(playerId, false);
-                if (player.getAirSupply() <= 0 && !bonusUsed) {
-                    // Calculate bonus air based on level
-                    int airBonus = Math.toIntExact(2 + round(level * level * 0.1)); // In seconds
-                    int airBonusTicks = airBonus * 20; // Convert to ticks
-
-                    // Add bonus air
-                    player.setAirSupply(airBonusTicks);
-
-                    // Mark bonus as used
-                    BONUS_AIR_USED.put(playerId, true);
-                }
-            } else {
-                // Player not underwater - reset bonus availability
+        // All levels use the same bonus air system
+        if (player.isUnderWater()) {
+            // Check if player has full air (just went underwater or surfaced)
+            if (player.getAirSupply() >= player.getMaxAirSupply()) {
+                // Reset bonus air availability
                 BONUS_AIR_USED.put(playerId, false);
             }
-        } else {
-            // Level 12: Infinite water breathing effect
-            if (!player.hasEffect(MobEffects.WATER_BREATHING)) {
-                player.addEffect(new MobEffectInstance(
-                        MobEffects.WATER_BREATHING,
-                        100,
-                        0,
-                        false,
-                        false,
-                        false
-                ));
+
+            // Check if player is about to drown (air <= 0) and hasn't used bonus yet
+            boolean bonusUsed = BONUS_AIR_USED.getOrDefault(playerId, false);
+            if (player.getAirSupply() <= 0 && !bonusUsed) {
+                // Calculate bonus air based on level
+                int airBonus;
+                if (level < 12) {
+                    airBonus = Math.toIntExact(2 + round(level * level * 0.1)); // In seconds
+                } else {
+                    airBonus = 20; // Level 12: 20 seconds
+                }
+                int airBonusTicks = airBonus * 20; // Convert to ticks
+
+                // Add bonus air
+                player.setAirSupply(airBonusTicks);
+
+                // Mark bonus as used
+                BONUS_AIR_USED.put(playerId, true);
             }
+        } else {
+            // Player not underwater - reset bonus availability
+            BONUS_AIR_USED.put(playerId, false);
         }
     }
 
@@ -148,9 +142,6 @@ public class SeaFishDisk extends UpgradeDisk {
         if (swimSpeedAttribute != null) {
             swimSpeedAttribute.removeModifier(SWIM_SPEED_MODIFIER_ID);
         }
-
-        // Remove water breathing effect
-        player.removeEffect(MobEffects.WATER_BREATHING);
 
         UUID playerId = player.getUUID();
         APPLIED_LEVELS.remove(playerId);
