@@ -39,4 +39,9 @@ public class ModItems {
             "flame_walker_disk",
             properties -> new DiskItem("flame_walker", properties)
     );
+
+    public static final DeferredHolder<Item, DiskItem> STEP_ASSIST_DISK = ITEMS.registerItem(
+            "step_assist_disk",
+            properties -> new DiskItem("step_assist", properties)
+    );
 }

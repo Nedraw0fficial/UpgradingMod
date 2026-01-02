@@ -4,6 +4,7 @@
   "item.upgrading.magnet_disk": "Upgrade Disk",
   "item.upgrading.mighty_miner_disk": "Upgrade Disk",
   "item.upgrading.flame_walker_disk": "Upgrade Disk",
+  "item.upgrading.step_assist_disk": "Upgrade Disk",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Swift Feet",
@@ -11,7 +12,7 @@
   "disk.upgrading.magnet": "Magnet",
   "disk.upgrading.mighty_miner": "Mighty Miner",
   "disk.upgrading.flame_walker": "Flame Walker",
-
+  "disk.upgrading.step_assist": "Step Assist",
 
   "_comment1": "Disk descriptions will be added here later",
 

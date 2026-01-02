@@ -39,7 +39,7 @@ public class SeaFishDisk extends UpgradeDisk {
                 .withDescription(9, "+10s of air underwater but\n-4% movement speed on land")
                 .withDescription(10, "+12s of air underwater but\n-2% movement speed on land")
                 .withDescription(11, "+14s of air underwater")
-                .withDescription(12, "Infinite water breathing\n+8% swim speed");
+                .withDescription(12, "+20s of air underwater\n+12% swim speed");
     }
 
     @Override
@@ -75,7 +75,7 @@ public class SeaFishDisk extends UpgradeDisk {
                 if (swimSpeedAttribute != null) {
                     swimSpeedAttribute.removeModifier(SWIM_SPEED_MODIFIER_ID);
 
-                    double swimBoost = 0.08; // 8% faster
+                    double swimBoost = 0.12; // 8% faster
                     AttributeModifier swimModifier = new AttributeModifier(
                             SWIM_SPEED_MODIFIER_ID,
                             swimBoost,
