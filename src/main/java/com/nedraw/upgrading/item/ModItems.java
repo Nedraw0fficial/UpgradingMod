@@ -77,4 +77,11 @@ public class ModItems {
             "harvester_disk",
             properties -> new DiskItem("harvester", properties)
     );
+
+    //_epic
+
+    public static final DeferredHolder<Item, DiskItem> GLUTTON_DISK = ITEMS.registerItem(
+            "glutton_disk",
+            properties -> new DiskItem("glutton", properties)
+    );
 }

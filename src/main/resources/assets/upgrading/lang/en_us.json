@@ -6,6 +6,7 @@
   "item.upgrading.flame_walker_disk": "Upgrade Disk",
   "item.upgrading.step_assist_disk": "Upgrade Disk",
   "item.upgrading.harvester_disk": "Upgrade Disk",
+  "item.upgrading.glutton_disk": "Upgrade Disk",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Swift Feet",
@@ -15,6 +16,7 @@
   "disk.upgrading.flame_walker": "Flame Walker",
   "disk.upgrading.step_assist": "Step Assist",
   "disk.upgrading.harvester": "Harvester",
+  "disk.upgrading.glutton": "Glutton",
 
   "_comment1": "Disk descriptions will be added here later",
 

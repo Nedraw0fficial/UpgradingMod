@@ -33,6 +33,8 @@ public class UpgradingMod {
         DiskRegistry.register(new FlameWalkerDisk());
         DiskRegistry.register(new StepAssistDisk());
         DiskRegistry.register(new HarvesterDisk());
+        // - EPIC -
+        DiskRegistry.register(new GluttonDisk());
         // - - - - - - -
         LOGGER.info("Registered {} disks", DiskRegistry.getAllDisks().size());
 
