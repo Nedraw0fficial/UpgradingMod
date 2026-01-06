@@ -84,4 +84,17 @@ public class ModItems {
             "glutton_disk",
             properties -> new DiskItem("glutton", properties)
     );
+
+    public static final DeferredHolder<Item, DiskItem> SOAPY_HANDS_DISK = ITEMS.registerItem(
+            "soapy_hands_disk",
+            properties -> new DiskItem("soapy_hands", properties)
+    );
+
+    //_legendary
+
+    public static final DeferredHolder<Item, DiskItem> BERSERKER_DISK = ITEMS.registerItem(
+            "berserker_disk",
+            properties -> new DiskItem("berserker", properties)
+    );
+
 }

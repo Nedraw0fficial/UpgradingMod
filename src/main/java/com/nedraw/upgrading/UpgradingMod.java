@@ -35,6 +35,9 @@ public class UpgradingMod {
         DiskRegistry.register(new HarvesterDisk());
         // - EPIC -
         DiskRegistry.register(new GluttonDisk());
+        DiskRegistry.register(new SoapyHandsDisk());
+        // - LEGENDARY -
+        DiskRegistry.register(new BerserkerDisk());
         // - - - - - - -
         LOGGER.info("Registered {} disks", DiskRegistry.getAllDisks().size());
 
