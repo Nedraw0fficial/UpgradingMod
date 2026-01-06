@@ -38,11 +38,15 @@ public class UpgradingMod {
         DiskRegistry.register(new SoapyHandsDisk());
         // - LEGENDARY -
         DiskRegistry.register(new BerserkerDisk());
+        DiskRegistry.register(new PyroclasmDisk());
         // - - - - - - -
         LOGGER.info("Registered {} disks", DiskRegistry.getAllDisks().size());
 
         // Register items
         ModItems.ITEMS.register(modEventBus);
+
+        // REgister tabs
+        ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
 
         // Register data attachments
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);

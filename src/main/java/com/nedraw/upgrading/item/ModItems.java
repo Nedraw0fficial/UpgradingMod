@@ -97,4 +97,9 @@ public class ModItems {
             properties -> new DiskItem("berserker", properties)
     );
 
+    public static final DeferredHolder<Item, DiskItem> PYROCLASM_DISK = ITEMS.registerItem(
+            "pyroclasm_disk",
+            properties -> new DiskItem("pyroclasm", properties)
+    );
+
 }
