@@ -85,7 +85,7 @@ public class DiskLootInjector {
         addToLoot("chests/end_city_treasure", ModItems.BERSERKER_DISK, 0.02f);
 
         // Pyroclasm - Ancient city ice box only (most dangerous place)
-        // addToLoot("chests/ancient_city_ice_box", ModItems.PYROCLASM_DISK, 0.015f);
+        addToLoot("chests/ancient_city_ice_box", ModItems.PYROCLASM_DISK, 0.015f);
     }
 
     private static void addToLoot(String lootTable, DeferredHolder<Item, ?> diskItem, float chance) {

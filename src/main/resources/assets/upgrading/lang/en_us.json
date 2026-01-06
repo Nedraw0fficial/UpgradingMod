@@ -9,6 +9,7 @@
   "item.upgrading.glutton_disk": "Upgrade Disk",
   "item.upgrading.soapy_hands_disk": "Upgrade Disk",
   "item.upgrading.berserker_disk": "Upgrade Disk",
+  "item.upgrading.pyroclasm_disk": "Upgrade Disk",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Swift Feet",
@@ -21,6 +22,7 @@
   "disk.upgrading.glutton": "Glutton",
   "disk.upgrading.soapy_hands": "Soapy Hands",
   "disk.upgrading.berserker": "Berserker",
+  "disk.upgrading.pyroclasm": "Pyroclasm",
 
   "_comment1": "Disk descriptions will be added here later",
 
@@ -37,7 +39,7 @@
   "key.categories.upgrading": "UPGRADING! Mod",
   "key.upgrading.open_disk_menu": "Open Disk Menu",
 
-
+  "itemGroup.upgrading": "UPGRADING! Disks",
 
   "item.upgrading.golden_wheat": "Golden Wheat",
   "item.upgrading.golden_potato": "Golden Potato",
