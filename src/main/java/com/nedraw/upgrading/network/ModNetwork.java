@@ -1,6 +1,7 @@
 package com.nedraw.upgrading.network;
 
 import com.nedraw.upgrading.UpgradingMod;
+import com.nedraw.upgrading.network.packet.ClaimEncryptedFloppyPacket;
 import com.nedraw.upgrading.network.packet.EquipDiskPacket;
 import com.nedraw.upgrading.network.packet.SyncDiskDataPacket;
 import com.nedraw.upgrading.network.packet.UpgradeDiskPacket;
@@ -28,6 +29,12 @@ public class ModNetwork {
                 EquipDiskPacket.TYPE,
                 EquipDiskPacket.STREAM_CODEC,
                 EquipDiskPacket::handle
+        );
+
+        registrar.playToServer(
+                ClaimEncryptedFloppyPacket.TYPE,
+                ClaimEncryptedFloppyPacket.STREAM_CODEC,
+                ClaimEncryptedFloppyPacket::handle
         );
     }
 

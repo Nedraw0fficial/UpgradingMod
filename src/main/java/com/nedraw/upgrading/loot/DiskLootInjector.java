@@ -26,6 +26,12 @@ public class DiskLootInjector {
     private static final Map<ResourceKey<LootTable>, Map<DeferredHolder<Item, ?>, Float>> LOOT_INJECTIONS = new HashMap<>();
 
     static {
+
+        // Encrypted Floppy - (15%))
+        addToLoot("chests/simple_dungeon", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_plains", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/stronghold_corridor", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+
         // ===== BASIC DISKS (4 loot tables each, 8-12% chance) =====
 
         // Swift Feet - Movement/travel themed

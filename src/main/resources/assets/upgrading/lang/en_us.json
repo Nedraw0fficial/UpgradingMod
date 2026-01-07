@@ -45,5 +45,22 @@
   "item.upgrading.golden_potato": "Golden Potato",
   "item.upgrading.golden_beetroot": "Golden Beetroot",
   "item.upgrading.golden_nether_wart": "Golden Nether Wart",
-  "item.upgrading.golden_sweet_berries": "Golden Sweet Berries"
+  "item.upgrading.golden_sweet_berries": "Golden Sweet Berries",
+
+  "item.upgrading.encrypted_floppy": "Encrypted Floppy",
+
+
+  "gui.upgrading.encrypted_floppy.title": "Encrypted Floppy",
+  "gui.upgrading.encrypted_floppy.upgrade_chances": "UPGRADE CHANCES",
+  "gui.upgrading.encrypted_floppy.click_to_open": "CLICK TO OPEN!",
+
+  "rarity.upgrading.basic": "BASIC",
+  "rarity.upgrading.rare": "RARE",
+  "rarity.upgrading.epic": "EPIC",
+  "rarity.upgrading.legendary": "LEGENDARY",
+  "rarity.upgrading.mythic": "MYTHIC",
+
+  "message.upgrading.encrypted_floppy.unlocked": "⭐ ENCRYPTED FLOPPY UNLOCKED! ⭐",
+  "message.upgrading.encrypted_floppy.error": "Error: No disks available!"
+
 }

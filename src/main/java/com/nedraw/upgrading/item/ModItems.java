@@ -37,6 +37,13 @@ public class ModItems {
             properties -> new GoldenSweetBerriesItem(properties.food(Foods.GOLDEN_CARROT))
     );
 
+    // Other Items
+
+    public static final DeferredHolder<Item, EncryptedFloppyItem> ENCRYPTED_FLOPPY = ITEMS.registerItem(
+            "encrypted_floppy",
+            properties -> new EncryptedFloppyItem(properties)
+    );
+
 
     // REGISTRY
     //_basic
