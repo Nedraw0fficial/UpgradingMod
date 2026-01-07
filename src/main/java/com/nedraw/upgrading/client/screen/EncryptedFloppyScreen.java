@@ -26,6 +26,7 @@ public class EncryptedFloppyScreen extends Screen {
     private float diskScale;
     private float diskRotation;
     private float diskIdleRotation; // Casual rotation
+    private float disk3DFlip; // NEW: 3D flip animation on upgrade!
     private int tickCount;
     private final Random random;
 
@@ -37,10 +38,10 @@ public class EncryptedFloppyScreen extends Screen {
     private float bgScrollOffset;
 
     // Upgrade chances - REBALANCED
-    private static final float BASIC_TO_RARE = 0.18f;
-    private static final float RARE_TO_EPIC = 0.30f;
-    private static final float EPIC_TO_LEGENDARY = 0.24f;
-    private static final float LEGENDARY_TO_MYTHIC = 0.04f;
+    private static final float BASIC_TO_RARE = 0.50f;      // 50%
+    private static final float RARE_TO_EPIC = 0.35f;       // 35%
+    private static final float EPIC_TO_LEGENDARY = 0.20f;  // 20%
+    private static final float LEGENDARY_TO_MYTHIC = 0.08f;// 8%
 
     // White flash animation
     private boolean isFlashing;
@@ -56,6 +57,7 @@ public class EncryptedFloppyScreen extends Screen {
         this.diskScale = 1.0f;
         this.diskRotation = 0;
         this.diskIdleRotation = 0;
+        this.disk3DFlip = 0; // Start with no flip
         this.tickCount = 0;
         this.random = new Random();
         this.isFlashing = false;
@@ -92,6 +94,12 @@ public class EncryptedFloppyScreen extends Screen {
             if (Math.abs(diskRotation) < 0.5f) diskRotation = 0;
         }
 
+        // Animate 3D flip (SUPER FAST! POW!)
+        if (disk3DFlip > 0) {
+            disk3DFlip -= 40.0f; // EVEN FASTER! Completes in 9 ticks!
+            if (disk3DFlip < 0) disk3DFlip = 0;
+        }
+
         // Animate orb hover
         for (int i = 0; i < 4; i++) {
             orbHoverOffsets[i] += orbHoverSpeeds[i];
@@ -118,9 +126,6 @@ public class EncryptedFloppyScreen extends Screen {
 
         // Render glow effect behind disk
         renderGlow(graphics);
-
-        // Render floating disk with animation
-        renderDisk(graphics);
 
         // Render rarity text at top (BIGGER AND BOLD!)
         String rarityKey = "rarity.upgrading." + currentRarity.name().toLowerCase();
@@ -151,7 +156,10 @@ public class EncryptedFloppyScreen extends Screen {
                     0xFFFFFF, true);
         }
 
-        // White flash overlay
+        // RENDER DISK LAST SO IT'S ALWAYS ON TOP!
+        renderDisk(graphics);
+
+        // White flash overlay (LAST!)
         if (isFlashing) {
             float alpha = 1.0f - ((float) flashTicks / FLASH_DURATION);
             int whiteAlpha = (int) (alpha * 255);
@@ -277,35 +285,72 @@ public class EncryptedFloppyScreen extends Screen {
         int centerX = this.width / 2;
         int centerY = (this.height / 2) + (int) diskBobOffset;
 
-        // Apply scale and rotation (click rotation + idle rotation)
-        graphics.pose().pushPose();
-        graphics.pose().translate(centerX, centerY, 0);
-        graphics.pose().scale(diskScale, diskScale, 1.0f);
-
-        // Combine click rotation and idle rotation
-        float totalRotation = diskRotation + diskIdleRotation;
-        graphics.pose().rotateAround(
-                new org.joml.Quaternionf().rotationZ((float) Math.toRadians(totalRotation)),
-                0, 0, 0
-        );
-        graphics.pose().translate(-centerX, -centerY, 0);
-
         // Render encrypted floppy texture
         ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(
                 UpgradingMod.MODID,
                 "textures/gui/encrypted_floppy.png"
         );
 
+        // Calculate which side is facing us
+        float normalizedFlip = disk3DFlip % 360f;
+        boolean showFront = (normalizedFlip >= 0 && normalizedFlip < 90) || (normalizedFlip >= 270 && normalizedFlip < 360);
+
+        // Apply scale and ALL rotations together!
+        graphics.pose().pushPose();
+        graphics.pose().translate(centerX, centerY, 100); // PUSH FORWARD IN Z!
+
+        // Apply zoom scale
+        graphics.pose().scale(diskScale, diskScale, 1.0f);
+
+        // Apply 3D flip on Y-axis FIRST (card flip!)
+        if (disk3DFlip > 0) {
+            graphics.pose().rotateAround(
+                    new org.joml.Quaternionf().rotationY((float) Math.toRadians(disk3DFlip)),
+                    0, 0, 0
+            );
+        }
+
+        // THEN apply Z-axis rotation (click + idle) for grace!
+        float totalRotation = diskRotation + diskIdleRotation;
+        if (totalRotation != 0) {
+            graphics.pose().rotateAround(
+                    new org.joml.Quaternionf().rotationZ((float) Math.toRadians(totalRotation)),
+                    0, 0, 0
+            );
+        }
+
         RenderSystem.enableBlend();
-        graphics.blit(
-                net.minecraft.client.renderer.RenderType::guiTextured,
-                texture,
-                centerX - DISK_SIZE/2,
-                centerY - DISK_SIZE/2,
-                0, 0,
-                DISK_SIZE, DISK_SIZE,
-                DISK_SIZE, DISK_SIZE
-        );
+        RenderSystem.disableDepthTest(); // Ignore depth - always render on top!
+
+        // Only render the side that's facing the camera!
+        if (showFront) {
+            // Front side (normal)
+            graphics.blit(
+                    net.minecraft.client.renderer.RenderType::guiTextured,
+                    texture,
+                    -DISK_SIZE/2,
+                    -DISK_SIZE/2,
+                    0, 0,
+                    DISK_SIZE, DISK_SIZE,
+                    DISK_SIZE, DISK_SIZE
+            );
+        } else {
+            // Back side (flipped horizontally)
+            graphics.pose().pushPose();
+            graphics.pose().scale(-1.0f, 1.0f, 1.0f);
+            graphics.blit(
+                    net.minecraft.client.renderer.RenderType::guiTextured,
+                    texture,
+                    -DISK_SIZE/2,
+                    -DISK_SIZE/2,
+                    0, 0,
+                    DISK_SIZE, DISK_SIZE,
+                    DISK_SIZE, DISK_SIZE
+            );
+            graphics.pose().popPose();
+        }
+
+        RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
 
         graphics.pose().popPose();
@@ -442,6 +487,10 @@ public class EncryptedFloppyScreen extends Screen {
                             1.2f
                     )
             );
+
+            // TRIGGER 3D FLIP! (360 degree FAST spin) + keep zoom!
+            disk3DFlip = 360f;
+            // DON'T override diskScale - it's already set to 1.65f from mouseClicked!
         }
 
         return upgraded;

@@ -18,6 +18,9 @@ public class ModCreativeTabs {
                     .title(Component.translatable("itemGroup.upgrading"))
                     .icon(() -> new ItemStack(ModItems.BERSERKER_DISK.get()))
                     .displayItems((parameters, output) -> {
+                        // Encrypted Disk
+                        output.accept(ModItems.ENCRYPTED_FLOPPY.get());
+
                         // BASIC disks (alphabetical)
                         output.accept(ModItems.MAGNET_DISK.get());
                         output.accept(ModItems.MIGHTY_MINER_DISK.get());
