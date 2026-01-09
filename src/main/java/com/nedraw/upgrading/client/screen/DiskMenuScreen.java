@@ -284,7 +284,8 @@ public class DiskMenuScreen extends Screen {
 
         RenderSystem.enableBlend();
         graphics.blit(
-                net.minecraft.client.renderer.RenderType::guiTextured,
+                //used in 1.21.3
+                //net.minecraft.client.renderer.RenderType::gui,
                 texture,
                 x, y,
                 0, 0,

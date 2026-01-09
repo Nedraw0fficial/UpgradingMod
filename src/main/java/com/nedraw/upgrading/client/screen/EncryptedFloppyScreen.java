@@ -331,7 +331,7 @@ public class EncryptedFloppyScreen extends Screen {
         if (showFront) {
             // Front side (normal)
             graphics.blit(
-                    net.minecraft.client.renderer.RenderType::guiTextured,
+                    //net.minecraft.client.renderer.RenderType::gui,
                     texture,
                     -DISK_SIZE/2,
                     -DISK_SIZE/2,
@@ -344,7 +344,7 @@ public class EncryptedFloppyScreen extends Screen {
             graphics.pose().pushPose();
             graphics.pose().scale(-1.0f, 1.0f, 1.0f);
             graphics.blit(
-                    net.minecraft.client.renderer.RenderType::guiTextured,
+                    //net.minecraft.client.renderer.RenderType::gui,
                     texture,
                     -DISK_SIZE/2,
                     -DISK_SIZE/2,
@@ -401,7 +401,7 @@ public class EncryptedFloppyScreen extends Screen {
 
         RenderSystem.enableBlend();
         graphics.blit(
-                net.minecraft.client.renderer.RenderType::guiTextured,
+                //net.minecraft.client.renderer.RenderType::gui,
                 texture,
                 x, y,
                 0, 0,

@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,12 +18,14 @@ public class EncryptedFloppyItem extends Item {
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);  // Get the stack first!
+
         if (level.isClientSide) {
             // Open the Encrypted Floppy GUI
             Minecraft.getInstance().setScreen(new EncryptedFloppyScreen());
         }
-        //
-        return InteractionResult.SUCCESS;
+
+        return InteractionResultHolder.success(stack);  // Return the stack!
     }
 }

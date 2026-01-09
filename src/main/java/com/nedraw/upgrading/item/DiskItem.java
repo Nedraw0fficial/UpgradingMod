@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -58,7 +59,7 @@ public class DiskItem extends Item {
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
         if (!level.isClientSide) {
@@ -77,7 +78,7 @@ public class DiskItem extends Item {
                         SoundEvents.VILLAGER_NO, SoundSource.PLAYERS,
                         1.0f, 1.0f);
 
-                return InteractionResult.FAIL;
+                return InteractionResultHolder.fail(stack);
             }
 
             // Unlock the disk
@@ -104,9 +105,9 @@ public class DiskItem extends Item {
 
             stack.shrink(1);
 
-            return InteractionResult.SUCCESS;
+            return InteractionResultHolder.success(stack);
         }
 
-        return InteractionResult.CONSUME;
+        return InteractionResultHolder.consume(stack);
     }
 }
