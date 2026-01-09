@@ -27,10 +27,89 @@ public class DiskLootInjector {
 
     static {
 
-        // Encrypted Floppy - (15%))
+        // === OVERWORLD STRUCTURES ===
+
+        // Villages (all types)
+        addToLoot("chests/village/village_plains_house", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_desert_house", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_savanna_house", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_taiga_house", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_snowy_house", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_armorer", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_weaponsmith", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_toolsmith", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_cartographer", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_mason", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_shepherd", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_butcher", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_fletcher", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_fisher", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_tannery", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/village/village_temple", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+
+        // Dungeons & Mines
         addToLoot("chests/simple_dungeon", ModItems.ENCRYPTED_FLOPPY, 0.15f);
-        addToLoot("chests/village/village_plains", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/abandoned_mineshaft", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+
+        // Stronghold
         addToLoot("chests/stronghold_corridor", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/stronghold_crossing", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/stronghold_library", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+
+        // Pyramids & Temples
+        addToLoot("chests/desert_pyramid", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/jungle_temple", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+
+        // Igloo
+        addToLoot("chests/igloo_chest", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+
+        // Pillager Outpost
+        addToLoot("chests/pillager_outpost", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+
+        // Woodland Mansion
+        addToLoot("chests/woodland_mansion", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+
+        // Shipwreck
+        addToLoot("chests/shipwreck_treasure", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/shipwreck_supply", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/shipwreck_map", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+
+        // Buried Treasure
+        addToLoot("chests/buried_treasure", ModItems.ENCRYPTED_FLOPPY, 0.20f); // Slightly higher!
+
+        // Ocean Ruins
+        addToLoot("chests/underwater_ruin_small", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/underwater_ruin_big", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+
+        // === NETHER ===
+
+        // Nether Fortress
+        addToLoot("chests/nether_bridge", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+
+        // Bastion Remnant
+        addToLoot("chests/bastion_treasure", ModItems.ENCRYPTED_FLOPPY, 0.20f);
+        addToLoot("chests/bastion_other", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/bastion_bridge", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/bastion_hoglin_stable", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+
+        // === THE END ===
+
+        // End City
+        addToLoot("chests/end_city_treasure", ModItems.ENCRYPTED_FLOPPY, 0.20f);
+
+        // === ANCIENT CITY (1.19+) ===
+
+        addToLoot("chests/ancient_city", ModItems.ENCRYPTED_FLOPPY, 0.20f);
+        addToLoot("chests/ancient_city_ice_box", ModItems.ENCRYPTED_FLOPPY, 0.20f);
+
+        // === TRIAL CHAMBERS (1.21+) ===
+
+        addToLoot("chests/trial_chambers/reward", ModItems.ENCRYPTED_FLOPPY, 0.20f);
+        addToLoot("chests/trial_chambers/reward_unique", ModItems.ENCRYPTED_FLOPPY, 0.20f);
+        addToLoot("chests/trial_chambers/supply", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/trial_chambers/corridor", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/trial_chambers/entrance", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/trial_chambers/intersection", ModItems.ENCRYPTED_FLOPPY, 0.15f);
 
 
 

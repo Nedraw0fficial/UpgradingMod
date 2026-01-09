@@ -292,6 +292,9 @@ public class DiskMenuScreen extends Screen {
                 size, size
         );
         RenderSystem.disableBlend();
+
+        // CRITICAL: Reset shader color to prevent black armor bug!
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {

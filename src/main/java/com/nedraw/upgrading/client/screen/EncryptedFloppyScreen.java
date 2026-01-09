@@ -37,11 +37,11 @@ public class EncryptedFloppyScreen extends Screen {
     // Background scroll
     private float bgScrollOffset;
 
-    // Upgrade chances - REBALANCED
-    private static final float BASIC_TO_RARE = 0.50f;      // 50%
-    private static final float RARE_TO_EPIC = 0.35f;       // 35%
-    private static final float EPIC_TO_LEGENDARY = 0.20f;  // 20%
-    private static final float LEGENDARY_TO_MYTHIC = 0.08f;// 8%
+    // Upgrade chances - PROPERLY BALANCED for final distribution
+    private static final float BASIC_TO_RARE = 0.18f;
+    private static final float RARE_TO_EPIC = 0.30f;
+    private static final float EPIC_TO_LEGENDARY = 0.24f;
+    private static final float LEGENDARY_TO_MYTHIC = 0.04f;
 
     // White flash animation
     private boolean isFlashing;
@@ -166,6 +166,11 @@ public class EncryptedFloppyScreen extends Screen {
             graphics.fill(0, 0, this.width, this.height,
                     (whiteAlpha << 24) | 0xFFFFFF);
         }
+
+        // FINAL SAFETY: Reset ALL RenderSystem state!
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        RenderSystem.enableDepthTest();
+        RenderSystem.disableBlend();
     }
 
     private void renderBackgroundWithPattern(GuiGraphics graphics) {
@@ -353,6 +358,9 @@ public class EncryptedFloppyScreen extends Screen {
         RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
 
+        // CRITICAL: Reset shader color to prevent bleeding into other rendering!
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+
         graphics.pose().popPose();
     }
 
@@ -401,6 +409,9 @@ public class EncryptedFloppyScreen extends Screen {
                 ORB_SIZE, ORB_SIZE
         );
         RenderSystem.disableBlend();
+
+        // Reset shader color!
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     @Override
