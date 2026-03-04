@@ -29,6 +29,7 @@ public class UpgradingMod {
         DiskRegistry.register(new SeaFishDisk());
         DiskRegistry.register(new MagnetDisk());
         DiskRegistry.register(new MightyMinerDisk());
+        DiskRegistry.register(new NightVisionDisk());
         // - RARE -
         DiskRegistry.register(new FlameWalkerDisk());
         DiskRegistry.register(new StepAssistDisk());

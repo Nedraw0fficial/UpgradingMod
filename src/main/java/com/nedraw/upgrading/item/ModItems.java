@@ -68,6 +68,11 @@ public class ModItems {
             properties -> new DiskItem("mighty_miner", properties)
     );
 
+    public static final DeferredHolder<Item, DiskItem> NIGHT_VISION_DISK = ITEMS.registerItem(
+            "night_vision_disk",
+            properties -> new DiskItem("night_vision", properties)
+    );
+
     //_rare
 
     public static final DeferredHolder<Item, DiskItem> FLAME_WALKER_DISK = ITEMS.registerItem(

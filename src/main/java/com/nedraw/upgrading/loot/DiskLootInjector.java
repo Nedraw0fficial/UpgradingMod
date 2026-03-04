@@ -139,6 +139,12 @@ public class DiskLootInjector {
         addToLoot("chests/simple_dungeon", ModItems.MIGHTY_MINER_DISK, 0.10f);
         addToLoot("chests/village/village_toolsmith", ModItems.MIGHTY_MINER_DISK, 0.08f);
 
+        // Night Vision - Visibility/darkness themed
+        addToLoot("chests/stronghold_library", ModItems.NIGHT_VISION_DISK, 0.12f);
+        addToLoot("chests/ancient_city", ModItems.NIGHT_VISION_DISK, 0.10f);
+        addToLoot("chests/simple_dungeon", ModItems.NIGHT_VISION_DISK, 0.10f);
+        addToLoot("chests/woodland_mansion", ModItems.NIGHT_VISION_DISK, 0.08f);
+
         // ===== RARE DISKS (3 loot tables each, 5-8% chance) =====
 
         // Flame Walker - Nether themed

@@ -24,6 +24,7 @@ public class ModCreativeTabs {
                         // BASIC disks (alphabetical)
                         output.accept(ModItems.MAGNET_DISK.get());
                         output.accept(ModItems.MIGHTY_MINER_DISK.get());
+                        output.accept(ModItems.NIGHT_VISION_DISK.get());
                         output.accept(ModItems.SEA_FISH_DISK.get());
                         output.accept(ModItems.SWIFT_FEET_DISK.get());
 

@@ -6,6 +6,7 @@ import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.DiskRarity;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.UpgradeDisk;
+import com.nedraw.upgrading.item.ModItems;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -15,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.List;
@@ -51,56 +53,64 @@ public record ClaimEncryptedFloppyPacket(String rarityName) implements CustomPac
 
                 PlayerDiskData diskData = PlayerDiskData.get(player);
 
-                // Get all disks of this rarity that player doesn't have
-                List<UpgradeDisk> availableDisks = DiskRegistry.getAllDisks().stream()
+                // Get all disks of this rarity
+                List<UpgradeDisk> allRarityDisks = DiskRegistry.getAllDisks().stream()
                         .filter(disk -> disk.getRarity() == rarity)
-                        .filter(disk -> !diskData.isDiskUnlocked(disk.getId()))
                         .collect(Collectors.toList());
 
-                UpgradeDisk chosenDisk;
-
-                if (availableDisks.isEmpty()) {
-                    // Player has all disks of this rarity!
-                    // Give them a random disk from this rarity anyway (for duplicate levels)
-                    List<UpgradeDisk> allRarityDisks = DiskRegistry.getAllDisks().stream()
-                            .filter(disk -> disk.getRarity() == rarity)
-                            .collect(Collectors.toList());
-
-                    if (allRarityDisks.isEmpty()) {
-                        // No disks of this rarity exist (shouldn't happen)
-                        player.displayClientMessage(
-                                Component.translatable("message.upgrading.encrypted_floppy.error"),
-                                false
-                        );
-                        return;
-                    }
-
-                    chosenDisk = allRarityDisks.get(new Random().nextInt(allRarityDisks.size()));
-                } else {
-                    // Pick random disk from available
-                    chosenDisk = availableDisks.get(new Random().nextInt(availableDisks.size()));
+                if (allRarityDisks.isEmpty()) {
+                    // No disks of this rarity exist (shouldn't happen)
+                    player.displayClientMessage(
+                            Component.translatable("message.upgrading.encrypted_floppy.error"),
+                            false
+                    );
+                    return;
                 }
 
-                // Unlock the disk
-                diskData.unlockDisk(chosenDisk.getId());
+                // Pick a random disk from this rarity
+                UpgradeDisk chosenDisk = allRarityDisks.get(new Random().nextInt(allRarityDisks.size()));
+
+                // Check if player already has this disk unlocked
+                boolean alreadyUnlocked = diskData.isDiskUnlocked(chosenDisk.getId());
+
+                if (alreadyUnlocked) {
+                    // DUPLICATE! Give them the physical disk item instead
+                    ItemStack diskItem = getDiskItemStack(chosenDisk.getId());
+
+                    if (diskItem != null) {
+                        // Add to inventory or drop if full
+                        if (!player.addItem(diskItem)) {
+                            player.drop(diskItem, false);
+                        }
+
+                        player.displayClientMessage(
+                                Component.literal("Duplicate! Received ")
+                                        .append(Component.literal(chosenDisk.getDisplayName())
+                                                .withStyle(style -> style.withColor(chosenDisk.getRarity().getColor())))
+                                        .append(Component.literal(" as an item!"))
+                                        .withStyle(style -> style.withColor(0xFFAA00)),
+                                true
+                        );
+                    }
+                } else {
+                    // NEW DISK! Unlock it
+                    diskData.unlockDisk(chosenDisk.getId());
+
+                    player.displayClientMessage(
+                            Component.translatable("message.upgrading.disk_unlocked", chosenDisk.getDisplayName())
+                                    .withStyle(style -> style.withColor(0x55FF55)),
+                            true
+                    );
+                }
 
                 // Consume the encrypted floppy from player's hand
-                boolean consumed = false;
                 for (net.minecraft.world.InteractionHand hand : net.minecraft.world.InteractionHand.values()) {
                     net.minecraft.world.item.ItemStack stack = player.getItemInHand(hand);
                     if (stack.getItem() instanceof com.nedraw.upgrading.item.EncryptedFloppyItem) {
                         stack.shrink(1);
-                        consumed = true;
                         break;
                     }
                 }
-
-                // Simple unlock message (same as disk item unlock)
-                player.displayClientMessage(
-                        Component.translatable("message.upgrading.disk_unlocked", chosenDisk.getDisplayName())
-                                .withStyle(style -> style.withColor(0x55FF55)),
-                        true
-                );
 
                 // Spawn firework particles
                 for (int i = 0; i < 50; i++) {
@@ -133,5 +143,24 @@ public record ClaimEncryptedFloppyPacket(String rarityName) implements CustomPac
                 ServerEvents.syncDiskData(player);
             }
         });
+    }
+
+    // Helper method to get the physical disk item for a disk ID
+    private static ItemStack getDiskItemStack(String diskId) {
+        return switch (diskId) {
+            case "swift_feet" -> new ItemStack(ModItems.SWIFT_FEET_DISK.get());
+            case "sea_fish" -> new ItemStack(ModItems.SEA_FISH_DISK.get());
+            case "magnet" -> new ItemStack(ModItems.MAGNET_DISK.get());
+            case "mighty_miner" -> new ItemStack(ModItems.MIGHTY_MINER_DISK.get());
+            case "night_vision" -> new ItemStack(ModItems.NIGHT_VISION_DISK.get());
+            case "flame_walker" -> new ItemStack(ModItems.FLAME_WALKER_DISK.get());
+            case "step_assist" -> new ItemStack(ModItems.STEP_ASSIST_DISK.get());
+            case "harvester" -> new ItemStack(ModItems.HARVESTER_DISK.get());
+            case "glutton" -> new ItemStack(ModItems.GLUTTON_DISK.get());
+            case "soapy_hands" -> new ItemStack(ModItems.SOAPY_HANDS_DISK.get());
+            case "berserker" -> new ItemStack(ModItems.BERSERKER_DISK.get());
+            case "pyroclasm" -> new ItemStack(ModItems.PYROCLASM_DISK.get());
+            default -> null;
+        };
     }
 }
