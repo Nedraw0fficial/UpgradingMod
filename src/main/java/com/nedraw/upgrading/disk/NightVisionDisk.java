@@ -30,7 +30,7 @@ public class NightVisionDisk extends UpgradeDisk {
                 .withDescription(9, "Night vision blinks in darkness: 10s on, 0.5s off")
                 .withDescription(10, "Night vision blinks in darkness: 11s on, 0.3s off")
                 .withDescription(11, "Night vision blinks in darkness: 12s on, 0.2s off")
-                .withDescription(12, "Perfect constant night vision and\n see invisible nearby entities");
+                .withDescription(12, "Perfect constant night vision and\nsee invisible nearby entities");
     }
 
     @Override

@@ -1,0 +1,72 @@
+{
+  "item.upgrading.swift_feet_disk": "Disque d'amélioration",
+  "item.upgrading.sea_fish_disk": "Disque d'amélioration",
+  "item.upgrading.magnet_disk": "Disque d'amélioration",
+  "item.upgrading.mighty_miner_disk": "Disque d'amélioration",
+  "item.upgrading.flame_walker_disk": "Disque d'amélioration",
+  "item.upgrading.step_assist_disk": "Disque d'amélioration",
+  "item.upgrading.harvester_disk": "Disque d'amélioration",
+  "item.upgrading.glutton_disk": "Disque d'amélioration",
+  "item.upgrading.soapy_hands_disk": "Disque d'amélioration",
+  "item.upgrading.berserker_disk": "Disque d'amélioration",
+  "item.upgrading.pyroclasm_disk": "Disque d'amélioration",
+  "item.upgrading.night_vision_disk": "Disque d'amélioration",
+  "item.upgrading.lightweight_disk": "Disque d'amélioration",
+  "item.upgrading.feather_fall_disk": "Disque d'amélioration",
+
+  "_comment0": "Disk names",
+  "disk.upgrading.swift_feet": "Pieds Agiles",
+  "disk.upgrading.sea_fish": "Poisson de la Mer",
+  "disk.upgrading.magnet": "Aimant",
+  "disk.upgrading.mighty_miner": "Vaillant Mineur",
+  "disk.upgrading.flame_walker": "Marcheur de Flammes",
+  "disk.upgrading.step_assist": "Aide à la Marche",
+  "disk.upgrading.harvester": "Récolteur",
+  "disk.upgrading.glutton": "Gourmand",
+  "disk.upgrading.soapy_hands": "Mains Savonneuses",
+  "disk.upgrading.berserker": "Berserker",
+  "disk.upgrading.pyroclasm": "Pyroclasme",
+  "disk.upgrading.night_vision": "Vision Nocturne",
+  "disk.upgrading.lightweight": "Léger",
+  "disk.upgrading.feather_fall": "Plume Tombante",
+
+  "_comment1": "Disk descriptions will be added here later",
+
+  "_comment2": "GUI elements",
+  "gui.upgrading.disk_menu.title": "Disques d'Amélioration",
+  "gui.upgrading.disk_menu.upgrade": "AMÉLIORER!",
+  "gui.upgrading.disk_menu.cost": "Coûte: %s XP",
+  "gui.upgrading.disk_menu.level": "Niv. %s",
+
+  "_comment3": "Messages",
+  "message.upgrading.already_unlocked": "Vous avez déjà déverrouillé ce disque !",
+  "message.upgrading.disk_unlocked": "Débloqué: %s",
+
+  "key.categories.upgrading": "UPGRADING! Mod",
+  "key.upgrading.open_disk_menu": "Ouvrir menu d'équippement des disques",
+
+  "itemGroup.upgrading": "UPGRADING! Disks",
+
+  "item.upgrading.golden_wheat": "Blé doré",
+  "item.upgrading.golden_potato": "Pomme de terre dorée",
+  "item.upgrading.golden_beetroot": "Betterave dorée",
+  "item.upgrading.golden_nether_wart": "Verrue dorée du Nether",
+  "item.upgrading.golden_sweet_berries": "Baies sucrées dorées",
+
+  "item.upgrading.encrypted_floppy": "Disquette cryptée",
+
+
+  "gui.upgrading.encrypted_floppy.title": "Disquette cryptée",
+  "gui.upgrading.encrypted_floppy.upgrade_chances": "CHANCES D'AMÉLIORATION",
+  "gui.upgrading.encrypted_floppy.click_to_open": "CLIQUER POUR OUVRIR!",
+
+  "rarity.upgrading.basic": "BASIQUE",
+  "rarity.upgrading.rare": "RARE",
+  "rarity.upgrading.epic": "ÉPIC",
+  "rarity.upgrading.legendary": "LÉGENDAIRE",
+  "rarity.upgrading.mythic": "MYTHIQUE",
+
+  "message.upgrading.encrypted_floppy.unlocked": "⭐ DISQUETTE CRYPTÉE DÉBLOQUÉE! ⭐",
+  "message.upgrading.encrypted_floppy.error": "Erreur : aucun disque disponible !"
+
+}

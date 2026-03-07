@@ -73,6 +73,16 @@ public class ModItems {
             properties -> new DiskItem("night_vision", properties)
     );
 
+    public static final DeferredHolder<Item, DiskItem> LIGHTWEIGHT_DISK = ITEMS.registerItem(
+            "lightweight_disk",
+            properties -> new DiskItem("lightweight", properties)
+    );
+
+    public static final DeferredHolder<Item, DiskItem> FEATHER_FALL_DISK = ITEMS.registerItem(
+            "feather_fall_disk",
+            properties -> new DiskItem("feather_fall", properties)
+    );
+
     //_rare
 
     public static final DeferredHolder<Item, DiskItem> FLAME_WALKER_DISK = ITEMS.registerItem(

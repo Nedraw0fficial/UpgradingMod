@@ -11,6 +11,8 @@
   "item.upgrading.berserker_disk": "Upgrade Disk",
   "item.upgrading.pyroclasm_disk": "Upgrade Disk",
   "item.upgrading.night_vision_disk": "Upgrade Disk",
+  "item.upgrading.lightweight_disk": "Upgrade Disk",
+  "item.upgrading.feather_fall_disk": "Upgrade Disk",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Swift Feet",
@@ -25,6 +27,8 @@
   "disk.upgrading.berserker": "Berserker",
   "disk.upgrading.pyroclasm": "Pyroclasm",
   "disk.upgrading.night_vision": "Night Vision",
+  "disk.upgrading.lightweight": "Lightweight",
+  "disk.upgrading.feather_fall": "Feather Fall",
 
   "_comment1": "Disk descriptions will be added here later",
 

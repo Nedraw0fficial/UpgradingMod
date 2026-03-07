@@ -104,12 +104,15 @@ public class DeathHandler {
     private static ItemStack getDiskItemStack(String diskId) {
         return switch (diskId) {
             case "swift_feet" -> new ItemStack(ModItems.SWIFT_FEET_DISK.get());
-            case "mighty_miner" -> new ItemStack(ModItems.MIGHTY_MINER_DISK.get());
             case "sea_fish" -> new ItemStack(ModItems.SEA_FISH_DISK.get());
             case "magnet" -> new ItemStack(ModItems.MAGNET_DISK.get());
-            case "harvester" -> new ItemStack(ModItems.HARVESTER_DISK.get());
-            case "step_assist" -> new ItemStack(ModItems.STEP_ASSIST_DISK.get());
+            case "mighty_miner" -> new ItemStack(ModItems.MIGHTY_MINER_DISK.get());
+            case "night_vision" -> new ItemStack(ModItems.NIGHT_VISION_DISK.get());
+            case "lightweight" -> new ItemStack(ModItems.LIGHTWEIGHT_DISK.get());
+            case "feather_fall" -> new ItemStack(ModItems.FEATHER_FALL_DISK.get());
             case "flame_walker" -> new ItemStack(ModItems.FLAME_WALKER_DISK.get());
+            case "step_assist" -> new ItemStack(ModItems.STEP_ASSIST_DISK.get());
+            case "harvester" -> new ItemStack(ModItems.HARVESTER_DISK.get());
             case "glutton" -> new ItemStack(ModItems.GLUTTON_DISK.get());
             case "soapy_hands" -> new ItemStack(ModItems.SOAPY_HANDS_DISK.get());
             case "berserker" -> new ItemStack(ModItems.BERSERKER_DISK.get());

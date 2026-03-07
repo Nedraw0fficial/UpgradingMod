@@ -22,6 +22,8 @@ public class ModCreativeTabs {
                         output.accept(ModItems.ENCRYPTED_FLOPPY.get());
 
                         // BASIC disks (alphabetical)
+                        output.accept(ModItems.FEATHER_FALL_DISK.get());
+                        output.accept(ModItems.LIGHTWEIGHT_DISK.get());
                         output.accept(ModItems.MAGNET_DISK.get());
                         output.accept(ModItems.MIGHTY_MINER_DISK.get());
                         output.accept(ModItems.NIGHT_VISION_DISK.get());

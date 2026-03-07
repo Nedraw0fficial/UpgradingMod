@@ -145,6 +145,18 @@ public class DiskLootInjector {
         addToLoot("chests/simple_dungeon", ModItems.NIGHT_VISION_DISK, 0.10f);
         addToLoot("chests/woodland_mansion", ModItems.NIGHT_VISION_DISK, 0.08f);
 
+        // Lightweight - Resource/survival themed
+        addToLoot("chests/village/village_butcher", ModItems.LIGHTWEIGHT_DISK, 0.12f);
+        addToLoot("chests/village/village_fisher", ModItems.LIGHTWEIGHT_DISK, 0.12f);
+        addToLoot("chests/shipwreck_supply", ModItems.LIGHTWEIGHT_DISK, 0.10f);
+        addToLoot("chests/igloo_chest", ModItems.LIGHTWEIGHT_DISK, 0.08f);
+
+        // Feather Fall - Height/climbing themed
+        addToLoot("chests/jungle_temple", ModItems.FEATHER_FALL_DISK, 0.12f);
+        addToLoot("chests/end_city_treasure", ModItems.FEATHER_FALL_DISK, 0.10f);
+        addToLoot("chests/pillager_outpost", ModItems.FEATHER_FALL_DISK, 0.10f);
+        addToLoot("chests/stronghold_crossing", ModItems.FEATHER_FALL_DISK, 0.08f);
+
         // ===== RARE DISKS (3 loot tables each, 5-8% chance) =====
 
         // Flame Walker - Nether themed
