@@ -123,7 +123,7 @@ public class DiskLootInjector {
 
         // Sea Fish - Ocean/water themed
         addToLoot("chests/underwater_ruin_small", ModItems.SEA_FISH_DISK, 0.12f);
-        addToLoot("chests/underwater_ruin_big", ModItems.SEA_FISH_DISK, 0.15f);
+        addToLoot("chests/underwater_ruin_big", ModItems.SEA_FISH_DISK, 0.12f);
         addToLoot("chests/shipwreck_treasure", ModItems.SEA_FISH_DISK, 0.10f);
         addToLoot("chests/buried_treasure", ModItems.SEA_FISH_DISK, 0.08f);
 
@@ -157,6 +157,18 @@ public class DiskLootInjector {
         addToLoot("chests/pillager_outpost", ModItems.FEATHER_FALL_DISK, 0.10f);
         addToLoot("chests/stronghold_crossing", ModItems.FEATHER_FALL_DISK, 0.08f);
 
+        // Efficient - Mining/Tools themed
+        addToLoot("chests/village/village_toolsmith", ModItems.EFFICIENT_DISK, 0.12f);
+        addToLoot("chests/village/village_weaponsmith", ModItems.EFFICIENT_DISK, 0.12f);
+        addToLoot("chests/abandoned_mineshaft", ModItems.EFFICIENT_DISK, 0.10f);
+        addToLoot("chests/stronghold_library", ModItems.EFFICIENT_DISK, 0.08f);
+
+        // Tanky - Health/Armour themed
+        addToLoot("chests/village/village_toolsmith", ModItems.TANKY_DISK, 0.12f);
+        addToLoot("chests/woodland_mansion", ModItems.TANKY_DISK, 0.12f);
+        addToLoot("chests/simple_dungeon", ModItems.TANKY_DISK, 0.08f);
+        addToLoot("chests/abandoned_mineshaft", ModItems.TANKY_DISK, 0.08f);
+
         // ===== RARE DISKS (3 loot tables each, 5-8% chance) =====
 
         // Flame Walker - Nether themed
@@ -171,7 +183,7 @@ public class DiskLootInjector {
 
         // Harvester - Farming themed
         addToLoot("chests/village/village_shepherd", ModItems.HARVESTER_DISK, 0.08f);
-        addToLoot("chests/village/village_fisher", ModItems.HARVESTER_DISK, 0.08f);
+        addToLoot("chests/village/village_fisher", ModItems.HARVESTER_DISK, 0.07f);
         addToLoot("chests/woodland_mansion", ModItems.HARVESTER_DISK, 0.05f);
 
         // ===== EPIC DISKS (2 loot tables each, 2-4% chance) =====

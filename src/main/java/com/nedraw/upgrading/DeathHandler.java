@@ -110,6 +110,8 @@ public class DeathHandler {
             case "night_vision" -> new ItemStack(ModItems.NIGHT_VISION_DISK.get());
             case "lightweight" -> new ItemStack(ModItems.LIGHTWEIGHT_DISK.get());
             case "feather_fall" -> new ItemStack(ModItems.FEATHER_FALL_DISK.get());
+            case "efficient" -> new ItemStack(ModItems.EFFICIENT_DISK.get());
+            case "tanky" -> new ItemStack(ModItems.TANKY_DISK.get());
             case "flame_walker" -> new ItemStack(ModItems.FLAME_WALKER_DISK.get());
             case "step_assist" -> new ItemStack(ModItems.STEP_ASSIST_DISK.get());
             case "harvester" -> new ItemStack(ModItems.HARVESTER_DISK.get());

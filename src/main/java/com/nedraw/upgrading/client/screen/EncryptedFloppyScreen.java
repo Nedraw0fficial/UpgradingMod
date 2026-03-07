@@ -38,10 +38,10 @@ public class EncryptedFloppyScreen extends Screen {
     private float bgScrollOffset;
 
     // Upgrade chances - PROPERLY BALANCED for final distribution
-    private static final float BASIC_TO_RARE = 0.18f;
-    private static final float RARE_TO_EPIC = 0.30f;
-    private static final float EPIC_TO_LEGENDARY = 0.24f;
-    private static final float LEGENDARY_TO_MYTHIC = 0.04f;
+    private static final float BASIC_TO_RARE = 0.1396f;
+    private static final float RARE_TO_EPIC = 0.3042f;
+    private static final float EPIC_TO_LEGENDARY = 0.4118f;
+    private static final float LEGENDARY_TO_MYTHIC = 0.1145f;
 
     // White flash animation
     private boolean isFlashing;

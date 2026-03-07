@@ -22,6 +22,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.ENCRYPTED_FLOPPY.get());
 
                         // BASIC disks (alphabetical)
+                        output.accept(ModItems.EFFICIENT_DISK.get());
                         output.accept(ModItems.FEATHER_FALL_DISK.get());
                         output.accept(ModItems.LIGHTWEIGHT_DISK.get());
                         output.accept(ModItems.MAGNET_DISK.get());
@@ -29,7 +30,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.NIGHT_VISION_DISK.get());
                         output.accept(ModItems.SEA_FISH_DISK.get());
                         output.accept(ModItems.SWIFT_FEET_DISK.get());
-
+                        output.accept(ModItems.TANKY_DISK.get());
                         // RARE disks (alphabetical)
                         output.accept(ModItems.FLAME_WALKER_DISK.get());
                         output.accept(ModItems.HARVESTER_DISK.get());

@@ -13,6 +13,8 @@
   "item.upgrading.night_vision_disk": "Disque d'amélioration",
   "item.upgrading.lightweight_disk": "Disque d'amélioration",
   "item.upgrading.feather_fall_disk": "Disque d'amélioration",
+  "item.upgrading.efficient_disk": "Disque d'amélioration",
+  "item.upgrading.tanky_disk": "Disque d'amélioration",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Pieds Agiles",
@@ -29,6 +31,8 @@
   "disk.upgrading.night_vision": "Vision Nocturne",
   "disk.upgrading.lightweight": "Léger",
   "disk.upgrading.feather_fall": "Plume Tombante",
+  "disk.upgrading.efficient": "Efficace",
+  "disk.upgrading.tanky": "Robuste",
 
   "_comment1": "Disk descriptions will be added here later",
 

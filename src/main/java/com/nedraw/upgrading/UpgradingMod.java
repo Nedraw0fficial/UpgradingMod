@@ -32,6 +32,8 @@ public class UpgradingMod {
         DiskRegistry.register(new NightVisionDisk());
         DiskRegistry.register(new LightweightDisk());
         DiskRegistry.register(new FeatherFallDisk());
+        DiskRegistry.register(new EfficientDisk());
+        DiskRegistry.register(new TankyDisk());
         // - RARE -
         DiskRegistry.register(new FlameWalkerDisk());
         DiskRegistry.register(new StepAssistDisk());

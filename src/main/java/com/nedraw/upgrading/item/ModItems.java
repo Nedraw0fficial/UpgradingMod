@@ -83,6 +83,16 @@ public class ModItems {
             properties -> new DiskItem("feather_fall", properties)
     );
 
+    public static final DeferredHolder<Item, DiskItem> EFFICIENT_DISK = ITEMS.registerItem(
+            "efficient_disk",
+            properties -> new DiskItem("efficient", properties)
+    );
+
+    public static final DeferredHolder<Item, DiskItem> TANKY_DISK = ITEMS.registerItem(
+            "tanky_disk",
+            properties -> new DiskItem("tanky", properties)
+    );
+
     //_rare
 
     public static final DeferredHolder<Item, DiskItem> FLAME_WALKER_DISK = ITEMS.registerItem(
