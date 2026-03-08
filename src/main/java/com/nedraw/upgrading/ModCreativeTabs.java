@@ -31,7 +31,9 @@ public class ModCreativeTabs {
                         output.accept(ModItems.SEA_FISH_DISK.get());
                         output.accept(ModItems.SWIFT_FEET_DISK.get());
                         output.accept(ModItems.TANKY_DISK.get());
+
                         // RARE disks (alphabetical)
+                        output.accept(ModItems.BEAST_WHISPERER_DISK.get());
                         output.accept(ModItems.FLAME_WALKER_DISK.get());
                         output.accept(ModItems.HARVESTER_DISK.get());
                         output.accept(ModItems.STEP_ASSIST_DISK.get());

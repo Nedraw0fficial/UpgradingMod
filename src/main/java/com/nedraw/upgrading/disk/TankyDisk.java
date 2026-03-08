@@ -16,17 +16,17 @@ public class TankyDisk extends UpgradeDisk {
         super("tanky", "Tanky", DiskRarity.BASIC);
 
         this.withDescription(1, "+5% max health, -35% movement speed")
-                .withDescription(2, "+8% max health, -32% movement speed")
-                .withDescription(3, "+11% max health, -29% movement speed")
-                .withDescription(4, "+14% max health, -26% movement speed")
-                .withDescription(5, "+17% max health, -24% movement speed")
-                .withDescription(6, "+20% max health, -22% movement speed")
-                .withDescription(7, "+23% max health, -21% movement speed")
-                .withDescription(8, "+26% max health, -20% movement speed")
-                .withDescription(9, "+29% max health, -19% movement speed")
-                .withDescription(10, "+32% max health, -17% movement speed")
-                .withDescription(11, "+36% max health, -15% movement speed")
-                .withDescription(12, "+40% max health, -22% speed only when sprinting");
+                .withDescription(2, "+6% max health, -32% movement speed")
+                .withDescription(3, "+7% max health, -29% movement speed")
+                .withDescription(4, "+10% max health, -26% movement speed")
+                .withDescription(5, "+12% max health, -24% movement speed")
+                .withDescription(6, "+14% max health, -22% movement speed")
+                .withDescription(7, "+16% max health, -21% movement speed")
+                .withDescription(8, "+20% max health, -20% movement speed")
+                .withDescription(9, "+22% max health, -19% movement speed")
+                .withDescription(10, "+24% max health, -17% movement speed")
+                .withDescription(11, "+26% max health, -15% movement speed")
+                .withDescription(12, "+30% max health, -21% speed only when sprinting");
     }
 
     @Override
@@ -107,7 +107,7 @@ public class TankyDisk extends UpgradeDisk {
             if (!hasHealthMod) {
                 AttributeModifier healthMod = new AttributeModifier(
                         HEALTH_MODIFIER_ID,
-                        0.40, // +40% health
+                        0.30, // +30% health
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE
                 );
                 healthAttr.addPermanentModifier(healthMod);
@@ -122,7 +122,7 @@ public class TankyDisk extends UpgradeDisk {
                 // Add speed reduction when starting to sprint
                 AttributeModifier speedMod = new AttributeModifier(
                         SPEED_MODIFIER_ID,
-                        -0.22, // -22% speed
+                        -0.21, // -21% speed
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE
                 );
                 speedAttr.addPermanentModifier(speedMod);
@@ -136,16 +136,16 @@ public class TankyDisk extends UpgradeDisk {
     private float getHealthBoost(int level) {
         return switch (level) {
             case 1 -> 0.05f;   // +5%
-            case 2 -> 0.08f;   // +8%
-            case 3 -> 0.11f;   // +11%
-            case 4 -> 0.14f;   // +14%
-            case 5 -> 0.17f;   // +17%
-            case 6 -> 0.20f;   // +20%
-            case 7 -> 0.23f;   // +23%
-            case 8 -> 0.26f;   // +26%
-            case 9 -> 0.29f;   // +29%
-            case 10 -> 0.32f;  // +32%
-            case 11 -> 0.36f;  // +36%
+            case 2 -> 0.06f;   // +6%
+            case 3 -> 0.07f;   // +7%
+            case 4 -> 0.10f;   // +10%
+            case 5 -> 0.12f;   // +12%
+            case 6 -> 0.14f;   // +14%
+            case 7 -> 0.16f;   // +16%
+            case 8 -> 0.20f;   // +20%
+            case 9 -> 0.22f;   // +22%
+            case 10 -> 0.24f;  // +24%
+            case 11 -> 0.26f;  // +26%
             default -> 0.05f;
         };
     }

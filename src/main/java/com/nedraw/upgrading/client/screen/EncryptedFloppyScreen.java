@@ -368,7 +368,7 @@ public class EncryptedFloppyScreen extends Screen {
         Component upgradeText = Component.translatable("gui.upgrading.encrypted_floppy.upgrade_chances");
         int textWidth = this.font.width(upgradeText);
         graphics.drawString(this.font, upgradeText,
-                (this.width - textWidth) / 2, this.height - 110, // Lower position
+                (this.width - textWidth) / 2, this.height - 140, // Lower position
                 0xFFFFFF, true);
 
         // Calculate orb positions (right to left)

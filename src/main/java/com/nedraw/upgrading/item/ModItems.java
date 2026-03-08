@@ -110,6 +110,11 @@ public class ModItems {
             properties -> new DiskItem("harvester", properties)
     );
 
+    public static final DeferredHolder<Item, DiskItem> BEAST_WHISPERER_DISK = ITEMS.registerItem(
+            "beast_whisperer_disk",
+            properties -> new DiskItem("beast_whisperer", properties)
+    );
+
     //_epic
 
     public static final DeferredHolder<Item, DiskItem> GLUTTON_DISK = ITEMS.registerItem(

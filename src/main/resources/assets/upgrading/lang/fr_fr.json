@@ -71,6 +71,8 @@
   "rarity.upgrading.mythic": "MYTHIQUE",
 
   "message.upgrading.encrypted_floppy.unlocked": "⭐ DISQUETTE CRYPTÉE DÉBLOQUÉE! ⭐",
-  "message.upgrading.encrypted_floppy.error": "Erreur : aucun disque disponible !"
+  "message.upgrading.encrypted_floppy.error": "Erreur : aucun disque disponible !",
+  "item.upgrading.beast_whisperer_disk": "Upgrade Disk",
+  "disk.upgrading.beast_whisperer": "Beast Whisperer"
 
 }

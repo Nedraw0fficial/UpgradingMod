@@ -115,6 +115,7 @@ public class DeathHandler {
             case "flame_walker" -> new ItemStack(ModItems.FLAME_WALKER_DISK.get());
             case "step_assist" -> new ItemStack(ModItems.STEP_ASSIST_DISK.get());
             case "harvester" -> new ItemStack(ModItems.HARVESTER_DISK.get());
+            case "beast_whisperer" -> new ItemStack(ModItems.BEAST_WHISPERER_DISK.get());
             case "glutton" -> new ItemStack(ModItems.GLUTTON_DISK.get());
             case "soapy_hands" -> new ItemStack(ModItems.SOAPY_HANDS_DISK.get());
             case "berserker" -> new ItemStack(ModItems.BERSERKER_DISK.get());
