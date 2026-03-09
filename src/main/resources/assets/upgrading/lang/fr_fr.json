@@ -15,6 +15,7 @@
   "item.upgrading.feather_fall_disk": "Disque d'amélioration",
   "item.upgrading.efficient_disk": "Disque d'amélioration",
   "item.upgrading.tanky_disk": "Disque d'amélioration",
+  "item.upgrading.beast_whisperer_disk": "Disque d'amélioration",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Pieds Agiles",
@@ -33,6 +34,7 @@
   "disk.upgrading.feather_fall": "Plume Tombante",
   "disk.upgrading.efficient": "Efficace",
   "disk.upgrading.tanky": "Robuste",
+  "disk.upgrading.beast_whisperer": "Chuchoteur d'Animaux",
 
   "_comment1": "Disk descriptions will be added here later",
 
@@ -71,8 +73,6 @@
   "rarity.upgrading.mythic": "MYTHIQUE",
 
   "message.upgrading.encrypted_floppy.unlocked": "⭐ DISQUETTE CRYPTÉE DÉBLOQUÉE! ⭐",
-  "message.upgrading.encrypted_floppy.error": "Erreur : aucun disque disponible !",
-  "item.upgrading.beast_whisperer_disk": "Upgrade Disk",
-  "disk.upgrading.beast_whisperer": "Beast Whisperer"
+  "message.upgrading.encrypted_floppy.error": "Erreur : aucun disque disponible !"
 
 }
