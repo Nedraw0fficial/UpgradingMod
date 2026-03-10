@@ -16,6 +16,7 @@
   "item.upgrading.efficient_disk": "Disque d'amélioration",
   "item.upgrading.tanky_disk": "Disque d'amélioration",
   "item.upgrading.beast_whisperer_disk": "Disque d'amélioration",
+  "item.upgrading.iron_grip_disk": "Disque d'amélioration",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Pieds Agiles",
@@ -35,8 +36,9 @@
   "disk.upgrading.efficient": "Efficace",
   "disk.upgrading.tanky": "Robuste",
   "disk.upgrading.beast_whisperer": "Chuchoteur d'Animaux",
+  "disk.upgrading.iron_grip": "Poigne de Fer",
 
-  "_comment1": "Disk descriptions will be added here later",
+  "_comment1": "Disk descriptions will be added here later (or not idk)",
 
   "_comment2": "GUI elements",
   "gui.upgrading.disk_menu.title": "Disques d'Amélioration",

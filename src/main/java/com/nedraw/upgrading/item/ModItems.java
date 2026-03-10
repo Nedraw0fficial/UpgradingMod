@@ -115,6 +115,11 @@ public class ModItems {
             properties -> new DiskItem("beast_whisperer", properties)
     );
 
+    public static final DeferredHolder<Item, DiskItem> IRON_GRIP_DISK = ITEMS.registerItem(
+            "iron_grip_disk",
+            properties -> new DiskItem("iron_grip", properties)
+    );
+
     //_epic
 
     public static final DeferredHolder<Item, DiskItem> GLUTTON_DISK = ITEMS.registerItem(

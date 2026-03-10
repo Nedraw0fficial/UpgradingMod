@@ -16,6 +16,7 @@
   "item.upgrading.efficient_disk": "Upgrade Disk",
   "item.upgrading.tanky_disk": "Upgrade Disk",
   "item.upgrading.beast_whisperer_disk": "Upgrade Disk",
+  "item.upgrading.iron_grip_disk": "Upgrade Disk",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Swift Feet",
@@ -35,8 +36,9 @@
   "disk.upgrading.efficient": "Efficient",
   "disk.upgrading.tanky": "Tanky",
   "disk.upgrading.beast_whisperer": "Beast Whisperer",
+  "disk.upgrading.iron_grip": "Iron Grip",
 
-  "_comment1": "Disk descriptions will be added here later",
+  "_comment1": "Disk descriptions will be added here later (or not idk)",
 
   "_comment2": "GUI elements",
   "gui.upgrading.disk_menu.title": "Upgrade Disks",

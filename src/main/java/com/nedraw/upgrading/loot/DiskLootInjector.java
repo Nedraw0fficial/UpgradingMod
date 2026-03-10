@@ -13,6 +13,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -70,12 +71,12 @@ public class DiskLootInjector {
         addToLoot("chests/woodland_mansion", ModItems.ENCRYPTED_FLOPPY, 0.15f);
 
         // Shipwreck
-        addToLoot("chests/shipwreck_treasure", ModItems.ENCRYPTED_FLOPPY, 0.15f);
-        addToLoot("chests/shipwreck_supply", ModItems.ENCRYPTED_FLOPPY, 0.15f);
+        addToLoot("chests/shipwreck_treasure", ModItems.ENCRYPTED_FLOPPY, 0.20f);
+        addToLoot("chests/shipwreck_supply", ModItems.ENCRYPTED_FLOPPY, 0.10f);
         addToLoot("chests/shipwreck_map", ModItems.ENCRYPTED_FLOPPY, 0.15f);
 
         // Buried Treasure
-        addToLoot("chests/buried_treasure", ModItems.ENCRYPTED_FLOPPY, 0.20f); // Slightly higher!
+        addToLoot("chests/buried_treasure", ModItems.ENCRYPTED_FLOPPY, 0.25f); // Slightly higher!
 
         // Ocean Ruins
         addToLoot("chests/underwater_ruin_small", ModItems.ENCRYPTED_FLOPPY, 0.15f);
@@ -105,7 +106,7 @@ public class DiskLootInjector {
         // === TRIAL CHAMBERS (1.21+) ===
 
         addToLoot("chests/trial_chambers/reward", ModItems.ENCRYPTED_FLOPPY, 0.20f);
-        addToLoot("chests/trial_chambers/reward_unique", ModItems.ENCRYPTED_FLOPPY, 0.20f);
+        addToLoot("chests/trial_chambers/reward_unique", ModItems.ENCRYPTED_FLOPPY, 0.25f);
         addToLoot("chests/trial_chambers/supply", ModItems.ENCRYPTED_FLOPPY, 0.15f);
         addToLoot("chests/trial_chambers/corridor", ModItems.ENCRYPTED_FLOPPY, 0.15f);
         addToLoot("chests/trial_chambers/entrance", ModItems.ENCRYPTED_FLOPPY, 0.15f);
@@ -185,6 +186,16 @@ public class DiskLootInjector {
         addToLoot("chests/village/village_shepherd", ModItems.HARVESTER_DISK, 0.08f);
         addToLoot("chests/village/village_fisher", ModItems.HARVESTER_DISK, 0.07f);
         addToLoot("chests/woodland_mansion", ModItems.HARVESTER_DISK, 0.05f);
+
+        // Beast Whisperer - Breeding themed
+        addToLoot("chests/village/village_shepherd", ModItems.BEAST_WHISPERER_DISK, 0.08f);
+        addToLoot("chests/pillager_outpost", ModItems.BEAST_WHISPERER_DISK, 0.06f);
+        addToLoot("chests/simple_dungeon", ModItems.BEAST_WHISPERER_DISK, 0.06f);
+
+        // Iron Grip - Defense themed
+        addToLoot("chests/village/village_armorer", ModItems.IRON_GRIP_DISK, 0.08f);
+        addToLoot("chests/village/village_weaponsmith", ModItems.IRON_GRIP_DISK, 0.06f);
+        addToLoot("chests/desert_pyramid", ModItems.IRON_GRIP_DISK, 0.05f);
 
         // ===== EPIC DISKS (2 loot tables each, 2-4% chance) =====
 
