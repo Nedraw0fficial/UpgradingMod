@@ -197,6 +197,12 @@ public class DiskLootInjector {
         addToLoot("chests/village/village_weaponsmith", ModItems.IRON_GRIP_DISK, 0.06f);
         addToLoot("chests/desert_pyramid", ModItems.IRON_GRIP_DISK, 0.05f);
 
+        // Treasure Sense - Loot/resources themed
+        addToLoot("chests/shipwreck_treasure", ModItems.TREASURE_SENSE_DISK, 0.07f);
+        addToLoot("chests/bastion_treasure", ModItems.TREASURE_SENSE_DISK, 0.08f);
+        addToLoot("chests/desert_pyramid", ModItems.TREASURE_SENSE_DISK, 0.06f);
+
+
         // ===== EPIC DISKS (2 loot tables each, 2-4% chance) =====
 
         // Glutton - Food/treasure themed

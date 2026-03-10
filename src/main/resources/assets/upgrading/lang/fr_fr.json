@@ -17,6 +17,7 @@
   "item.upgrading.tanky_disk": "Disque d'amélioration",
   "item.upgrading.beast_whisperer_disk": "Disque d'amélioration",
   "item.upgrading.iron_grip_disk": "Disque d'amélioration",
+  "item.upgrading.treasure_sense_disk": "Disque d'amélioration",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Pieds Agiles",
@@ -37,6 +38,7 @@
   "disk.upgrading.tanky": "Robuste",
   "disk.upgrading.beast_whisperer": "Chuchoteur d'Animaux",
   "disk.upgrading.iron_grip": "Poigne de Fer",
+  "disk.upgrading.treasure_sense": "Instinct du Trésor",
 
   "_comment1": "Disk descriptions will be added here later (or not idk)",
 

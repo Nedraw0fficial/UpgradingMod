@@ -120,6 +120,11 @@ public class ModItems {
             properties -> new DiskItem("iron_grip", properties)
     );
 
+    public static final DeferredHolder<Item, DiskItem> TREASURE_SENSE_DISK = ITEMS.registerItem(
+            "treasure_sense_disk",
+            properties -> new DiskItem("treasure_sense", properties)
+    );
+
     //_epic
 
     public static final DeferredHolder<Item, DiskItem> GLUTTON_DISK = ITEMS.registerItem(

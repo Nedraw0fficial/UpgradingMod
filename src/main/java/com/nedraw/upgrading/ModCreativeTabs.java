@@ -38,6 +38,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.HARVESTER_DISK.get());
                         output.accept(ModItems.IRON_GRIP_DISK.get());
                         output.accept(ModItems.STEP_ASSIST_DISK.get());
+                        output.accept(ModItems.TREASURE_SENSE_DISK.get());
 
                         // EPIC disks (alphabetical)
                         output.accept(ModItems.GLUTTON_DISK.get());
