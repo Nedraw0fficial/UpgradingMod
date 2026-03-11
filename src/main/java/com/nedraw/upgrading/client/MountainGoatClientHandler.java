@@ -46,11 +46,7 @@ public class MountainGoatClientHandler {
                         PacketDistributor.sendToServer(new WallJumpPacket(wall.get3DDataValue()));
                         lastJump = now;
 
-                        mc.player.displayClientMessage(
-                                net.minecraft.network.chat.Component.literal("→ JUMP SENT!")
-                                        .withStyle(style -> style.withColor(0x00FFFF)),
-                                true
-                        );
+                        //mc.player.displayClientMessage(net.minecraft.network.chat.Component.literal("→ JUMP SENT!").withStyle(style -> style.withColor(0x00FFFF)), true);
                     }
                 }
             }

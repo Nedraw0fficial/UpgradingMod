@@ -33,11 +33,7 @@ public record WallJumpPacket(int wallDirection) implements CustomPacketPayload {
 
                 // Verify player is actually clinging
                 if (!MountainGoatHandler.CLING_START.containsKey(player.getUUID())) {
-                    player.displayClientMessage(
-                            net.minecraft.network.chat.Component.literal("✗ Not clinging!")
-                                    .withStyle(style -> style.withColor(0xFF5555)),
-                            true
-                    );
+                    //player.displayClientMessage(net.minecraft.network.chat.Component.literal("✗ Not clinging!").withStyle(style -> style.withColor(0xFF5555)), true);
                     return;
                 }
 
