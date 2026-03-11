@@ -18,6 +18,8 @@
   "item.upgrading.beast_whisperer_disk": "Disque d'amélioration",
   "item.upgrading.iron_grip_disk": "Disque d'amélioration",
   "item.upgrading.treasure_sense_disk": "Disque d'amélioration",
+  "item.upgrading.pawnbroker_disk": "Disque d'amélioration",
+  "item.upgrading.mountain_goat_disk": "Disque d'amélioration",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Pieds Agiles",
@@ -39,6 +41,8 @@
   "disk.upgrading.beast_whisperer": "Chuchoteur d'Animaux",
   "disk.upgrading.iron_grip": "Poigne de Fer",
   "disk.upgrading.treasure_sense": "Instinct du Trésor",
+  "disk.upgrading.pawnbroker": "Prêteur sur Gage",
+  "disk.upgrading.mountain_goat": "Chèvre Montagneuse",
 
   "_comment1": "Disk descriptions will be added here later (or not idk)",
 

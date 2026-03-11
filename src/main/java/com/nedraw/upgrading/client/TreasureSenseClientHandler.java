@@ -53,7 +53,7 @@ public class TreasureSenseClientHandler {
     private static void renderGlowingChests(RenderLevelStageEvent event, Player player) {
         Level level = player.level();
         BlockPos playerPos = player.blockPosition();
-        int range = 6;
+        int range = 8;
 
         PoseStack poseStack = event.getPoseStack();
         Vec3 cameraPos = event.getCamera().getPosition();

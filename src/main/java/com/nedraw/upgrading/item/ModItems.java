@@ -125,6 +125,11 @@ public class ModItems {
             properties -> new DiskItem("treasure_sense", properties)
     );
 
+    public static final DeferredHolder<Item, DiskItem> PAWNBROKER_DISK = ITEMS.registerItem(
+            "pawnbroker_disk",
+            properties -> new DiskItem("pawnbroker", properties)
+    );
+
     //_epic
 
     public static final DeferredHolder<Item, DiskItem> GLUTTON_DISK = ITEMS.registerItem(
@@ -135,6 +140,11 @@ public class ModItems {
     public static final DeferredHolder<Item, DiskItem> SOAPY_HANDS_DISK = ITEMS.registerItem(
             "soapy_hands_disk",
             properties -> new DiskItem("soapy_hands", properties)
+    );
+
+    public static final DeferredHolder<Item, DiskItem> MOUNTAIN_GOAT_DISK = ITEMS.registerItem(
+            "mountain_goat_disk",
+            properties -> new DiskItem("mountain_goat", properties)
     );
 
     //_legendary

@@ -15,7 +15,7 @@ public class TreasureSenseDisk extends UpgradeDisk {
                 .withDescription(9, "Chests have 26% chance to duplicate 3 items")
                 .withDescription(10, "Chests have 29.6% chance to duplicate 3 items")
                 .withDescription(11, "Chests have 33.2% chance to duplicate 4 items")
-                .withDescription(12, "Chests have 34.8% chance to duplicate 4 items\nNearby loot chests glow through walls (8 blocks)");
+                .withDescription(12, "Chests have 34.8% chance to duplicate 4 items\nand nearby chests glow through walls (8 blocks)");
     }
 
     @Override

@@ -118,8 +118,10 @@ public class DeathHandler {
             case "beast_whisperer" -> new ItemStack(ModItems.BEAST_WHISPERER_DISK.get());
             case "iron_grip" -> new ItemStack(ModItems.IRON_GRIP_DISK.get());
             case "treasure_sense" -> new ItemStack(ModItems.TREASURE_SENSE_DISK.get());
+            case "pawnbroker" -> new ItemStack(ModItems.PAWNBROKER_DISK.get());
             case "glutton" -> new ItemStack(ModItems.GLUTTON_DISK.get());
             case "soapy_hands" -> new ItemStack(ModItems.SOAPY_HANDS_DISK.get());
+            case "mountain_goat" -> new ItemStack(ModItems.MOUNTAIN_GOAT_DISK.get());
             case "berserker" -> new ItemStack(ModItems.BERSERKER_DISK.get());
             case "pyroclasm" -> new ItemStack(ModItems.PYROCLASM_DISK.get());
             default -> ItemStack.EMPTY;

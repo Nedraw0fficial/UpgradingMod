@@ -37,11 +37,13 @@ public class ModCreativeTabs {
                         output.accept(ModItems.FLAME_WALKER_DISK.get());
                         output.accept(ModItems.HARVESTER_DISK.get());
                         output.accept(ModItems.IRON_GRIP_DISK.get());
+                        output.accept(ModItems.PAWNBROKER_DISK.get());
                         output.accept(ModItems.STEP_ASSIST_DISK.get());
                         output.accept(ModItems.TREASURE_SENSE_DISK.get());
 
                         // EPIC disks (alphabetical)
                         output.accept(ModItems.GLUTTON_DISK.get());
+                        output.accept(ModItems.MOUNTAIN_GOAT_DISK.get());
                         output.accept(ModItems.SOAPY_HANDS_DISK.get());
 
                         // LEGENDARY disks (alphabetical)

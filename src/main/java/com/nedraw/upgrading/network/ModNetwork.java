@@ -1,10 +1,7 @@
 package com.nedraw.upgrading.network;
 
 import com.nedraw.upgrading.UpgradingMod;
-import com.nedraw.upgrading.network.packet.ClaimEncryptedFloppyPacket;
-import com.nedraw.upgrading.network.packet.EquipDiskPacket;
-import com.nedraw.upgrading.network.packet.SyncDiskDataPacket;
-import com.nedraw.upgrading.network.packet.UpgradeDiskPacket;
+import com.nedraw.upgrading.network.packet.*;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
@@ -35,6 +32,13 @@ public class ModNetwork {
                 ClaimEncryptedFloppyPacket.TYPE,
                 ClaimEncryptedFloppyPacket.STREAM_CODEC,
                 ClaimEncryptedFloppyPacket::handle
+        );
+
+        // WALL JUMP PACKET
+        registrar.playToServer(
+                WallJumpPacket.TYPE,
+                WallJumpPacket.STREAM_CODEC,
+                WallJumpPacket::handle
         );
     }
 

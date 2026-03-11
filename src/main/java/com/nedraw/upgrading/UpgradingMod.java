@@ -11,6 +11,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import org.joml.sampling.PoissonSampling;
 import org.slf4j.Logger;
 
 @Mod(UpgradingMod.MODID)
@@ -41,9 +42,11 @@ public class UpgradingMod {
         DiskRegistry.register(new BeastWhispererDisk());
         DiskRegistry.register(new IronGripDisk());
         DiskRegistry.register(new TreasureSenseDisk());
+        DiskRegistry.register(new PawnbrokerDisk());
         // - EPIC -
         DiskRegistry.register(new GluttonDisk());
         DiskRegistry.register(new SoapyHandsDisk());
+        DiskRegistry.register(new MountainGoatDisk());
         // - LEGENDARY -
         DiskRegistry.register(new BerserkerDisk());
         DiskRegistry.register(new PyroclasmDisk());
@@ -53,7 +56,7 @@ public class UpgradingMod {
         // Register items
         ModItems.ITEMS.register(modEventBus);
 
-        // REgister tabs
+        // Register tabs
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
 
         // Register data attachments

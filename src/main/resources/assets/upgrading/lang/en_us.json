@@ -18,6 +18,8 @@
   "item.upgrading.beast_whisperer_disk": "Upgrade Disk",
   "item.upgrading.iron_grip_disk": "Upgrade Disk",
   "item.upgrading.treasure_sense_disk": "Upgrade Disk",
+  "item.upgrading.pawnbroker_disk": "Upgrade Disk",
+  "item.upgrading.mountain_goat_disk": "Upgrade Disk",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Swift Feet",
@@ -39,6 +41,8 @@
   "disk.upgrading.beast_whisperer": "Beast Whisperer",
   "disk.upgrading.iron_grip": "Iron Grip",
   "disk.upgrading.treasure_sense": "Treasure Sense",
+  "disk.upgrading.pawnbroker": "Pawnbroker",
+  "disk.upgrading.mountain_goat": "Mountain Goat",
 
   "_comment1": "Disk descriptions will be added here later (or not idk)",
 
