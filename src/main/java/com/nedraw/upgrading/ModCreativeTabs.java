@@ -47,6 +47,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.SOAPY_HANDS_DISK.get());
 
                         // LEGENDARY disks (alphabetical)
+                        output.accept(ModItems.ARCHITECTS_MIND_DISK.get());
                         output.accept(ModItems.BERSERKER_DISK.get());
                         output.accept(ModItems.PYROCLASM_DISK.get());
                     })

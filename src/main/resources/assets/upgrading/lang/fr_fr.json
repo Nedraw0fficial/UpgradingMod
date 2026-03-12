@@ -1,25 +1,5 @@
 {
-  "item.upgrading.swift_feet_disk": "Disque d'amélioration",
-  "item.upgrading.sea_fish_disk": "Disque d'amélioration",
-  "item.upgrading.magnet_disk": "Disque d'amélioration",
-  "item.upgrading.mighty_miner_disk": "Disque d'amélioration",
-  "item.upgrading.flame_walker_disk": "Disque d'amélioration",
-  "item.upgrading.step_assist_disk": "Disque d'amélioration",
-  "item.upgrading.harvester_disk": "Disque d'amélioration",
-  "item.upgrading.glutton_disk": "Disque d'amélioration",
-  "item.upgrading.soapy_hands_disk": "Disque d'amélioration",
-  "item.upgrading.berserker_disk": "Disque d'amélioration",
-  "item.upgrading.pyroclasm_disk": "Disque d'amélioration",
-  "item.upgrading.night_vision_disk": "Disque d'amélioration",
-  "item.upgrading.lightweight_disk": "Disque d'amélioration",
-  "item.upgrading.feather_fall_disk": "Disque d'amélioration",
-  "item.upgrading.efficient_disk": "Disque d'amélioration",
-  "item.upgrading.tanky_disk": "Disque d'amélioration",
-  "item.upgrading.beast_whisperer_disk": "Disque d'amélioration",
-  "item.upgrading.iron_grip_disk": "Disque d'amélioration",
-  "item.upgrading.treasure_sense_disk": "Disque d'amélioration",
-  "item.upgrading.pawnbroker_disk": "Disque d'amélioration",
-  "item.upgrading.mountain_goat_disk": "Disque d'amélioration",
+  "item.upgrading.disk": "Disque d'amélioration",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Pieds Agiles",
@@ -42,19 +22,21 @@
   "disk.upgrading.iron_grip": "Poigne de Fer",
   "disk.upgrading.treasure_sense": "Instinct du Trésor",
   "disk.upgrading.pawnbroker": "Prêteur sur Gage",
-  "disk.upgrading.mountain_goat": "Chèvre Montagneuse",
+  "disk.upgrading.mountain_goat": "Chèvre des Montagnes",
+  "disk.upgrading.architects_mind": "Cerveau d'Architecte",
 
-  "_comment1": "Disk descriptions will be added here later (or not idk)",
+  "_comment1": "See below for descriptions (nice)",
 
   "_comment2": "GUI elements",
   "gui.upgrading.disk_menu.title": "Disques d'Amélioration",
   "gui.upgrading.disk_menu.upgrade": "AMÉLIORER!",
   "gui.upgrading.disk_menu.cost": "Coûte: %s XP",
-  "gui.upgrading.disk_menu.level": "Niv. %s",
+  "gui.upgrading.disk_menu.level": "Niv.%s",
 
   "_comment3": "Messages",
   "message.upgrading.already_unlocked": "Vous avez déjà déverrouillé ce disque !",
   "message.upgrading.disk_unlocked": "Débloqué: %s",
+  "message.upgrading.not_enough_xp": "Pas assez d'XP!",
 
   "key.categories.upgrading": "UPGRADING! Mod",
   "key.upgrading.open_disk_menu": "Ouvrir menu d'équippement des disques",
@@ -76,11 +58,26 @@
 
   "rarity.upgrading.basic": "BASIQUE",
   "rarity.upgrading.rare": "RARE",
-  "rarity.upgrading.epic": "ÉPIC",
+  "rarity.upgrading.epic": "ÉPIQUE",
   "rarity.upgrading.legendary": "LÉGENDAIRE",
   "rarity.upgrading.mythic": "MYTHIQUE",
 
   "message.upgrading.encrypted_floppy.unlocked": "⭐ DISQUETTE CRYPTÉE DÉBLOQUÉE! ⭐",
-  "message.upgrading.encrypted_floppy.error": "Erreur : aucun disque disponible !"
+  "message.upgrading.encrypted_floppy.error": "Erreur : aucun disque disponible !",
+
+  "DESCRIPTION_TRANSLATIONS": "it took too much time",
+
+  "description.upgrading.swift_feet.1": "+3% de vitesse de mouvement",
+  "description.upgrading.swift_feet.2": "+6% de vitesse de mouvement",
+  "description.upgrading.swift_feet.3": "+9% de vitesse de mouvement",
+  "description.upgrading.swift_feet.4": "+12% de vitesse de mouvement",
+  "description.upgrading.swift_feet.5": "+15% de vitesse de mouvement",
+  "description.upgrading.swift_feet.6": "+18% de vitesse de mouvement",
+  "description.upgrading.swift_feet.7": "+21% de vitesse de mouvement",
+  "description.upgrading.swift_feet.8": "+24% de vitesse de mouvement",
+  "description.upgrading.swift_feet.9": "+27% de vitesse de mouvement",
+  "description.upgrading.swift_feet.10": "+30% de vitesse de mouvement",
+  "description.upgrading.swift_feet.11": "+33% de vitesse de mouvement",
+  "description.upgrading.swift_feet.12": "+36% de vitesse de mouvement et\npossibilité de dash"
 
 }

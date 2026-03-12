@@ -1,25 +1,5 @@
 {
-  "item.upgrading.swift_feet_disk": "Upgrade Disk",
-  "item.upgrading.sea_fish_disk": "Upgrade Disk",
-  "item.upgrading.magnet_disk": "Upgrade Disk",
-  "item.upgrading.mighty_miner_disk": "Upgrade Disk",
-  "item.upgrading.flame_walker_disk": "Upgrade Disk",
-  "item.upgrading.step_assist_disk": "Upgrade Disk",
-  "item.upgrading.harvester_disk": "Upgrade Disk",
-  "item.upgrading.glutton_disk": "Upgrade Disk",
-  "item.upgrading.soapy_hands_disk": "Upgrade Disk",
-  "item.upgrading.berserker_disk": "Upgrade Disk",
-  "item.upgrading.pyroclasm_disk": "Upgrade Disk",
-  "item.upgrading.night_vision_disk": "Upgrade Disk",
-  "item.upgrading.lightweight_disk": "Upgrade Disk",
-  "item.upgrading.feather_fall_disk": "Upgrade Disk",
-  "item.upgrading.efficient_disk": "Upgrade Disk",
-  "item.upgrading.tanky_disk": "Upgrade Disk",
-  "item.upgrading.beast_whisperer_disk": "Upgrade Disk",
-  "item.upgrading.iron_grip_disk": "Upgrade Disk",
-  "item.upgrading.treasure_sense_disk": "Upgrade Disk",
-  "item.upgrading.pawnbroker_disk": "Upgrade Disk",
-  "item.upgrading.mountain_goat_disk": "Upgrade Disk",
+  "item.upgrading.disk": "Upgrade Disk",
 
   "_comment0": "Disk names",
   "disk.upgrading.swift_feet": "Swift Feet",
@@ -43,18 +23,20 @@
   "disk.upgrading.treasure_sense": "Treasure Sense",
   "disk.upgrading.pawnbroker": "Pawnbroker",
   "disk.upgrading.mountain_goat": "Mountain Goat",
+  "disk.upgrading.architects_mind": "Architect's Mind",
 
-  "_comment1": "Disk descriptions will be added here later (or not idk)",
+  "_comment1": "See below for descriptions (nice)",
 
   "_comment2": "GUI elements",
   "gui.upgrading.disk_menu.title": "Upgrade Disks",
   "gui.upgrading.disk_menu.upgrade": "UPGRADE!",
   "gui.upgrading.disk_menu.cost": "Cost: %s XP",
-  "gui.upgrading.disk_menu.level": "Lv. %s",
+  "gui.upgrading.disk_menu.level": "Lv.%s",
 
   "_comment3": "Messages",
   "message.upgrading.already_unlocked": "You already have this disk unlocked!",
   "message.upgrading.disk_unlocked": "Unlocked: %s",
+  "message.upgrading.not_enough_xp": "Not enough XP!",
 
   "key.categories.upgrading": "UPGRADING! Mod",
   "key.upgrading.open_disk_menu": "Open Disk Menu",
@@ -81,6 +63,21 @@
   "rarity.upgrading.mythic": "MYTHIC",
 
   "message.upgrading.encrypted_floppy.unlocked": "⭐ ENCRYPTED FLOPPY UNLOCKED! ⭐",
-  "message.upgrading.encrypted_floppy.error": "Error: No disks available!"
+  "message.upgrading.encrypted_floppy.error": "Error: No disks available!",
+
+  "DESCRIPTION_TRANSLATIONS": "it took too much time",
+
+  "description.upgrading.swift_feet.1": "+3% movement speed",
+  "description.upgrading.swift_feet.2": "+6% movement speed",
+  "description.upgrading.swift_feet.3": "+9% movement speed",
+  "description.upgrading.swift_feet.4": "+12% movement speed",
+  "description.upgrading.swift_feet.5": "+15% movement speed",
+  "description.upgrading.swift_feet.6": "+18% movement speed",
+  "description.upgrading.swift_feet.7": "+21% movement speed",
+  "description.upgrading.swift_feet.8": "+24% movement speed",
+  "description.upgrading.swift_feet.9": "+27% movement speed",
+  "description.upgrading.swift_feet.10": "+30% movement speed",
+  "description.upgrading.swift_feet.11": "+33% movement speed",
+  "description.upgrading.swift_feet.12": "+36% movement speed and unlock\nthe ability to dash"
 
 }

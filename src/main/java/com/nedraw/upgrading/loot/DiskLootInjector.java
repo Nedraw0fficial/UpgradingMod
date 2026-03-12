@@ -202,6 +202,11 @@ public class DiskLootInjector {
         addToLoot("chests/bastion_treasure", ModItems.TREASURE_SENSE_DISK, 0.08f);
         addToLoot("chests/desert_pyramid", ModItems.TREASURE_SENSE_DISK, 0.06f);
 
+        // Pawnbroker - Resources/trading themed
+        addToLoot("chests/village/village_toolsmith", ModItems.PAWNBROKER_DISK, 0.07f);
+        addToLoot("chests/woodland_mansion", ModItems.PAWNBROKER_DISK, 0.07f);
+        addToLoot("chests/stronghold_library", ModItems.PAWNBROKER_DISK, 0.06f);
+
 
         // ===== EPIC DISKS (2 loot tables each, 2-4% chance) =====
 
@@ -213,6 +218,10 @@ public class DiskLootInjector {
         addToLoot("chests/stronghold_library", ModItems.SOAPY_HANDS_DISK, 0.03f);
         addToLoot("chests/ancient_city", ModItems.SOAPY_HANDS_DISK, 0.04f);
 
+        // Mountain Goat - Mobility themed
+        addToLoot("chests/pillager_outpost", ModItems.MOUNTAIN_GOAT_DISK, 0.02f);
+        addToLoot("chests/trial_chambers/reward", ModItems.MOUNTAIN_GOAT_DISK, 0.04f);
+
         // ===== LEGENDARY DISKS (1 loot table each, 1-2% chance) =====
 
         // Berserker - End cities only (combat mastery)
@@ -220,6 +229,9 @@ public class DiskLootInjector {
 
         // Pyroclasm - Ancient city ice box only (most dangerous place)
         addToLoot("chests/ancient_city_ice_box", ModItems.PYROCLASM_DISK, 0.015f);
+
+        // Architect's Mind - Building themed
+        addToLoot("chests/shipwreck_map", ModItems.ARCHITECTS_MIND_DISK, 0.02f);
     }
 
     private static void addToLoot(String lootTable, DeferredHolder<Item, ?> diskItem, float chance) {

@@ -26,18 +26,7 @@ public class SwiftFeetDisk extends UpgradeDisk {
     public SwiftFeetDisk() {
         super("swift_feet", "Swift Feet", DiskRarity.BASIC);
 
-        this.withDescription(1, "+3% movement speed")
-                .withDescription(2, "+6% movement speed")
-                .withDescription(3, "+9% movement speed")
-                .withDescription(4, "+12% movement speed")
-                .withDescription(5, "+15% movement speed")
-                .withDescription(6, "+18% movement speed")
-                .withDescription(7, "+21% movement speed")
-                .withDescription(8, "+24% movement speed")
-                .withDescription(9, "+27% movement speed")
-                .withDescription(10, "+30% movement speed")
-                .withDescription(11, "+33% movement speed")
-                .withDescription(12, "+36% movement speed and unlock\nthe ability to dash");
+        // No descriptions anymore (hell yeah !)
     }
 
     @Override

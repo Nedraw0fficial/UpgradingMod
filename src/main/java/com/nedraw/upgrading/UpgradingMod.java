@@ -50,6 +50,7 @@ public class UpgradingMod {
         // - LEGENDARY -
         DiskRegistry.register(new BerserkerDisk());
         DiskRegistry.register(new PyroclasmDisk());
+        DiskRegistry.register(new ArchitectsMindDisk());
         // - - - - - - -
         LOGGER.info("Registered {} disks", DiskRegistry.getAllDisks().size());
 

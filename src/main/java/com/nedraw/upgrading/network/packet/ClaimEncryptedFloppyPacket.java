@@ -169,6 +169,7 @@ public record ClaimEncryptedFloppyPacket(String rarityName) implements CustomPac
             case "soapy_hands" -> new ItemStack(ModItems.SOAPY_HANDS_DISK.get());
             case "berserker" -> new ItemStack(ModItems.BERSERKER_DISK.get());
             case "pyroclasm" -> new ItemStack(ModItems.PYROCLASM_DISK.get());
+            case "architects_mind" -> new ItemStack(ModItems.ARCHITECTS_MIND_DISK.get());
             default -> null;
         };
     }

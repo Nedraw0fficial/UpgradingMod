@@ -1,5 +1,7 @@
 package com.nedraw.upgrading.disk;
 
+import net.minecraft.network.chat.Component;
+
 public enum DiskRarity {
     BASIC(1, 3, 0x8CC8CF),         // Blue-Gray
     RARE(4, 10, 0xFFA538),          // Orange
@@ -28,5 +30,11 @@ public enum DiskRarity {
 
     public int getColor() {
         return color;
+    }
+
+    // New string method
+    public String getDisplayName() {
+        // Translation key format (FINALLY !)
+        return Component.translatable("rarity.upgrading." + this.name().toLowerCase()).getString();
     }
 }

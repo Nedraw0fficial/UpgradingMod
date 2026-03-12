@@ -54,7 +54,7 @@ public class DiskMenuScreen extends Screen {
     private int topPos;
 
     public DiskMenuScreen() {
-        super(Component.literal("Upgrade Disks"));
+        super(Component.translatable("gui.upgrading.disk_menu.title"));
     }
 
     @Override
@@ -222,8 +222,8 @@ public class DiskMenuScreen extends Screen {
 
         // Rarity and level - REFRESH FROM CURRENT DATA
         int level = diskData.getDiskLevel(hoveredDiskId);
-        String rarityText = disk.getRarity().name();
-        String levelText = "Lv. " + level;
+        String rarityText = disk.getRarity().getDisplayName();
+        String levelText = Component.translatable("gui.upgrading.disk_menu.level", level).getString();
 
         // Draw rarity with underline
         int rarityTextX = x + 5;
@@ -260,12 +260,12 @@ public class DiskMenuScreen extends Screen {
             graphics.fill(buttonX, buttonY, buttonX + buttonWidth, buttonY + buttonHeight,
                     hovering ? 0xFF55AA55 : 0xFF338833);
 
-            graphics.drawCenteredString(this.font, "UPGRADE!", buttonX + buttonWidth/2, buttonY + 6, 0xFFFFFF);
+            graphics.drawCenteredString(this.font, Component.translatable("gui.upgrading.disk_menu.upgrade"), buttonX + buttonWidth/2, buttonY + 6, 0xFFFFFF);
 
             int xpCost = disk.getRarity().getXpCostForLevel(level);
             int playerXP = diskData.getTotalXP(minecraft.player);
 
-            String costText = "Cost: " + xpCost + " XP";
+            String costText = Component.translatable("gui.upgrading.disk_menu.cost", xpCost).getString();
             int costColor = playerXP >= xpCost ? 0x55FF55 : 0xFF5555;
 
             graphics.drawString(this.font, costText, buttonX + buttonWidth + 10, buttonY + 6, costColor);
@@ -337,7 +337,7 @@ public class DiskMenuScreen extends Screen {
                 } else {
                     // Not enough XP - show message
                     minecraft.player.displayClientMessage(
-                            Component.literal("Not enough XP!").withStyle(style -> style.withColor(0xFF5555)),
+                            Component.translatable("message.upgrading.not_enough_xp").withStyle(style -> style.withColor(0xFF5555)),
                             true
                     );
 

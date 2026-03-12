@@ -124,6 +124,7 @@ public class DeathHandler {
             case "mountain_goat" -> new ItemStack(ModItems.MOUNTAIN_GOAT_DISK.get());
             case "berserker" -> new ItemStack(ModItems.BERSERKER_DISK.get());
             case "pyroclasm" -> new ItemStack(ModItems.PYROCLASM_DISK.get());
+            case "architects_mind" -> new ItemStack(ModItems.ARCHITECTS_MIND_DISK.get());
             default -> ItemStack.EMPTY;
         };
     }

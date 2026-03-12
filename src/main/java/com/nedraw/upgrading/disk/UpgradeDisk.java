@@ -23,7 +23,8 @@ public class UpgradeDisk {
     }
 
     public String getDisplayName() {
-        return displayName;
+        //return displayName;
+        return Component.translatable("disk.upgrading." + id).getString();
     }
 
     public DiskRarity getRarity() {
@@ -40,10 +41,27 @@ public class UpgradeDisk {
     }
 
     public String getDescriptionForLevel(int level) {
-        if (level < 1 || level > descriptions.size()) {
+        if (level < 1 || level > 12) {
             return "No description";
         }
-        return descriptions.get(level - 1);
+
+        //First, trying to get a translated description
+        // Translation key format: "description.upgrading.{disk_id}.{level}"
+        String translationKey = "description.upgrading." + id + "." + level;
+        Component translated = Component.translatable(translationKey);
+        String result = translated.getString();
+
+        // Check if translation exists (if it's the same as the key, translation doesn't exist)
+        if (!result.equals(translationKey)) {
+            return result;
+        }
+
+        // Fallback to hardcoded descriptions (for old disks)
+        if (level <= descriptions.size() && !descriptions.get(level - 1).isEmpty()) {
+            return descriptions.get(level - 1);
+        }
+
+        return "No description";
     }
 
     // Called when disk is equipped OR when level changes

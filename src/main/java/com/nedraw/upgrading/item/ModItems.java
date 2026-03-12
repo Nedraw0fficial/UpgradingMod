@@ -159,4 +159,9 @@ public class ModItems {
             properties -> new DiskItem("pyroclasm", properties)
     );
 
+    public static final DeferredHolder<Item, DiskItem> ARCHITECTS_MIND_DISK = ITEMS.registerItem(
+            "architects_mind_disk",
+            properties -> new DiskItem("architects_mind", properties)
+    );
+
 }

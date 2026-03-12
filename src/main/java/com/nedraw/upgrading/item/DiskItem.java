@@ -6,6 +6,7 @@ import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.UpgradeDisk;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -30,7 +31,7 @@ public class DiskItem extends Item {
     @Override
     public Component getName(ItemStack stack) {
         // All disks are called "Upgrade Disk"
-        return Component.literal("Upgrade Disk");
+        return Component.translatable("item.upgrading.disk");
     }
 
     @Override
@@ -53,7 +54,10 @@ public class DiskItem extends Item {
                                     .withBold(true)
                                     .withUnderlined(true))
                             .append(Component.literal(" - \"" + disk.getDisplayName() + "\"")
-                                    .withStyle(ChatFormatting.WHITE))
+                                    .withStyle(style -> style
+                                            .withBold(false)
+                                            .withUnderlined(false)
+                                            .withColor(TextColor.fromLegacyFormat(ChatFormatting.WHITE))))
             );
         }
     }
