@@ -23,13 +23,6 @@ public class GluttonDisk extends UpgradeDisk {
 
     public GluttonDisk() {
         super("glutton", "Glutton", DiskRarity.EPIC);
-
-        this.withDescription(7, "+4% food saturation")
-                .withDescription(8, "+8% food saturation")
-                .withDescription(9, "+12% food saturation")
-                .withDescription(10, "+16% food saturation")
-                .withDescription(11, "+20% food saturation")
-                .withDescription(12, "+30% food saturation and\noverflow converts to absorption");
     }
 
     @Override

@@ -31,19 +31,6 @@ public class MightyMinerDisk extends UpgradeDisk {
 
     public MightyMinerDisk() {
         super("mighty_miner", "Mighty Miner", DiskRarity.BASIC);
-
-        this.withDescription(1, "+2% mining speed")
-                .withDescription(2, "+2% mining speed")
-                .withDescription(3, "+3% mining speed")
-                .withDescription(4, "+4% mining speed")
-                .withDescription(5, "+7% mining speed")
-                .withDescription(6, "+10% mining speed")
-                .withDescription(7, "+14% mining speed")
-                .withDescription(8, "+19% mining speed")
-                .withDescription(9, "+25% mining speed")
-                .withDescription(10, "+34% mining speed")
-                .withDescription(11, "+43% mining speed")
-                .withDescription(12, "+55% mining speed and 6% chance\nof finding ores in stones");
     }
 
     @Override

@@ -25,19 +25,6 @@ public class SeaFishDisk extends UpgradeDisk {
 
     public SeaFishDisk() {
         super("sea_fish", "Sea Fish", DiskRarity.BASIC);
-
-        this.withDescription(1, "+2s of air underwater but\n-20% movement speed on land")
-                .withDescription(2, "+2s of air underwater but\n-18% movement speed on land")
-                .withDescription(3, "+3s of air underwater but\n-16% movement speed on land")
-                .withDescription(4, "+4s of air underwater but\n-14% movement speed on land")
-                .withDescription(5, "+5s of air underwater but\n-12% movement speed on land")
-                .withDescription(6, "+6s of air underwater but\n-10% movement speed on land")
-                .withDescription(7, "+7s of air underwater but\n-8% movement speed on land")
-                .withDescription(8, "+8s of air underwater but\n-6% movement speed on land")
-                .withDescription(9, "+10s of air underwater but\n-4% movement speed on land")
-                .withDescription(10, "+12s of air underwater but\n-2% movement speed on land")
-                .withDescription(11, "+14s of air underwater")
-                .withDescription(12, "+20s of air underwater\n+12% swim speed");
     }
 
     @Override

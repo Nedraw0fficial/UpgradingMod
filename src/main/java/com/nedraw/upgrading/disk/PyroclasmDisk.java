@@ -20,11 +20,6 @@ public class PyroclasmDisk extends UpgradeDisk {
 
     public PyroclasmDisk() {
         super("pyroclasm", "Pyroclasm", DiskRarity.LEGENDARY);
-
-        this.withDescription(9, "9% chance: ignite on hit\n9% chance: ignite attackers")
-                .withDescription(10, "13% chance: ignite on hit\n13% chance: ignite attackers")
-                .withDescription(11, "16% chance: ignite on hit\n16% chance: ignite attackers")
-                .withDescription(12, "20% fire on hit/counter + Fire Shield:\nExplodes at <40% HP, deals damage,\nknockback, ignites. Recharges at full HP");
     }
 
     @Override

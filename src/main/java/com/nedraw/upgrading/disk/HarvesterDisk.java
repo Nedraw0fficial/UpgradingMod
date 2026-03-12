@@ -25,16 +25,6 @@ public class HarvesterDisk extends UpgradeDisk {
 
     public HarvesterDisk() {
         super("harvester", "Harvester", DiskRarity.RARE);
-
-        this.withDescription(4, "+3% chance of duplicating\nbroken crops")
-                .withDescription(5, "+6% chance of duplicating\nbroken crops")
-                .withDescription(6, "+9% chance of duplicating\nbroken crops")
-                .withDescription(7, "+12% chance of duplicating\nbroken crops")
-                .withDescription(8, "+15% chance of duplicating\nbroken crops")
-                .withDescription(9, "+18% chance of duplicating\nbroken crops")
-                .withDescription(10, "+21% chance of duplicating\nbroken crops")
-                .withDescription(11, "+24% chance of duplicating\nbroken crops")
-                .withDescription(12, "+37% chance of duplicating crops\nand find bonus items");
     }
 
     @Override

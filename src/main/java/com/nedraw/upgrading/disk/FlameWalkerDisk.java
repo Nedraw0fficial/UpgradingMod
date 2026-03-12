@@ -22,16 +22,6 @@ public class FlameWalkerDisk extends UpgradeDisk {
 
     public FlameWalkerDisk() {
         super("flame_walker", "Flame Walker", DiskRarity.RARE);
-
-        this.withDescription(4, "-5.2% fire damage")
-                .withDescription(5, "-10.4% fire damage")
-                .withDescription(6, "-15.6% fire damage")
-                .withDescription(7, "-20.8% fire damage")
-                .withDescription(8, "-26% fire damage")
-                .withDescription(9, "-31.2% fire damage")
-                .withDescription(10, "-36.4% fire damage")
-                .withDescription(11, "-41.6% fire damage")
-                .withDescription(12, "-55.6% fire damage and grant the\n ability to walk on lava");
     }
 
     @Override

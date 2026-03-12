@@ -14,19 +14,6 @@ public class TankyDisk extends UpgradeDisk {
 
     public TankyDisk() {
         super("tanky", "Tanky", DiskRarity.BASIC);
-
-        this.withDescription(1, "+5% max health, -35% movement speed")
-                .withDescription(2, "+6% max health, -32% movement speed")
-                .withDescription(3, "+7% max health, -29% movement speed")
-                .withDescription(4, "+10% max health, -26% movement speed")
-                .withDescription(5, "+12% max health, -24% movement speed")
-                .withDescription(6, "+14% max health, -22% movement speed")
-                .withDescription(7, "+16% max health, -21% movement speed")
-                .withDescription(8, "+20% max health, -20% movement speed")
-                .withDescription(9, "+22% max health, -19% movement speed")
-                .withDescription(10, "+24% max health, -17% movement speed")
-                .withDescription(11, "+26% max health, -15% movement speed")
-                .withDescription(12, "+30% max health, -21% speed only when sprinting");
     }
 
     @Override

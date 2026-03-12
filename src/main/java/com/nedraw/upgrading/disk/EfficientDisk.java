@@ -18,19 +18,6 @@ public class EfficientDisk extends UpgradeDisk {
 
     public EfficientDisk() {
         super("efficient", "Efficient", DiskRarity.BASIC);
-
-        this.withDescription(1, "5% chance to prevent tool durability loss")
-                .withDescription(2, "6% chance to prevent tool durability loss")
-                .withDescription(3, "7% chance to prevent tool durability loss")
-                .withDescription(4, "8% chance to prevent tool durability loss")
-                .withDescription(5, "10% chance to prevent tool durability loss")
-                .withDescription(6, "12% chance to prevent tool durability loss")
-                .withDescription(7, "14% chance to prevent tool durability loss")
-                .withDescription(8, "16% chance to prevent tool durability loss")
-                .withDescription(9, "18% chance to prevent tool durability loss")
-                .withDescription(10, "20% chance to prevent tool durability loss")
-                .withDescription(11, "22% chance to prevent tool durability loss")
-                .withDescription(12, "24% chance to prevent tool durability loss\nand 7% chance to prevent armor/offhand\ndurability loss");
     }
 
     @Override

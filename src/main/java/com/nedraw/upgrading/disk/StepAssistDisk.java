@@ -22,16 +22,6 @@ public class StepAssistDisk extends UpgradeDisk {
 
     public StepAssistDisk() {
         super("step_assist", "Step Assist", DiskRarity.RARE);
-
-        this.withDescription(4, "+0.1 blocks of auto-step up but\n-32% swim speed")
-                .withDescription(5, "+0.2 blocks of auto-step up but\n-28% swim speed")
-                .withDescription(6, "+0.3 blocks of auto-step up but\n-24% swim speed")
-                .withDescription(7, "+0.4 blocks of auto-step up but\n-20% swim speed")
-                .withDescription(8, "+0.5 blocks of auto-step up but\n-16% swim speed")
-                .withDescription(9, "+0.6 blocks of auto-step up but\n-12% swim speed")
-                .withDescription(10, "+0.7 blocks of auto-step up but\n-8% swim speed")
-                .withDescription(11, "+0.8 blocks of auto-step up but\n-4% swim speed")
-                .withDescription(12, "+1.2 blocks of auto-step up\nand +5.5% movement speed");
     }
 
     @Override

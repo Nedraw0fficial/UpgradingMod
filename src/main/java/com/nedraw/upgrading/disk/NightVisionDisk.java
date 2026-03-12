@@ -18,19 +18,6 @@ public class NightVisionDisk extends UpgradeDisk {
 
     public NightVisionDisk() {
         super("night_vision", "Night Vision", DiskRarity.BASIC);
-
-        this.withDescription(1, "Night vision blinks in darkness: 2s on, 8s off")
-                .withDescription(2, "Night vision blinks in darkness: 3s on, 7s off")
-                .withDescription(3, "Night vision blinks in darkness: 4s on, 6s off")
-                .withDescription(4, "Night vision blinks in darkness: 5s on, 5s off")
-                .withDescription(5, "Night vision blinks in darkness: 6s on, 4s off")
-                .withDescription(6, "Night vision blinks in darkness: 7s on, 3s off")
-                .withDescription(7, "Night vision blinks in darkness: 8s on, 2s off")
-                .withDescription(8, "Night vision blinks in darkness: 9s on, 1s off")
-                .withDescription(9, "Night vision blinks in darkness: 10s on, 0.5s off")
-                .withDescription(10, "Night vision blinks in darkness: 11s on, 0.3s off")
-                .withDescription(11, "Night vision blinks in darkness: 12s on, 0.2s off")
-                .withDescription(12, "Perfect constant night vision and\nsee invisible nearby entities");
     }
 
     @Override

@@ -16,19 +16,6 @@ public class MagnetDisk extends UpgradeDisk {
 
     public MagnetDisk() {
         super("magnet", "Magnet", DiskRarity.BASIC);
-
-        this.withDescription(1, "+0.5 blocks radius of item pick-up\nwhen crouching")
-                .withDescription(2, "+1 blocks radius of item pick-up\nwhen crouching")
-                .withDescription(3, "+1.5 blocks radius of item pick-up\nwhen crouching")
-                .withDescription(4, "+2 blocks radius of item pick-up\nwhen crouching")
-                .withDescription(5, "+2.5 blocks radius of item pick-up\nwhen crouching")
-                .withDescription(6, "+3 blocks radius of item pick-up\nwhen crouching")
-                .withDescription(7, "+3.5 blocks radius of item pick-up\nwhen crouching")
-                .withDescription(8, "+4 blocks radius of item pick-up\nwhen crouching")
-                .withDescription(9, "+4.5 blocks radius of item pick-up\nwhen crouching")
-                .withDescription(10, "+5 blocks radius of item pick-up\nwhen crouching")
-                .withDescription(11, "+5.5 blocks radius of item pick-up\nwhen crouching")
-                .withDescription(12, "8 blocks radius of item pick-up\nwith instant pickup");
     }
 
     @Override

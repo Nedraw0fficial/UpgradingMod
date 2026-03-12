@@ -10,16 +10,6 @@ public class BeastWhispererDisk extends UpgradeDisk {
 
     public BeastWhispererDisk() {
         super("beast_whisperer", "Beast Whisperer", DiskRarity.RARE);
-
-        this.withDescription(4, "Animals breeding cooldown is 10% faster")
-                .withDescription(5, "Animals breeding cooldown is 15% faster")
-                .withDescription(6, "Animals breeding cooldown is 20% faster")
-                .withDescription(7, "Animals breeding cooldown is 25% faster")
-                .withDescription(8, "Animals breeding cooldown is 30% faster")
-                .withDescription(9, "Animals breeding cooldown is 35% faster")
-                .withDescription(10, "Animals breeding cooldown is 45% faster")
-                .withDescription(11, "Animals breeding cooldown is 60% faster")
-                .withDescription(12, "Animals breeding cooldown is 80% faster\nand 12% chance for twins (recursive)");
     }
 
     @Override

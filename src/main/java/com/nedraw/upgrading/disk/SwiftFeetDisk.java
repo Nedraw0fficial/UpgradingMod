@@ -25,7 +25,6 @@ public class SwiftFeetDisk extends UpgradeDisk {
 
     public SwiftFeetDisk() {
         super("swift_feet", "Swift Feet", DiskRarity.BASIC);
-
         // No descriptions anymore (hell yeah !)
     }
 

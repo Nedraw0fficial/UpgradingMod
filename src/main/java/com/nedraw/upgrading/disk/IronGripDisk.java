@@ -6,16 +6,6 @@ public class IronGripDisk extends UpgradeDisk {
 
     public IronGripDisk() {
         super("iron_grip", "Iron Grip", DiskRarity.RARE);
-
-        this.withDescription(4, "Knockback reduced by 5%")
-                .withDescription(5, "Knockback reduced by 7%")
-                .withDescription(6, "Knockback reduced by 9%")
-                .withDescription(7, "Knockback reduced by 12%")
-                .withDescription(8, "Knockback reduced by 15%")
-                .withDescription(9, "Knockback reduced by 19%")
-                .withDescription(10, "Knockback reduced by 23%")
-                .withDescription(11, "Knockback reduced by 30%")
-                .withDescription(12, "Knockback reduced by 40% and can't\nbe knocked off edges while sneaking");
     }
 
     @Override

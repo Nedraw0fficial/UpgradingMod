@@ -20,11 +20,6 @@ public class BerserkerDisk extends UpgradeDisk {
 
     public BerserkerDisk() {
         super("berserker", "Berserker", DiskRarity.LEGENDARY);
-
-        this.withDescription(9, "+5% damage per 10% missing health")
-                .withDescription(10, "+6% damage per 10% missing health")
-                .withDescription(11, "+7% damage per 10% missing health")
-                .withDescription(12, "+8% damage per 10% missing health\nBelow 30% HP: +50% dmg, +30% speed, Resistance II");
     }
 
     @Override

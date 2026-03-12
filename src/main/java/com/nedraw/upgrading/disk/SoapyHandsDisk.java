@@ -13,13 +13,6 @@ public class SoapyHandsDisk extends UpgradeDisk {
 
     public SoapyHandsDisk() {
         super("soapy_hands", "Soapy Hands", DiskRarity.EPIC);
-
-        this.withDescription(7, "2% chance to make enemies\ndrop their held item")
-                .withDescription(8, "4% chance to make enemies\ndrop their held item")
-                .withDescription(9, "6% chance to make enemies\ndrop their held item")
-                .withDescription(10, "8% chance to make enemies\ndrop their held item")
-                .withDescription(11, "10% chance to make enemies\ndrop their held item")
-                .withDescription(12, "15% main hand, 8% for EVERY\nother inventory slot!");
     }
 
     @Override

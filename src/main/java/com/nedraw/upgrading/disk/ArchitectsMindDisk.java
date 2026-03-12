@@ -12,11 +12,6 @@ public class ArchitectsMindDisk extends UpgradeDisk {
 
     public ArchitectsMindDisk() {
         super("architects_mind", "Architect's Mind", DiskRarity.LEGENDARY);
-
-        this.withDescription(9, "+1 block reach")
-                .withDescription(10, "+2 block reach")
-                .withDescription(11, "+3.5 block reach")
-                .withDescription(12, "+5.5 block reach + instant block placement");
     }
 
     @Override

@@ -15,19 +15,6 @@ public class LightweightDisk extends UpgradeDisk {
 
     public LightweightDisk() {
         super("lightweight", "Lightweight", DiskRarity.BASIC);
-
-        this.withDescription(1, "5% chance to prevent hunger drain")
-                .withDescription(2, "10% chance to prevent hunger drain")
-                .withDescription(3, "15% chance to prevent hunger drain")
-                .withDescription(4, "20% chance to prevent hunger drain")
-                .withDescription(5, "25% chance to prevent hunger drain")
-                .withDescription(6, "30% chance to prevent hunger drain")
-                .withDescription(7, "35% chance to prevent hunger drain")
-                .withDescription(8, "40% chance to prevent hunger drain")
-                .withDescription(9, "45% chance to prevent hunger drain")
-                .withDescription(10, "50% chance to prevent hunger drain")
-                .withDescription(11, "55% chance to prevent hunger drain")
-                .withDescription(12, "60% chance to prevent hunger drain\nand eating food gives 15% more saturation");
     }
 
     @Override

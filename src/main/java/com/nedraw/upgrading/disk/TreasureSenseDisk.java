@@ -6,16 +6,6 @@ public class TreasureSenseDisk extends UpgradeDisk {
 
     public TreasureSenseDisk() {
         super("treasure_sense", "Treasure Sense", DiskRarity.RARE);
-
-        this.withDescription(4, "Chests have 8% chance to duplicate 1 item")
-                .withDescription(5, "Chests have 11.6% chance to duplicate 1 item")
-                .withDescription(6, "Chests have 15.2% chance to duplicate 2 items")
-                .withDescription(7, "Chests have 18.8% chance to duplicate 2 items")
-                .withDescription(8, "Chests have 22.4% chance to duplicate 2 items")
-                .withDescription(9, "Chests have 26% chance to duplicate 3 items")
-                .withDescription(10, "Chests have 29.6% chance to duplicate 3 items")
-                .withDescription(11, "Chests have 33.2% chance to duplicate 4 items")
-                .withDescription(12, "Chests have 34.8% chance to duplicate 4 items\nand nearby chests glow through walls (8 blocks)");
     }
 
     @Override

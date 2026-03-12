@@ -6,19 +6,6 @@ public class FeatherFallDisk extends UpgradeDisk {
 
     public FeatherFallDisk() {
         super("feather_fall", "Feather Fall", DiskRarity.BASIC);
-
-        this.withDescription(1, "Reduce fall damage by 5%")
-                .withDescription(2, "Reduce fall damage by 8%")
-                .withDescription(3, "Reduce fall damage by 11%")
-                .withDescription(4, "Reduce fall damage by 14%")
-                .withDescription(5, "Reduce fall damage by 17%")
-                .withDescription(6, "Reduce fall damage by 20%")
-                .withDescription(7, "Reduce fall damage by 23%")
-                .withDescription(8, "Reduce fall damage by 26%")
-                .withDescription(9, "Reduce fall damage by 29%")
-                .withDescription(10, "Reduce fall damage by 32%")
-                .withDescription(11, "Reduce fall damage by 36%")
-                .withDescription(12, "Reduce fall damage by 40% and negate\n2.0 damage falls");
     }
 
     @Override
