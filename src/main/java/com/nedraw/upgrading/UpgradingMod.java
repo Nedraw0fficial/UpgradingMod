@@ -5,6 +5,7 @@ import com.nedraw.upgrading.client.ClientSetup;
 import com.nedraw.upgrading.data.ModAttachments;
 import com.nedraw.upgrading.disk.*;
 
+import com.nedraw.upgrading.effect.ModEffects;
 import com.nedraw.upgrading.item.ModItems;
 import com.nedraw.upgrading.network.ModNetwork;
 import net.neoforged.bus.api.IEventBus;
@@ -47,15 +48,22 @@ public class UpgradingMod {
         DiskRegistry.register(new GluttonDisk());
         DiskRegistry.register(new SoapyHandsDisk());
         DiskRegistry.register(new MountainGoatDisk());
+        DiskRegistry.register(new WarchemistDisk());
+        DiskRegistry.register(new BasherDisk());
         // - LEGENDARY -
         DiskRegistry.register(new BerserkerDisk());
         DiskRegistry.register(new PyroclasmDisk());
         DiskRegistry.register(new ArchitectsMindDisk());
+        // - MYTHIC -
+        DiskRegistry.register(new NecroArcherDisk());
         // - - - - - - -
         LOGGER.info("Registered {} disks", DiskRegistry.getAllDisks().size());
 
         // Register items
         ModItems.ITEMS.register(modEventBus);
+
+        // Register effects
+        ModEffects.MOB_EFFECTS.register(modEventBus);
 
         // Register tabs
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);

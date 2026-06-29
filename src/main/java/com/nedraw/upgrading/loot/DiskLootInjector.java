@@ -222,6 +222,15 @@ public class DiskLootInjector {
         addToLoot("chests/pillager_outpost", ModItems.MOUNTAIN_GOAT_DISK, 0.02f);
         addToLoot("chests/trial_chambers/reward", ModItems.MOUNTAIN_GOAT_DISK, 0.04f);
 
+        // Warchemist - Combat and Potions
+        addToLoot("chests/shipwreck_treasure", ModItems.WARCHEMIST_DISK, 0.03f);
+        addToLoot("chests/trial_chambers/reward", ModItems.WARCHEMIST_DISK, 0.04f);
+
+        // Basher - Shield Blocking
+        addToLoot("chests/village/village_toolsmith", ModItems.BASHER_DISK, 0.03f);
+        addToLoot("chests/desert_pyramid", ModItems.BASHER_DISK, 0.03f);
+
+
         // ===== LEGENDARY DISKS (1 loot table each, 1-2% chance) =====
 
         // Berserker - End cities only (combat mastery)
@@ -232,6 +241,8 @@ public class DiskLootInjector {
 
         // Architect's Mind - Building themed
         addToLoot("chests/shipwreck_map", ModItems.ARCHITECTS_MIND_DISK, 0.02f);
+
+        // MYTHIC DISKS CAN'T BE FOUND IN LOOT ! --> Encrypted Floppy
     }
 
     private static void addToLoot(String lootTable, DeferredHolder<Item, ?> diskItem, float chance) {

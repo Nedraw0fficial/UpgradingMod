@@ -24,6 +24,9 @@
   "disk.upgrading.pawnbroker": "Prêteur sur Gages",
   "disk.upgrading.mountain_goat": "Chèvre des Montagnes",
   "disk.upgrading.architects_mind": "Esprit d'Architecte",
+  "disk.upgrading.warchemist": "Warchemiste",
+  "disk.upgrading.basher": "Repousseur",
+  "disk.upgrading.necro_archer": "Nécro-Archer",
 
   "_comment1": "See below for descriptions (nice)",
 
@@ -40,6 +43,7 @@
 
   "key.categories.upgrading": "UPGRADING! Mod",
   "key.upgrading.open_disk_menu": "Ouvrir le menu d'équippement des disques",
+  "key.upgrading.activate_mythic": "Activer la capacité MYTHIQUE",
 
   "itemGroup.upgrading": "UPGRADING! Disks",
 
@@ -281,6 +285,20 @@
   "description.upgrading.mountain_goat.11": "Possibilité de s'accrocher aux murs\npendant 2.0 secondes",
   "description.upgrading.mountain_goat.12": "Possibilité de s'accrocher aux murs\npendant 2.5 secondes + saut mural",
 
+  "description.upgrading.warchemist.7": "Infliger des dégâts octroie un effet positif aléatoire pendant 3s",
+  "description.upgrading.warchemist.8": "Infliger des dégâts octroie un effet positif aléatoire pendant 4s",
+  "description.upgrading.warchemist.9": "Infliger des dégâts octroie un effet positif aléatoire pendant 5s",
+  "description.upgrading.warchemist.10": "Infliger des dégâts octroie un effet positif aléatoire pendant 7s",
+  "description.upgrading.warchemist.11": "Infliger des dégâts octroie un effet positif aléatoire pendant 9s",
+  "description.upgrading.warchemist.12": "Infliger des dégâts octroie un effet de niveau II aléatoire pendant 12s\net inflige un effet négatif aléatoire à l'attaquant pendant 5s",
+
+  "description.upgrading.basher.7": "Bloquer inflige 30% des dégâts bloqués en recul",
+  "description.upgrading.basher.8": "Bloquer inflige 40% des dégâts bloqués en recul",
+  "description.upgrading.basher.9": "Bloquer inflige 50% des dégâts bloqués en recul",
+  "description.upgrading.basher.10": "Bloquer inflige 60% des dégâts bloqués en recul",
+  "description.upgrading.basher.11": "Bloquer inflige 70% des dégâts bloqués en recul",
+  "description.upgrading.basher.12": "Bloquer inflige un recul total basé sur les dégâts bloqués\net en renvoie 30% en dégâts directs",
+
 
 
 
@@ -297,6 +315,11 @@
   "description.upgrading.architects_mind.9": "+1 bloc de portée de placement/cassage de blocs",
   "description.upgrading.architects_mind.10": "+2 blocs de portée de placement/cassage de blocs",
   "description.upgrading.architects_mind.11": "+3.5 blocs de portée de placement/cassage de blocs",
-  "description.upgrading.architects_mind.12": "+5.5 blocs de portée de placement/cassage de blocs\net placement instantané"
+  "description.upgrading.architects_mind.12": "+5.5 blocs de portée de placement/cassage de blocs\net placement instantané",
 
+
+
+
+  "description.upgrading.necro_archer.11": "Arc tiré 60% plus vite, flèches x1.5 dégâts & vélocité\nACTIF: boost 7s - +35% vitesse, tir 80% plus vite,\n cibles touchées obtiennent Nécrosis (300s).\n À la fin: 14 dégâts + Lenteur II + Faiblesse II + Cécité II",
+  "description.upgrading.necro_archer.12": "Arc tiré 80% plus vite, flèches x2 dégâts & vélocité\nACTIF: boost 10s - +40% vitesse, tir instantané,\n cibles touchées obtiennent Nécrosis (600s).\n À la fin: 16 dégâts + Lenteur III + Faiblesse II + Cécité III"
 }

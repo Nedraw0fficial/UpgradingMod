@@ -15,10 +15,19 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
     private final Set<String> unlockedDisks = new HashSet<>();
     private final Map<String, Integer> diskLevels = new HashMap<>();
     private final String[] equippedSlots = new String[3]; // 3 equipment slots
+    private final Map<String, Long> abilityCooldowns = new HashMap<>();
 
     // Get data from player
     public static PlayerDiskData get(Player player) {
         return player.getData(ModAttachments.PLAYER_DISK_DATA);
+    }
+
+    public long getAbilityCooldown(String diskId) {
+        return abilityCooldowns.getOrDefault(diskId, 0L);
+    }
+
+    public void setAbilityCooldown(String diskId, long timestamp) {
+        abilityCooldowns.put(diskId, timestamp);
     }
 
     // === DISK UNLOCKING ===
@@ -140,6 +149,13 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
         }
         tag.put("EquippedSlots", equippedTag);
 
+        // Save ability cooldowns
+        CompoundTag cooldownsTag = new CompoundTag();
+        for (Map.Entry<String, Long> entry : abilityCooldowns.entrySet()) {
+            cooldownsTag.putLong(entry.getKey(), entry.getValue());
+        }
+        tag.put("AbilityCooldowns", cooldownsTag);
+
         return tag;
     }
 
@@ -167,6 +183,12 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
             if (equippedTag.contains(key)) {
                 equippedSlots[i] = equippedTag.getString(key);
             }
+        }
+
+        abilityCooldowns.clear();
+        CompoundTag cooldownsTag = tag.getCompound("AbilityCooldowns");
+        for (String key : cooldownsTag.getAllKeys()) {
+            abilityCooldowns.put(key, cooldownsTag.getLong(key));
         }
     }
 
@@ -206,4 +228,5 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
         // Re-add remaining XP
         player.giveExperiencePoints(remaining);
     }
+
 }

@@ -32,7 +32,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.SWIFT_FEET_DISK.get());
                         output.accept(ModItems.TANKY_DISK.get());
 
-                        // RARE disks (alphabetical)
+                        // RARE disks
                         output.accept(ModItems.BEAST_WHISPERER_DISK.get());
                         output.accept(ModItems.FLAME_WALKER_DISK.get());
                         output.accept(ModItems.HARVESTER_DISK.get());
@@ -41,12 +41,14 @@ public class ModCreativeTabs {
                         output.accept(ModItems.STEP_ASSIST_DISK.get());
                         output.accept(ModItems.TREASURE_SENSE_DISK.get());
 
-                        // EPIC disks (alphabetical)
+                        // EPIC disks
                         output.accept(ModItems.GLUTTON_DISK.get());
                         output.accept(ModItems.MOUNTAIN_GOAT_DISK.get());
                         output.accept(ModItems.SOAPY_HANDS_DISK.get());
+                        output.accept(ModItems.WARCHEMIST_DISK.get());
+                        output.accept(ModItems.BASHER_DISK.get());
 
-                        // LEGENDARY disks (alphabetical)
+                        // LEGENDARY disks
                         output.accept(ModItems.ARCHITECTS_MIND_DISK.get());
                         output.accept(ModItems.BERSERKER_DISK.get());
                         output.accept(ModItems.PYROCLASM_DISK.get());

@@ -24,6 +24,9 @@
   "disk.upgrading.pawnbroker": "Pawnbroker",
   "disk.upgrading.mountain_goat": "Mountain Goat",
   "disk.upgrading.architects_mind": "Architect's Mind",
+  "disk.upgrading.warchemist": "Warchemist",
+  "disk.upgrading.basher": "Basher",
+  "disk.upgrading.necro_archer": "Necro-Archer",
 
   "_comment1": "See below for descriptions (nice)",
 
@@ -40,6 +43,7 @@
 
   "key.categories.upgrading": "UPGRADING! Mod",
   "key.upgrading.open_disk_menu": "Open Disk Menu",
+  "key.upgrading.activate_mythic": "Activate MYTHIC Ability",
 
   "itemGroup.upgrading": "UPGRADING! Disks",
 
@@ -286,6 +290,20 @@
   "description.upgrading.mountain_goat.11": "Cling to walls for 2.0 seconds",
   "description.upgrading.mountain_goat.12": "Cling to walls for 2.5 seconds + wall jump",
 
+  "description.upgrading.warchemist.7": "Random positive effect for 3s on hit",
+  "description.upgrading.warchemist.8": "Random positive effect for 4s on hit",
+  "description.upgrading.warchemist.9": "Random positive effect for 5s on hit",
+  "description.upgrading.warchemist.10": "Random positive effect for 7s on hit",
+  "description.upgrading.warchemist.11": "Random positive effect for 9s on hit",
+  "description.upgrading.warchemist.12": "Random positive effect level II for 12s on\nhit and random negative effect on attacker for 5s",
+
+  "description.upgrading.basher.7": "Blocking deals 30% of blocked damage as knockback",
+  "description.upgrading.basher.8": "Blocking deals 40% of blocked damage as knockback",
+  "description.upgrading.basher.9": "Blocking deals 50% of blocked damage as knockback",
+  "description.upgrading.basher.10": "Blocking deals 60% of blocked damage as knockback",
+  "description.upgrading.basher.11": "Blocking deals 70% of blocked damage as knockback",
+  "description.upgrading.basher.12": "Blocking deals full knockback based on blocked\ndamage and returns 30% of it as direct damage",
+
 
 
 
@@ -302,5 +320,11 @@
   "description.upgrading.architects_mind.9": "+1 block reach",
   "description.upgrading.architects_mind.10": "+2 block reach",
   "description.upgrading.architects_mind.11": "+3.5 block reach",
-  "description.upgrading.architects_mind.12": "+5.5 block reach + instant block placement"
+  "description.upgrading.architects_mind.12": "+5.5 block reach + instant block placement",
+
+
+
+
+  "description.upgrading.necro_archer.11": "Draw bow 60% faster, arrows deal x1.5 damage & velocity\nACTIVE: 7s boost - +35% speed, 80% faster draw,\nhit targets get Necromisis (300s).\nOn end: 14 dmg + Slowness II + Weakness II + Blindness II",
+  "description.upgrading.necro_archer.12": "Draw bow 80% faster, arrows deal x2 damage & velocity\nACTIVE: 10s boost - +40% speed, instant draw,\nhit targets get Necromisis (600s).\nOn end: 16 dmg + Slowness III + Weakness II + Blindness III"
 }

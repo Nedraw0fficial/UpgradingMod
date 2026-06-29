@@ -40,6 +40,13 @@ public class ModNetwork {
                 WallJumpPacket.STREAM_CODEC,
                 WallJumpPacket::handle
         );
+
+        //Mythic disks' keybind packet
+        registrar.playToServer(
+                ActivateMythicPacket.TYPE,
+                ActivateMythicPacket.STREAM_CODEC,
+                ActivateMythicPacket::handle
+        );
     }
 
 }

@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.nedraw.upgrading.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [],
+  "client": [
+    "BowItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

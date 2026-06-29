@@ -12,5 +12,6 @@ public class ClientSetup {
     @SubscribeEvent
     public static void registerKeyBinds(RegisterKeyMappingsEvent event) {
         event.register(ModKeyBinds.OPEN_DISK_MENU);
+        event.register(ModKeyBinds.ACTIVATE_MYTHIC);
     }
 }

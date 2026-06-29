@@ -15,4 +15,12 @@ public class ModKeyBinds {
             GLFW.GLFW_KEY_R,
             KEY_CATEGORY
     );
+
+    public static final KeyMapping ACTIVATE_MYTHIC = new KeyMapping(
+            "key.upgrading.activate_mythic",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_X,
+            KEY_CATEGORY
+    );
 }

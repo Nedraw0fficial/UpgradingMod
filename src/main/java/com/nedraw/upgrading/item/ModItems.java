@@ -147,6 +147,16 @@ public class ModItems {
             properties -> new DiskItem("mountain_goat", properties)
     );
 
+    public static final DeferredHolder<Item, DiskItem> WARCHEMIST_DISK = ITEMS.registerItem(
+            "warchemist_disk",
+            properties -> new DiskItem("warchemist", properties)
+    );
+
+    public static final DeferredHolder<Item, DiskItem> BASHER_DISK = ITEMS.registerItem(
+            "basher_disk",
+            properties -> new DiskItem("basher", properties)
+    );
+
     //_legendary
 
     public static final DeferredHolder<Item, DiskItem> BERSERKER_DISK = ITEMS.registerItem(
@@ -162,6 +172,13 @@ public class ModItems {
     public static final DeferredHolder<Item, DiskItem> ARCHITECTS_MIND_DISK = ITEMS.registerItem(
             "architects_mind_disk",
             properties -> new DiskItem("architects_mind", properties)
+    );
+
+    //_mythic
+
+    public static final DeferredHolder<Item, DiskItem> NECRO_ARCHER_DISK = ITEMS.registerItem(
+            "necro_archer_disk",
+            properties -> new DiskItem("necro_archer", properties)
     );
 
 }

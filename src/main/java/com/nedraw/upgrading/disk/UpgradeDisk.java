@@ -90,4 +90,12 @@ public class UpgradeDisk {
     public int getMaxLevel() {
         return 12;
     }
+
+    public void activateAbility(Player player, int level) {
+        // Override in MYTHIC disk implementations
+    }
+
+    public long getAbilityCooldownMs(int level) {
+        return 60000; // Default: 60s
+    }
 }

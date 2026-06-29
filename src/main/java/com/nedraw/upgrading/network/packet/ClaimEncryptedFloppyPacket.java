@@ -16,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
@@ -167,9 +168,12 @@ public record ClaimEncryptedFloppyPacket(String rarityName) implements CustomPac
             case "mountain_goat" -> new ItemStack(ModItems.MOUNTAIN_GOAT_DISK.get());
             case "glutton" -> new ItemStack(ModItems.GLUTTON_DISK.get());
             case "soapy_hands" -> new ItemStack(ModItems.SOAPY_HANDS_DISK.get());
+            case "warchemist" -> new ItemStack(ModItems.WARCHEMIST_DISK.get());
+            case "basher" -> new ItemStack(ModItems.BASHER_DISK.get());
             case "berserker" -> new ItemStack(ModItems.BERSERKER_DISK.get());
             case "pyroclasm" -> new ItemStack(ModItems.PYROCLASM_DISK.get());
             case "architects_mind" -> new ItemStack(ModItems.ARCHITECTS_MIND_DISK.get());
+            case "necro_archer" -> new ItemStack(ModItems.NECRO_ARCHER_DISK.get());
             default -> null;
         };
     }
