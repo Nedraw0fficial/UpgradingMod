@@ -1,17 +1,19 @@
 package com.nedraw.upgrading.disk;
 
+import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class LightweightDisk extends UpgradeDisk {
 
     private static final Map<UUID, Integer> LAST_FOOD_LEVEL = new HashMap<>();
     private static final Random RANDOM = new Random();
+
+    // Track timestamps (ms) of each successful prevention for the 5-in-1-minute check
+    private static final Map<UUID, List<Long>> PREVENTION_TIMESTAMPS = new HashMap<>();
 
     public LightweightDisk() {
         super("lightweight", "Lightweight", DiskRarity.BASIC);
@@ -19,13 +21,11 @@ public class LightweightDisk extends UpgradeDisk {
 
     @Override
     public void applyEffect(Player player, int level) {
-        // Initialize tracking
         LAST_FOOD_LEVEL.put(player.getUUID(), player.getFoodData().getFoodLevel());
     }
 
     @Override
     public void applyTickEffect(Player player, int level) {
-        // Server-side only
         if (player.level().isClientSide) return;
 
         UUID playerId = player.getUUID();
@@ -33,51 +33,58 @@ public class LightweightDisk extends UpgradeDisk {
         int currentFood = foodData.getFoodLevel();
         int lastFood = LAST_FOOD_LEVEL.getOrDefault(playerId, currentFood);
 
-        // Check if hunger decreased
         if (currentFood < lastFood) {
-            int lost = lastFood - currentFood;
-
-            // Roll chance to prevent hunger loss
             float preventChance = getPreventChance(level);
 
             if (RANDOM.nextFloat() < preventChance) {
-                // Success! Restore the lost hunger
+                // Prevention succeeded - restore hunger
                 foodData.setFoodLevel(lastFood);
+
+                // Track timestamp of this prevention
+                long now = System.currentTimeMillis();
+                List<Long> timestamps = PREVENTION_TIMESTAMPS.computeIfAbsent(playerId, k -> new ArrayList<>());
+                timestamps.add(now);
+
+                // Remove timestamps older than 60 seconds
+                timestamps.removeIf(t -> now - t > 60_000);
+
+                // Fire advancement if 5+ preventions in the last minute
+                if (timestamps.size() >= 5 && player instanceof ServerPlayer sp) {
+                    ModAdvancementTriggers.HUNGER_DRAIN_PREVENTED_5(sp);
+                    timestamps.clear(); // Reset so it doesn't spam
+                }
             }
         }
 
-        // Update tracking with CURRENT food level (after potential restoration)
         LAST_FOOD_LEVEL.put(playerId, foodData.getFoodLevel());
     }
 
     @Override
     public void removeEffect(Player player) {
-        LAST_FOOD_LEVEL.remove(player.getUUID());
+        UUID playerId = player.getUUID();
+        LAST_FOOD_LEVEL.remove(playerId);
+        PREVENTION_TIMESTAMPS.remove(playerId);
     }
 
     private float getPreventChance(int level) {
         return switch (level) {
-            case 1 -> 0.05f;   // 5%
-            case 2 -> 0.10f;   // 10%
-            case 3 -> 0.15f;   // 15%
-            case 4 -> 0.20f;   // 20%
-            case 5 -> 0.25f;   // 25%
-            case 6 -> 0.30f;   // 30%
-            case 7 -> 0.35f;   // 35%
-            case 8 -> 0.40f;   // 40%
-            case 9 -> 0.45f;   // 45%
-            case 10 -> 0.50f;  // 50%
-            case 11 -> 0.55f;  // 55%
-            case 12 -> 0.60f;  // 60%
+            case 1  -> 0.05f;
+            case 2  -> 0.10f;
+            case 3  -> 0.15f;
+            case 4  -> 0.20f;
+            case 5  -> 0.25f;
+            case 6  -> 0.30f;
+            case 7  -> 0.35f;
+            case 8  -> 0.40f;
+            case 9  -> 0.45f;
+            case 10 -> 0.50f;
+            case 11 -> 0.55f;
+            case 12 -> 0.60f;
             default -> 0.05f;
         };
     }
 
-    // Called from food consumption event
     public float getSaturationBonus(int level) {
-        if (level >= 12) {
-            return 0.15f; // 15% bonus saturation
-        }
-        return 0.0f;
+        return level >= 12 ? 0.15f : 0.0f;
     }
 }

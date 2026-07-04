@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:efficient_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.basic.efficient.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.basic.efficient.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_basic",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

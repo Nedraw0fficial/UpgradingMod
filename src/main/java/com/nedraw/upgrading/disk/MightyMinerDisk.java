@@ -1,7 +1,9 @@
 package com.nedraw.upgrading.disk;
 
+import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -24,9 +26,7 @@ public class MightyMinerDisk extends UpgradeDisk {
     private static final ResourceLocation MINING_SPEED_MODIFIER_ID =
             ResourceLocation.fromNamespaceAndPath("upgrading", "mighty_miner_efficiency");
 
-    // Track which level is currently applied to each player
     private static final Map<UUID, Integer> APPLIED_LEVELS = new HashMap<>();
-
     private static final Random RANDOM = new Random();
 
     public MightyMinerDisk() {
@@ -38,25 +38,19 @@ public class MightyMinerDisk extends UpgradeDisk {
         UUID playerId = player.getUUID();
         Integer appliedLevel = APPLIED_LEVELS.get(playerId);
 
-        // Only update attributes if level changed
         if (appliedLevel == null || appliedLevel != level) {
             var miningAttribute = player.getAttribute(Attributes.BLOCK_BREAK_SPEED);
 
             if (miningAttribute != null) {
-                // Remove old modifier
                 miningAttribute.removeModifier(MINING_SPEED_MODIFIER_ID);
 
-                // Calculate mining speed bonus
-                double miningBonus;
-                miningBonus = 2 + round(Math.pow(level, 2.8) /20) / 100.0;
+                double miningBonus = 2 + round(Math.pow(level, 2.8) / 20) / 100.0;
 
-                // Add new modifier
-                AttributeModifier miningModifier = new AttributeModifier(
+                miningAttribute.addPermanentModifier(new AttributeModifier(
                         MINING_SPEED_MODIFIER_ID,
                         miningBonus,
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE
-                );
-                miningAttribute.addPermanentModifier(miningModifier);
+                ));
             }
 
             APPLIED_LEVELS.put(playerId, level);
@@ -65,61 +59,44 @@ public class MightyMinerDisk extends UpgradeDisk {
 
     @Override
     public void applyTickEffect(Player player, int level) {
-        // No continuous effects needed for mining speed
-        // Ore finding is handled in BlockBreakHandler event
+        // No continuous effects needed
     }
 
     @Override
     public void removeEffect(Player player) {
         var miningAttribute = player.getAttribute(Attributes.BLOCK_BREAK_SPEED);
-
-        if (miningAttribute != null) {
-            miningAttribute.removeModifier(MINING_SPEED_MODIFIER_ID);
-        }
-
+        if (miningAttribute != null) miningAttribute.removeModifier(MINING_SPEED_MODIFIER_ID);
         APPLIED_LEVELS.remove(player.getUUID());
     }
 
-    // Handle ore finding when breaking stone (called from BlockBreakHandler)
     public void handleBlockBreak(Player player, BlockState state, BlockPos pos, int level) {
-        // Server-side only
         if (!(player.level() instanceof ServerLevel serverLevel)) return;
 
-        // Level 12: Chance to find ores when breaking stone
         if (level >= 12) {
             Block block = state.getBlock();
 
-            // Check if breaking stone, deepslate, or similar
             if (block == Blocks.STONE || block == Blocks.DEEPSLATE ||
                     block == Blocks.COBBLESTONE || block == Blocks.COBBLED_DEEPSLATE) {
 
-                // 6% chance to drop a random ore
                 if (RANDOM.nextDouble() < 0.06) {
-                    // Weighted ore selection
                     int roll = RANDOM.nextInt(100);
                     Item selectedOre;
 
-                    if (roll < 30) {
-                        selectedOre = Items.COAL; // 30%
-                    } else if (roll < 55) {
-                        selectedOre = Items.RAW_IRON; // 25%
-                    } else if (roll < 75) {
-                        selectedOre = Items.RAW_COPPER; // 20%
-                    } else if (roll < 85) {
-                        selectedOre = Items.RAW_GOLD; // 10%
-                    } else if (roll < 92) {
-                        selectedOre = Items.REDSTONE; // 7%
-                    } else if (roll < 96) {
-                        selectedOre = Items.LAPIS_LAZULI; // 4%
-                    } else if (roll < 99) {
-                        selectedOre = Items.EMERALD; // 3%
-                    } else {
-                        selectedOre = Items.DIAMOND; // 1%
-                    }
+                    if (roll < 30)      selectedOre = Items.COAL;
+                    else if (roll < 55) selectedOre = Items.RAW_IRON;
+                    else if (roll < 75) selectedOre = Items.RAW_COPPER;
+                    else if (roll < 85) selectedOre = Items.RAW_GOLD;
+                    else if (roll < 92) selectedOre = Items.REDSTONE;
+                    else if (roll < 96) selectedOre = Items.LAPIS_LAZULI;
+                    else if (roll < 99) selectedOre = Items.EMERALD;
+                    else                selectedOre = Items.DIAMOND;
 
-                    // Drop the ore block
-                    ItemStack oreDrop = new ItemStack(selectedOre);
-                    Block.popResource(serverLevel, pos, oreDrop);
+                    Block.popResource(serverLevel, pos, new ItemStack(selectedOre));
+
+                    // Fire advancement when bonus ore is found
+                    if (player instanceof ServerPlayer sp) {
+                        ModAdvancementTriggers.BONUS_ORE_FOUND(sp);
+                    }
                 }
             }
         }

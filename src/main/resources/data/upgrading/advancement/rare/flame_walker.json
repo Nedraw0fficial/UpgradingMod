@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:flame_walker_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.rare.flame_walker.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.rare.flame_walker.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_rare",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

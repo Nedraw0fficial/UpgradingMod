@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:magnet_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.basic.magnet.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.basic.magnet.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_basic",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

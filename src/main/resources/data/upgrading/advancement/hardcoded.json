@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:encrypted_floppy"
+    },
+    "title": {
+      "translate": "advancement.upgrading.hardcoded.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.hardcoded.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "upgrading:root",
+  "criteria": {
+    "get_floppy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "id": "upgrading:encrypted_floppy"
+          }
+        ]
+      }
+    }
+  }
+}

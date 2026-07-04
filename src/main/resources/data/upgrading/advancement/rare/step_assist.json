@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:step_assist_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.rare.step_assist.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.rare.step_assist.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_rare",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

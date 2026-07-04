@@ -1,5 +1,7 @@
 package com.nedraw.upgrading.disk;
 
+import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -125,6 +127,11 @@ public class SwiftFeetDisk extends UpgradeDisk {
         // Apply velocity boost
         player.setDeltaMovement(motionX, 0.385, motionZ);
         player.hurtMarked = true;
+
+        //adv
+        if (player instanceof ServerPlayer sp) {
+            ModAdvancementTriggers.AERIAL_DASH(sp);
+        }
 
         // Update cooldown
         DASH_COOLDOWNS.put(playerId, System.currentTimeMillis());

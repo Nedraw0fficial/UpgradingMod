@@ -1,8 +1,8 @@
 package com.nedraw.upgrading.mixin;
 
 import com.nedraw.upgrading.data.PlayerDiskData;
-import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.DiskRarity;
+import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.UpgradeDisk;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -16,10 +16,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(BowItem.class)
 public class BowItemMixin {
 
-    @Inject(method = "getUseDuration", at = @At("RETURN"), cancellable = true)
+    @Inject(
+            method = "getUseDuration(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)I",
+            at = @At("RETURN"),
+            cancellable = true
+    )
     private void modifyDrawSpeed(ItemStack stack, LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
-        // Only apply to players
         if (!(entity instanceof Player player)) return;
+
+        boolean isClient = entity.level().isClientSide;
 
         PlayerDiskData diskData = PlayerDiskData.get(player);
 
@@ -35,11 +40,13 @@ public class BowItemMixin {
             int level = diskData.getDiskLevel(diskId);
             float multiplier = getSpeedMultiplier(player.getUUID(), level);
 
+            // DEBUG: print which side this fired on
+            System.out.println("!!!!!!!!!! SIDE: " + (isClient ? "CLIENT" : "SERVER") + " | multiplier: " + multiplier + " | original: " + cir.getReturnValue());
+
             if (multiplier != 1.0f) {
                 int newDuration = Math.round(cir.getReturnValue() / multiplier);
                 cir.setReturnValue(Math.max(1, newDuration));
             }
-
             return;
         }
     }
@@ -48,10 +55,8 @@ public class BowItemMixin {
         boolean inBoost = com.nedraw.upgrading.NecroArcherHandler.isPlayerBoosted(playerId);
 
         if (inBoost) {
-            // During boost: L11 = 80% faster (1.8x), L12 = zero draw time (100x ≈ instant)
             return level >= 12 ? 100.0f : 1.8f;
         } else {
-            // Passive: L11 = 60% faster (1.6x), L12 = 80% faster (1.8x)
             return level >= 12 ? 1.8f : 1.6f;
         }
     }

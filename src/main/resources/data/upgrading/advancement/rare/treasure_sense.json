@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:treasure_sense_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.rare.treasure_sense.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.rare.treasure_sense.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_rare",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

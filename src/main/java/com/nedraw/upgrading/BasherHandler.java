@@ -1,8 +1,10 @@
 package com.nedraw.upgrading;
 
+import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
 import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.BasherDisk;
 import com.nedraw.upgrading.disk.DiskRegistry;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -17,16 +19,9 @@ public class BasherHandler {
 
     @SubscribeEvent
     public static void onShieldBlock(LivingShieldBlockEvent event) {
-        // Only trigger for players
         if (!(event.getEntity() instanceof Player player)) return;
-
-        // Server side only
         if (player.level().isClientSide) return;
-
-        // Only trigger when actually blocking
         if (!event.getBlocked()) return;
-
-        // Only trigger for melee (attacker must be a LivingEntity)
         if (!(event.getDamageSource().getEntity() instanceof LivingEntity attacker)) return;
 
         PlayerDiskData diskData = PlayerDiskData.get(player);
@@ -40,10 +35,8 @@ public class BasherHandler {
                     float blockedDamage = event.getBlockedDamage();
                     float knockbackMultiplier = getKnockbackMultiplier(level);
 
-                    // Calculate knockback strength, capped at KNOCKBACK_CAP
                     float knockbackStrength = Math.min(blockedDamage * knockbackMultiplier, KNOCKBACK_CAP);
 
-                    // Knockback direction = away from shield face (player's look direction)
                     Vec3 lookDir = player.getLookAngle();
                     attacker.setDeltaMovement(
                             attacker.getDeltaMovement().x + lookDir.x * knockbackStrength,
@@ -52,7 +45,11 @@ public class BasherHandler {
                     );
                     attacker.hurtMarked = true;
 
-                    // L12: return 30% of blocked damage as direct damage (ignores armor)
+                    // Fire advancement when the enemy is truly launched (knockback >= 3.0)
+                    if (knockbackStrength >= 3.0f && player instanceof ServerPlayer sp) {
+                        ModAdvancementTriggers.SHIELD_BASH_LAUNCHED(sp);
+                    }
+
                     if (level >= 12) {
                         attacker.hurt(
                                 player.damageSources().thorns(player),

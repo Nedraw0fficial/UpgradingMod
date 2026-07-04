@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:harvester_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.rare.harvester.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.rare.harvester.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_rare",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

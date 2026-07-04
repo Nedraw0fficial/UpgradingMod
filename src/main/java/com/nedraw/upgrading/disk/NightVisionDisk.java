@@ -1,11 +1,14 @@
 package com.nedraw.upgrading.disk;
 
+import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.BlockPos;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -27,58 +30,47 @@ public class NightVisionDisk extends UpgradeDisk {
 
     @Override
     public void applyTickEffect(Player player, int level) {
-        // Server-side only
         if (player.level().isClientSide) return;
 
         UUID playerId = player.getUUID();
 
-        // Check if it's dark
         BlockPos pos = player.blockPosition();
         int lightLevel = player.level().getBrightness(net.minecraft.world.level.LightLayer.BLOCK, pos);
 
         if (lightLevel >= LIGHT_THRESHOLD) {
-            // Not dark - clear everything
             BLINK_TIMERS.remove(playerId);
             IS_BLINK_ON.remove(playerId);
             player.removeEffect(MobEffects.NIGHT_VISION);
             return;
         }
 
-        // Level 12: Always on
         if (level >= 12) {
-            player.addEffect(new MobEffectInstance(
-                    MobEffects.NIGHT_VISION,
-                    220,
-                    0,
-                    false,
-                    false,
-                    true
-            ));
+            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 220, 0, false, false, true));
 
-            // Glow invisible entities
-            player.level().getEntitiesOfClass(
+            // Find invisible entities and glow them
+            List<net.minecraft.world.entity.LivingEntity> invisible = player.level().getEntitiesOfClass(
                     net.minecraft.world.entity.LivingEntity.class,
                     player.getBoundingBox().inflate(20),
                     entity -> entity.isInvisible() && entity != player
-            ).forEach(entity -> {
-                entity.addEffect(new MobEffectInstance(
-                        MobEffects.GLOWING,
-                        40,
-                        0,
-                        false,
-                        false,
-                        false
+            );
+
+            if (!invisible.isEmpty()) {
+                invisible.forEach(entity -> entity.addEffect(
+                        new MobEffectInstance(MobEffects.GLOWING, 40, 0, false, false, false)
                 ));
-            });
+
+                // Fire advancement when at least one invisible entity is detected
+                if (player instanceof ServerPlayer sp) {
+                    ModAdvancementTriggers.SEE_INVISIBLE(sp);
+                }
+            }
             return;
         }
 
         // Levels 1-11: BLINK MECHANIC
-
         int onDuration = getOnDuration(level);
         int offDuration = getOffDuration(level);
 
-        // Initialize if first time
         if (!BLINK_TIMERS.containsKey(playerId)) {
             BLINK_TIMERS.put(playerId, 0);
             IS_BLINK_ON.put(playerId, true);
@@ -88,37 +80,22 @@ public class NightVisionDisk extends UpgradeDisk {
         boolean isBlinkOn = IS_BLINK_ON.get(playerId);
 
         if (isBlinkOn) {
-            // ON PHASE - Apply night vision
-            player.addEffect(new MobEffectInstance(
-                    MobEffects.NIGHT_VISION,
-                    40,
-                    0,
-                    false,
-                    false,
-                    true
-            ));
+            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 40, 0, false, false, true));
 
-            // Check if ON phase is over
             if (timer >= onDuration) {
-                // Switch to OFF
                 IS_BLINK_ON.put(playerId, false);
                 BLINK_TIMERS.put(playerId, 0);
                 player.removeEffect(MobEffects.NIGHT_VISION);
             } else {
-                // Continue ON phase
                 BLINK_TIMERS.put(playerId, timer + 1);
             }
         } else {
-            // OFF PHASE - No night vision
             player.removeEffect(MobEffects.NIGHT_VISION);
 
-            // Check if OFF phase is over
             if (timer >= offDuration) {
-                // Switch to ON
                 IS_BLINK_ON.put(playerId, true);
                 BLINK_TIMERS.put(playerId, 0);
             } else {
-                // Continue OFF phase
                 BLINK_TIMERS.put(playerId, timer + 1);
             }
         }
@@ -134,34 +111,20 @@ public class NightVisionDisk extends UpgradeDisk {
 
     private int getOnDuration(int level) {
         return switch (level) {
-            case 1 -> 40;
-            case 2 -> 60;
-            case 3 -> 80;
-            case 4 -> 100;
-            case 5 -> 120;
-            case 6 -> 140;
-            case 7 -> 160;
-            case 8 -> 180;
-            case 9 -> 200;
-            case 10 -> 220;
-            case 11 -> 240;
+            case 1 -> 40;   case 2 -> 60;   case 3 -> 80;
+            case 4 -> 100;  case 5 -> 120;  case 6 -> 140;
+            case 7 -> 160;  case 8 -> 180;  case 9 -> 200;
+            case 10 -> 220; case 11 -> 240;
             default -> 40;
         };
     }
 
     private int getOffDuration(int level) {
         return switch (level) {
-            case 1 -> 160;
-            case 2 -> 140;
-            case 3 -> 120;
-            case 4 -> 100;
-            case 5 -> 80;
-            case 6 -> 60;
-            case 7 -> 40;
-            case 8 -> 20;
-            case 9 -> 10;
-            case 10 -> 6;
-            case 11 -> 4;
+            case 1 -> 160;  case 2 -> 140;  case 3 -> 120;
+            case 4 -> 100;  case 5 -> 80;   case 6 -> 60;
+            case 7 -> 40;   case 8 -> 20;   case 9 -> 10;
+            case 10 -> 6;   case 11 -> 4;
             default -> 160;
         };
     }

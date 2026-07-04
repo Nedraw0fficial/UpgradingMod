@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:soapy_hands_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.epic.soapy_hands.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.epic.soapy_hands.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_epic",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:necro_archer_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.mythic.necro_archer.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.mythic.necro_archer.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_mythic",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

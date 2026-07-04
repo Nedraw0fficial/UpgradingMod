@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:feather_fall_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.basic.feather_fall.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.basic.feather_fall.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_basic",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

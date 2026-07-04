@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:sea_fish_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.basic.sea_fish.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.basic.sea_fish.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_basic",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

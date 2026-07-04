@@ -1,9 +1,11 @@
 package com.nedraw.upgrading;
 
+import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
 import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.TreasureSenseDisk;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
@@ -29,21 +31,15 @@ public class TreasureSenseHandler {
         Player player = event.getEntity();
         AbstractContainerMenu container = event.getContainer();
 
-        // Only process on server side
         if (player.level().isClientSide) return;
-
-        // Check if it's a chest menu
         if (!(container instanceof ChestMenu chestMenu)) return;
 
-        // Get the chest BlockEntity
         var chestContainer = chestMenu.getContainer();
         BlockEntity blockEntity = null;
 
-        // Try to find the chest BlockEntity from the container
         if (chestContainer instanceof ChestBlockEntity chest) {
             blockEntity = chest;
         } else {
-            // For double chests or other container types, we need to search nearby
             BlockPos playerPos = player.blockPosition();
             for (int x = -1; x <= 1; x++) {
                 for (int y = -1; y <= 1; y++) {
@@ -61,12 +57,8 @@ public class TreasureSenseHandler {
 
         if (blockEntity == null) return;
 
-        // Check if this chest was already looted by Treasure Sense
         var blockEntityData = blockEntity.getPersistentData();
-        if (blockEntityData.contains(LOOTED_TAG)) {
-            // Already looted, don't duplicate again
-            return;
-        }
+        if (blockEntityData.contains(LOOTED_TAG)) return;
 
         PlayerDiskData diskData = PlayerDiskData.get(player);
 
@@ -77,33 +69,26 @@ public class TreasureSenseHandler {
                 if (disk instanceof TreasureSenseDisk treasureDisk) {
                     int level = diskData.getDiskLevel(diskId);
 
-                    // MARK CHEST AS LOOTED IMMEDIATELY - BEFORE THE ROLL
-                    // This prevents save-scumming by opening/closing until you get lucky
+                    // Mark BEFORE the roll to prevent save-scumming
                     blockEntityData.putBoolean(LOOTED_TAG, true);
                     blockEntity.setChanged();
 
                     float chance = treasureDisk.getDuplicationChance(level);
 
-                    // Roll for duplication
                     if (RANDOM.nextFloat() < chance) {
                         int duplicateCount = treasureDisk.getDuplicationCount(level);
 
-                        // Find non-empty slots in chest
                         List<Integer> nonEmptySlots = new ArrayList<>();
                         for (int i = 0; i < chestContainer.getContainerSize(); i++) {
-                            if (!chestContainer.getItem(i).isEmpty()) {
-                                nonEmptySlots.add(i);
-                            }
+                            if (!chestContainer.getItem(i).isEmpty()) nonEmptySlots.add(i);
                         }
 
                         if (!nonEmptySlots.isEmpty()) {
-                            // Duplicate random items
                             for (int i = 0; i < duplicateCount && i < nonEmptySlots.size(); i++) {
                                 int randomSlot = nonEmptySlots.get(RANDOM.nextInt(nonEmptySlots.size()));
                                 ItemStack original = chestContainer.getItem(randomSlot);
 
                                 if (!original.isEmpty()) {
-                                    // Find empty slot to put duplicate
                                     for (int emptySlot = 0; emptySlot < chestContainer.getContainerSize(); emptySlot++) {
                                         if (chestContainer.getItem(emptySlot).isEmpty()) {
                                             chestContainer.setItem(emptySlot, original.copy());
@@ -111,14 +96,16 @@ public class TreasureSenseHandler {
                                         }
                                     }
                                 }
-
-                                // Remove from list so we don't duplicate the same item twice
                                 nonEmptySlots.remove(Integer.valueOf(randomSlot));
+                            }
+
+                            // Fire advancement after successful duplication
+                            if (player instanceof ServerPlayer sp) {
+                                ModAdvancementTriggers.CHEST_DUPLICATED(sp);
                             }
                         }
                     }
                 }
-
                 return;
             }
         }

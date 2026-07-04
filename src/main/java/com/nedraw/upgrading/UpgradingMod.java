@@ -1,6 +1,7 @@
 package com.nedraw.upgrading;
 
 import com.mojang.logging.LogUtils;
+import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
 import com.nedraw.upgrading.client.ClientSetup;
 import com.nedraw.upgrading.data.ModAttachments;
 import com.nedraw.upgrading.disk.*;
@@ -8,6 +9,7 @@ import com.nedraw.upgrading.disk.*;
 import com.nedraw.upgrading.effect.ModEffects;
 import com.nedraw.upgrading.item.ModItems;
 import com.nedraw.upgrading.network.ModNetwork;
+import com.nedraw.upgrading.particle.ModParticles;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -65,8 +67,15 @@ public class UpgradingMod {
         // Register effects
         ModEffects.MOB_EFFECTS.register(modEventBus);
 
+        // Register particles
+        ModParticles.PARTICLE_TYPES.register(modEventBus);
+
         // Register tabs
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
+
+        // Register advancements
+        //ModAdvancementTriggers.TRIGGERS.register(modEventBus);
+        //no registry needed here
 
         // Register data attachments
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);

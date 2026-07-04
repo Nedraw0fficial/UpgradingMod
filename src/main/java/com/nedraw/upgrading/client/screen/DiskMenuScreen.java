@@ -50,6 +50,8 @@ public class DiskMenuScreen extends Screen {
     private String hoveredDiskId = null;
     private boolean hoveringUpgradeButton = false;
 
+    private int animationTick = 0;
+
     private int leftPos;
     private int topPos;
 
@@ -277,6 +279,19 @@ public class DiskMenuScreen extends Screen {
     }
 
     private void renderDiskAt(GuiGraphics graphics, String diskId, int x, int y, int size) {
+        UpgradeDisk disk = DiskRegistry.getDisk(diskId);
+
+        if (disk != null && disk.isAnimated()) {
+            renderAnimatedDiskAt(graphics, disk, x, y, size);
+        } else {
+            renderStaticDiskAt(graphics, diskId, x, y, size);
+        }
+
+        // CRITICAL: Reset shader color to prevent black armor bug!
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+
+    private void renderStaticDiskAt(GuiGraphics graphics, String diskId, int x, int y, int size) {
         ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(
                 UpgradingMod.MODID,
                 "textures/gui/disks/" + diskId + "_disk.png"
@@ -284,8 +299,6 @@ public class DiskMenuScreen extends Screen {
 
         RenderSystem.enableBlend();
         graphics.blit(
-                //used in 1.21.3
-                //net.minecraft.client.renderer.RenderType::gui,
                 texture,
                 x, y,
                 0, 0,
@@ -293,9 +306,37 @@ public class DiskMenuScreen extends Screen {
                 size, size
         );
         RenderSystem.disableBlend();
+    }
 
-        // CRITICAL: Reset shader color to prevent black armor bug!
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+    private void renderAnimatedDiskAt(GuiGraphics graphics, UpgradeDisk disk, int x, int y, int size) {
+        ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(
+                UpgradingMod.MODID,
+                "textures/gui/disks/" + disk.getId() + "_disk.png"
+        );
+
+        int frameSize = disk.getFrameSize(); // 64 - actual source size in texture
+        int frameCount = disk.getFrameCount(); // 26
+        int ticksPerFrame = disk.getTicksPerFrame(); // 2
+
+        // Current frame based on animation tick
+        int currentFrame = (animationTick / ticksPerFrame) % frameCount;
+
+        // V offset into the spritesheet
+        int vOffset = currentFrame * frameSize;
+
+        RenderSystem.enableBlend();
+        // This blit overload: (texture, destX, destY, srcU, srcV, destW, destH, srcW, srcH, textureW, textureH)
+        // We scale from frameSize source to 'size' destination
+        graphics.blit(
+                texture,
+                x, y,                          // destination position
+                size, size,                    // destination size (scaled to fit slot)
+                0, vOffset,                    // source UV offset
+                frameSize, frameSize,          // source region size
+                frameSize,                     // total texture width
+                frameCount * frameSize         // total texture height
+        );
+        RenderSystem.disableBlend();
     }
 
     private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {
@@ -423,6 +464,7 @@ public class DiskMenuScreen extends Screen {
     @Override
     public void tick() {
         super.tick();
+        animationTick++;
 
         if (minecraft != null && minecraft.player != null) {
             // ALWAYS refresh diskData to catch server updates (like upgrades)

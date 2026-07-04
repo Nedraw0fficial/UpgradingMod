@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:beast_whisperer_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.rare.beast_whisperer.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.rare.beast_whisperer.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_rare",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

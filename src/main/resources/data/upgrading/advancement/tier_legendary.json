@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:berserker_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.tier_legendary.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.tier_legendary.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "upgrading:root",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

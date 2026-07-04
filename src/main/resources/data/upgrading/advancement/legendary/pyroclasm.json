@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:pyroclasm_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.legendary.pyroclasm.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.legendary.pyroclasm.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_legendary",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

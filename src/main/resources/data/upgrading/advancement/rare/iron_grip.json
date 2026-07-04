@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:iron_grip_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.rare.iron_grip.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.rare.iron_grip.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_rare",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

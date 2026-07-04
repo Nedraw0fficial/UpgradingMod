@@ -1,12 +1,14 @@
 package com.nedraw.upgrading.item;
 
 import com.nedraw.upgrading.ServerEvents;
+import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
 import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.UpgradeDisk;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -88,13 +90,24 @@ public class DiskItem extends Item {
             // Unlock the disk
             diskData.unlockDisk(diskId);
 
+            UpgradeDisk disk = DiskRegistry.getDisk(diskId);
+            if (disk != null && player instanceof ServerPlayer serverPlayer) {
+                switch (disk.getRarity()) {
+                    case BASIC      -> ModAdvancementTriggers.UNLOCK_BASIC_DISK(serverPlayer);
+                    case RARE       -> ModAdvancementTriggers.UNLOCK_RARE_DISK(serverPlayer);
+                    case EPIC       -> ModAdvancementTriggers.UNLOCK_EPIC_DISK(serverPlayer);
+                    case LEGENDARY  -> ModAdvancementTriggers.UNLOCK_LEGENDARY_DISK(serverPlayer);
+                    case MYTHIC     -> ModAdvancementTriggers.UNLOCK_MYTHIC_DISK(serverPlayer);
+                }
+            }
+
             // SYNC TO CLIENT
             if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
                 ServerEvents.syncDiskData(serverPlayer);
             }
 
             // Show success message
-            UpgradeDisk disk = DiskRegistry.getDisk(diskId);
+            //UpgradeDisk disk = DiskRegistry.getDisk(diskId);
             if (disk != null) {
                 player.displayClientMessage(
                         Component.translatable("message.upgrading.disk_unlocked", disk.getDisplayName())

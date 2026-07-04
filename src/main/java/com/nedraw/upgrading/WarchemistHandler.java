@@ -1,9 +1,11 @@
 package com.nedraw.upgrading;
 
+import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
 import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.WarchemistDisk;
 import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -41,13 +43,9 @@ public class WarchemistHandler {
             MobEffects.HUNGER
     );
 
-    // Trigger 1: Player DEALS damage → gets a positive effect
     @SubscribeEvent
     public static void onDamageDealt(LivingDamageEvent.Post event) {
-        // The attacker must be a player
         if (!(event.getSource().getEntity() instanceof Player player)) return;
-
-        // Server side only
         if (player.level().isClientSide) return;
 
         PlayerDiskData diskData = PlayerDiskData.get(player);
@@ -61,25 +59,23 @@ public class WarchemistHandler {
                     int durationTicks = getDurationTicks(level);
                     int amplifier = level >= 12 ? 1 : 0;
 
-                    // Apply random positive effect to player
                     Holder<MobEffect> positiveEffect = POSITIVE_EFFECTS.get(RANDOM.nextInt(POSITIVE_EFFECTS.size()));
                     player.addEffect(new MobEffectInstance(positiveEffect, durationTicks, amplifier, false, true));
+
+                    // Check if player now has ALL 8 positive effects simultaneously
+                    if (player instanceof ServerPlayer sp && hasAllEightEffects(player)) {
+                        ModAdvancementTriggers.ALL_8_EFFECTS(sp);
+                    }
                 }
                 return;
             }
         }
     }
 
-    // Trigger 2 (L12 only): Player RECEIVES damage → attacker gets a negative effect
     @SubscribeEvent
     public static void onDamageReceived(LivingDamageEvent.Post event) {
-        // The one taking damage must be a player
         if (!(event.getEntity() instanceof Player player)) return;
-
-        // Server side only
         if (player.level().isClientSide) return;
-
-        // The attacker must be a LivingEntity
         if (!(event.getSource().getEntity() instanceof LivingEntity attacker)) return;
 
         PlayerDiskData diskData = PlayerDiskData.get(player);
@@ -90,37 +86,40 @@ public class WarchemistHandler {
                 var disk = DiskRegistry.getDisk(diskId);
                 if (disk instanceof WarchemistDisk) {
                     int level = diskData.getDiskLevel(diskId);
-
-                    // Only at L12
-                    if (level >= 12) {
-                        applyNegativeEffect(attacker);
-                    }
+                    if (level >= 12) applyNegativeEffect(attacker);
                 }
                 return;
             }
         }
     }
 
+    private static boolean hasAllEightEffects(Player player) {
+        return player.hasEffect(MobEffects.REGENERATION) &&
+                player.hasEffect(MobEffects.SATURATION) &&
+                player.hasEffect(MobEffects.FIRE_RESISTANCE) &&
+                player.hasEffect(MobEffects.DAMAGE_RESISTANCE) &&
+                player.hasEffect(MobEffects.DAMAGE_BOOST) &&
+                player.hasEffect(MobEffects.MOVEMENT_SPEED) &&
+                player.hasEffect(MobEffects.JUMP) &&
+                player.hasEffect(MobEffects.ABSORPTION);
+    }
+
     private static void applyNegativeEffect(LivingEntity target) {
         Holder<MobEffect> effect = NEGATIVE_EFFECTS.get(RANDOM.nextInt(NEGATIVE_EFFECTS.size()));
-
-        // If the target is undead, swap Poison → Wither
         if (target.isInvertedHealAndHarm() && effect == MobEffects.POISON) {
             effect = MobEffects.WITHER;
         }
-
-        // 5 seconds = 100 ticks
         target.addEffect(new MobEffectInstance(effect, 100, 0, false, true));
     }
 
     private static int getDurationTicks(int level) {
         return switch (level) {
-            case 7  -> 60;   // 3s
-            case 8  -> 80;   // 4s
-            case 9  -> 100;  // 5s
-            case 10 -> 140;  // 7s
-            case 11 -> 180;  // 9s
-            case 12 -> 240;  // 12s
+            case 7  -> 60;
+            case 8  -> 80;
+            case 9  -> 100;
+            case 10 -> 140;
+            case 11 -> 180;
+            case 12 -> 240;
             default -> 60;
         };
     }

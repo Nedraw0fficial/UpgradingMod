@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:night_vision_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.basic.night_vision.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.basic.night_vision.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_basic",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

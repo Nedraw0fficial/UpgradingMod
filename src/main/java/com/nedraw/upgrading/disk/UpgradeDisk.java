@@ -98,4 +98,20 @@ public class UpgradeDisk {
     public long getAbilityCooldownMs(int level) {
         return 60000; // Default: 60s
     }
+
+    public boolean isAnimated() {
+        return false;
+    }
+
+    public int getFrameCount() {
+        return 1;
+    }
+
+    public int getTicksPerFrame() {
+        return 2; // default: 2 ticks per frame = 10fps
+    }
+
+    public int getFrameSize() {
+        return 48; // default GUI disk size
+    }
 }

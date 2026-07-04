@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "upgrading:swift_feet_disk"
+    },
+    "title": {
+      "translate": "advancement.upgrading.basic.swift_feet.title"
+    },
+    "description": {
+      "translate": "advancement.upgrading.basic.swift_feet.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "upgrading:tier_basic",
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

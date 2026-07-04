@@ -16,9 +16,26 @@ public class NecroArcherDisk extends UpgradeDisk {
 
     @Override
     public long getAbilityCooldownMs(int level) {
-        // Cooldown starts AFTER the boost ends
-        // L11: boost 7s + 90s cooldown = 97s total cycle
-        // L12: boost 10s + 120s cooldown = 130s total cycle
         return level >= 12 ? 120_000L : 90_000L;
+    }
+
+    @Override
+    public boolean isAnimated() {
+        return true;
+    }
+
+    @Override
+    public int getFrameCount() {
+        return 26;
+    }
+
+    @Override
+    public int getTicksPerFrame() {
+        return 4;
+    }
+
+    @Override
+    public int getFrameSize() {
+        return 64;
     }
 }

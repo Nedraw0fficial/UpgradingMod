@@ -1,9 +1,11 @@
 package com.nedraw.upgrading;
 
+import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
 import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.IronGripDisk;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -31,16 +33,19 @@ public class IronGripHandler {
                     if (level >= 12 && player.isCrouching()) {
                         if (isNearEdge(player)) {
                             event.setCanceled(true);
+
+                            // Fire advancement - player resisted being knocked off an edge!
+                            if (player instanceof ServerPlayer sp) {
+                                ModAdvancementTriggers.EDGE_KNOCKBACK_RESISTED(sp);
+                            }
                             return;
                         }
                     }
 
                     // Reduce knockback strength
-                    float originalStrength = event.getOriginalStrength();
-                    float newStrength = originalStrength * (1.0f - reduction);
+                    float newStrength = event.getOriginalStrength() * (1.0f - reduction);
                     event.setStrength(newStrength);
                 }
-
                 return;
             }
         }
@@ -50,16 +55,14 @@ public class IronGripHandler {
         Level level = player.level();
         BlockPos playerPos = player.blockPosition();
 
-        // Check if there's no solid block below in a 1-block radius
         for (int xOffset = -1; xOffset <= 1; xOffset++) {
             for (int zOffset = -1; zOffset <= 1; zOffset++) {
                 BlockPos checkPos = playerPos.offset(xOffset, -1, zOffset);
                 if (!level.getBlockState(checkPos).isSolid()) {
-                    return true; // Found an edge (no solid block below)
+                    return true;
                 }
             }
         }
-
-        return false; // All blocks below are solid
+        return false;
     }
 }

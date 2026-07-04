@@ -52,6 +52,9 @@ public class ModCreativeTabs {
                         output.accept(ModItems.ARCHITECTS_MIND_DISK.get());
                         output.accept(ModItems.BERSERKER_DISK.get());
                         output.accept(ModItems.PYROCLASM_DISK.get());
+
+                        // MYTHIC disks
+                        output.accept(ModItems.NECRO_ARCHER_DISK.get());
                     })
                     .build()
     );
