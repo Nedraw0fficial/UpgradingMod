@@ -31,7 +31,7 @@ public class NecroArcherDisk extends UpgradeDisk {
 
     @Override
     public int getTicksPerFrame() {
-        return 4;
+        return 5;
     }
 
     @Override
