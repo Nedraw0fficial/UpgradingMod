@@ -351,8 +351,8 @@ public class DiskMenuScreen extends Screen {
 
         // Level — just to the right with some spacing, not all the way to the edge
         String levelText = "Lv." + level;
-        int levelX = x + this.font.width(nameText) + 16;
-        graphics.drawString(this.font, levelText, levelX, y, 0xFFFF55, false);
+        int levelX = leftPos + INFO_X + INFO_W - this.font.width(levelText) - 16;
+        graphics.drawString(this.font, levelText, levelX, y, 0xFFFF55, false);;
 
         // Description with auto line-return + scrollable
         String rawDescription = disk.getDescriptionForLevel(level);

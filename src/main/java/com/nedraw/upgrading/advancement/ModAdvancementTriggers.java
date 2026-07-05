@@ -7,14 +7,14 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class ModAdvancementTriggers {
 
-    // Helper to grant an advancement directly by ResourceLocation
+    // Helper
     public static void grant(ServerPlayer player, String path) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID, path);
         AdvancementHolder holder = player.server.getAdvancements().get(id);
         if (holder == null) return;
 
         var progress = player.getAdvancements().getOrStartProgress(holder);
-        if (progress.isDone()) return; // Already completed
+        if (progress.isDone()) return; //if already completed
 
         for (String criterion : progress.getRemainingCriteria()) {
             player.getAdvancements().award(holder, criterion);
@@ -62,4 +62,8 @@ public class ModAdvancementTriggers {
     public static void UNLOCK_EPIC_DISK(ServerPlayer p)         { grant(p, "tier_epic"); }
     public static void UNLOCK_LEGENDARY_DISK(ServerPlayer p)    { grant(p, "tier_legendary"); }
     public static void UNLOCK_MYTHIC_DISK(ServerPlayer p)       { grant(p, "tier_mythic"); }
+
+    public static void ROOT(ServerPlayer p)      { grant(p, "root"); }
+    public static void HARDCODED(ServerPlayer p) { grant(p, "hardcoded"); }
+
 }

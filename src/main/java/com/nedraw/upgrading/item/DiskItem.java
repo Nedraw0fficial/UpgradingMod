@@ -32,7 +32,6 @@ public class DiskItem extends Item {
 
     @Override
     public Component getName(ItemStack stack) {
-        // All disks are called "Upgrade Disk"
         return Component.translatable("item.upgrading.disk");
     }
 
@@ -43,12 +42,8 @@ public class DiskItem extends Item {
         // Get the disk info
         UpgradeDisk disk = DiskRegistry.getDisk(diskId);
         if (disk != null) {
-            // Get exact rarity color from DiskRarity
             int rarityColor = disk.getRarity().getColor();
 
-            // Add lore: [RARITY] - "Name"
-            // [RARITY] is bold + underlined with exact hex color
-            // "Name" is white
             tooltipComponents.add(
                     Component.literal("[" + disk.getRarity().name() + "]")
                             .withStyle(style -> style
@@ -72,7 +67,6 @@ public class DiskItem extends Item {
             // Get player's disk data
             PlayerDiskData diskData = PlayerDiskData.get(player);
 
-            // Check if already unlocked
             if (diskData.isDiskUnlocked(diskId)) {
                 player.displayClientMessage(
                         Component.translatable("message.upgrading.already_unlocked")
@@ -87,7 +81,6 @@ public class DiskItem extends Item {
                 return InteractionResultHolder.fail(stack);
             }
 
-            // Unlock the disk
             diskData.unlockDisk(diskId);
 
             UpgradeDisk disk = DiskRegistry.getDisk(diskId);
@@ -106,7 +99,6 @@ public class DiskItem extends Item {
                 ServerEvents.syncDiskData(serverPlayer);
             }
 
-            // Show success message
             //UpgradeDisk disk = DiskRegistry.getDisk(diskId);
             if (disk != null) {
                 player.displayClientMessage(

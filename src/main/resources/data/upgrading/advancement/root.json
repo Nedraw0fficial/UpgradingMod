@@ -16,15 +16,8 @@
     "hidden": false
   },
   "criteria": {
-    "get_disk": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "tag": "upgrading:disks"
-          }
-        ]
-      }
+    "trigger": {
+      "trigger": "minecraft:impossible"
     }
   }
 }
