@@ -12,9 +12,14 @@ public class EncryptedFloppyHandler {
 
     @SubscribeEvent
     public static void onItemPickup(ItemEntityPickupEvent.Post event) {
-        if (!(event.getPlayer() instanceof ServerPlayer player)) return;
 
-        if (!event.getItemEntity().getItem().is(ModItems.ENCRYPTED_FLOPPY.get())) return;
+        if (!(event.getPlayer() instanceof ServerPlayer player)) {
+            return;
+        }
+
+        if (!event.getOriginalStack().is(ModItems.ENCRYPTED_FLOPPY.get())) {
+            return;
+        }
 
         ModAdvancementTriggers.ROOT(player);
         ModAdvancementTriggers.HARDCODED(player);
