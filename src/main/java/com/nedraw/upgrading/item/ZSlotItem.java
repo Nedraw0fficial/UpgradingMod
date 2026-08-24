@@ -1,6 +1,5 @@
 package com.nedraw.upgrading.item;
 
-import com.nedraw.upgrading.client.ZSlotItemRenderer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
