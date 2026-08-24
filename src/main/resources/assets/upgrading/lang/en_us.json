@@ -40,6 +40,7 @@
   "message.upgrading.already_unlocked": "You already have this disk unlocked!",
   "message.upgrading.disk_unlocked": "Unlocked: %s",
   "message.upgrading.not_enough_xp": "Not enough XP!",
+  "message.upgrading.not_enough_fragments": "Not enough Encrypted Fragments!",
   "tooltip.upgrading.encrypted_floppy.starts_at": "Starts at: ",
   "tooltip.upgrading.encrypted_floppy.guaranteed": "Guaranteed rarity!",
   "tooltip.upgrading.encrypted_floppy.chances": "%s upgrade chance(s)",
@@ -430,7 +431,7 @@
   "description.upgrading.warchemist.9": "Random positive effect for 5s when hit",
   "description.upgrading.warchemist.10": "Random positive effect for 7s when hit",
   "description.upgrading.warchemist.11": "Random positive effect for 9s when hit",
-  "description.upgrading.warchemist.12": "Random positive effect level II for 12s owhen hit and random negative effect on attacker for 5s",
+  "description.upgrading.warchemist.12": "Random positive effect level II for 12s when hit and random negative effect on attacker for 5s",
 
   "description.upgrading.basher.7": "Blocking deals 30% of blocked damage as knockback",
   "description.upgrading.basher.8": "Blocking deals 40% of blocked damage as knockback",

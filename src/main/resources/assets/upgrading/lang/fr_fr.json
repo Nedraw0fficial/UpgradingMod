@@ -40,6 +40,7 @@
   "message.upgrading.already_unlocked": "Vous avez déjà déverrouillé ce disque !",
   "message.upgrading.disk_unlocked": "Débloqué: %s",
   "message.upgrading.not_enough_xp": "Pas assez d'XP!",
+  "message.upgrading.not_enough_fragments": "Pas assez de Fragments Encryptés!",
   "tooltip.upgrading.encrypted_floppy.starts_at": "Commence à : ",
   "tooltip.upgrading.encrypted_floppy.guaranteed": "Rareté garantie !",
   "tooltip.upgrading.encrypted_floppy.chances": "%s chance(s) d'amélioration",

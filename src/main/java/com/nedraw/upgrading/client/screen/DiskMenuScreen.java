@@ -20,15 +20,14 @@ import java.util.stream.Collectors;
 
 public class DiskMenuScreen extends Screen {
 
-    // =====================
-    // TEXTURE RESOURCES
-    // =====================
     private static final ResourceLocation BACKGROUND_TEXTURE =
             ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID, "textures/gui/background.png");
     private static final ResourceLocation BUTTON_TEXTURE =
             ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID, "textures/gui/button.png");
     private static final ResourceLocation XP_ICON_TEXTURE =
             ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID, "textures/gui/xp_icon.png");
+    private static final ResourceLocation FRAGMENT_ICON_TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID, "textures/item/encrypted_fragment.png");
 
     private static ResourceLocation getOverlayTexture(DiskRarity rarity) {
         String name = switch (rarity) {
@@ -41,71 +40,68 @@ public class DiskMenuScreen extends Screen {
         return ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID, "textures/gui/" + name + ".png");
     }
 
-    // Background texture size
+    // Platinum overlay — per rarity for BASIC/RARE/EPIC, per disk for LEGENDARY/MYTHIC
+    private static ResourceLocation getPlatinumOverlay(UpgradeDisk disk) {
+        return switch (disk.getRarity()) {
+            case BASIC, RARE, EPIC ->
+                    ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID,
+                            "textures/gui/platinum/platinum_overlay_" + disk.getRarity().name().toLowerCase() + ".png");
+            case LEGENDARY, MYTHIC ->
+                    ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID,
+                            "textures/gui/platinum/platinum_overlay_" + disk.getId() + ".png");
+        };
+    }
+
     private static final int BG_TEX_W = 200;
     private static final int BG_TEX_H = 120;
 
-    // =====================
-    // LAYOUT CONSTANTS (game space = texture * 2)
-    // =====================
     private static final int SCREEN_WIDTH  = 400;
     private static final int SCREEN_HEIGHT = 240;
 
-    // Disk list
     private static final int DISK_LIST_X      = 12;
-    private static final int DISK_LIST_Y      = 38; //34
+    private static final int DISK_LIST_Y      = 38;
     private static final int DISK_LIST_WIDTH  = 76;
-    private static final int DISK_LIST_HEIGHT = 182; //186
-    private static final int DISK_SIZE        = 64; //48
-    private static final int DISK_SPACING     = 4; //8
+    private static final int DISK_LIST_HEIGHT = 182;
+    private static final int DISK_SIZE        = 64;
+    private static final int DISK_SPACING     = 4;
 
-    // Search bar
     private static final int SEARCH_X = 10;
     private static final int SEARCH_Y = 18;
     private static final int SEARCH_W = 80;
     private static final int SEARCH_H = 12;
 
-    // Slots — fixed alignment to match background texture
     private static final int SLOT_SIZE = 56;
     private static final int SLOT_Y    = 40;
     private static final int SLOT_1_X  = 150;
     private static final int SLOT_2_X  = 218;
     private static final int SLOT_3_X  = 286;
 
-    // Info panel — with proper padding
     private static final int INFO_PADDING = 8;
-    private static final int INFO_X = 100 + INFO_PADDING;  // left edge of info area + padding
-    private static final int INFO_Y = 148;                 // top of info text
-    private static final int INFO_W = 290 - INFO_PADDING;  // available width
+    private static final int INFO_X = 100 + INFO_PADDING;
+    private static final int INFO_Y = 148;
+    private static final int INFO_W = 290 - INFO_PADDING;
 
-    // Description area (scrollable)
     private static final int DESC_Y = 162;
-    private static final int DESC_W = 276;
+    private static final int DESC_W = 268;
     private static final int DESC_H = 34;
 
-    // Upgrade button
     private static final int BUTTON_X = 106;
     private static final int BUTTON_Y = 198;
     private static final int BUTTON_W = 72;
     private static final int BUTTON_H = 20;
 
-    // Button nine-slice params
     private static final int BTN_CORNER  = 4;
     private static final int BTN_TEX_W   = 9;
     private static final int BTN_STATE_NORMAL = 0;
     private static final int BTN_STATE_HOVER  = 9;
 
-    // XP icon + cost — right next to button
     private static final int XP_ICON_X = 186;
     private static final int XP_ICON_Y = 204;
     private static final int XP_ICON_W = 8;
     private static final int XP_ICON_H = 8;
 
-    // =====================
-    // STATE
-    // =====================
     private PlayerDiskData diskData;
-    private List<String> sortedDiskIds  = new ArrayList<>();
+    private List<String> sortedDiskIds   = new ArrayList<>();
     private List<String> filteredDiskIds = new ArrayList<>();
 
     private int scrollOffset     = 0;
@@ -113,11 +109,11 @@ public class DiskMenuScreen extends Screen {
     private int descScrollOffset = 0;
     private int descMaxScroll    = 0;
 
-    private String  heldDiskId           = null;
-    private String  hoveredDiskId        = null;
+    private String  heldDiskId            = null;
+    private String  hoveredDiskId         = null;
     private boolean hoveringUpgradeButton = false;
-    private boolean searchFocused        = false;
-    private String  searchText           = "";
+    private boolean searchFocused         = false;
+    private String  searchText            = "";
 
     private int animationTick = 0;
     private int leftPos, topPos;
@@ -128,9 +124,6 @@ public class DiskMenuScreen extends Screen {
         super(Component.translatable("gui.upgrading.disk_menu.title"));
     }
 
-    // =====================
-    // INIT
-    // =====================
     @Override
     protected void init() {
         super.init();
@@ -174,9 +167,6 @@ public class DiskMenuScreen extends Screen {
         scrollOffset = Math.min(scrollOffset, maxScroll);
     }
 
-    // =====================
-    // RENDER
-    // =====================
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         super.render(graphics, mouseX, mouseY, partialTick);
@@ -185,7 +175,6 @@ public class DiskMenuScreen extends Screen {
         hoveredDiskId = null;
         hoveringUpgradeButton = false;
 
-        // 1. Background texture (200x120 → 400x240, 2x scale)
         RenderSystem.enableBlend();
         graphics.blit(BACKGROUND_TEXTURE,
                 leftPos, topPos, SCREEN_WIDTH, SCREEN_HEIGHT,
@@ -193,7 +182,6 @@ public class DiskMenuScreen extends Screen {
         RenderSystem.disableBlend();
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-        // 2. Rarity overlay (if a disk is hovered/selected)
         String displayDisk = hoveredDiskId != null ? hoveredDiskId : previousHoveredDisk;
         if (displayDisk != null) {
             UpgradeDisk overlayDisk = DiskRegistry.getDisk(displayDisk);
@@ -207,16 +195,10 @@ public class DiskMenuScreen extends Screen {
             }
         }
 
-        // 3. Search bar
         renderSearchBar(graphics, mouseX, mouseY);
-
-        // 4. Disk list
         renderDiskList(graphics, mouseX, mouseY);
-
-        // 5. Equipment slots
         renderEquipmentSlots(graphics, mouseX, mouseY);
 
-        // Persist hovered disk when mouse moves into info area
         if (hoveredDiskId == null && previousHoveredDisk != null) {
             if (mouseX >= leftPos + 104 && mouseX <= leftPos + SCREEN_WIDTH - 4 &&
                     mouseY >= topPos + SLOT_Y && mouseY <= topPos + SCREEN_HEIGHT - 4) {
@@ -224,18 +206,13 @@ public class DiskMenuScreen extends Screen {
             }
         }
 
-        // 6. Info panel
         renderInfoPanel(graphics, mouseX, mouseY);
 
-        // 7. Held disk at cursor
         if (heldDiskId != null) {
             renderDiskAt(graphics, heldDiskId, mouseX - DISK_SIZE / 2, mouseY - DISK_SIZE / 2, DISK_SIZE);
         }
     }
 
-    // =====================
-    // SEARCH BAR
-    // =====================
     private void renderSearchBar(GuiGraphics graphics, int mouseX, int mouseY) {
         int x = leftPos + SEARCH_X;
         int y = topPos  + SEARCH_Y;
@@ -252,9 +229,6 @@ public class DiskMenuScreen extends Screen {
         graphics.disableScissor();
     }
 
-    // =====================
-    // DISK LIST
-    // =====================
     private void renderDiskList(GuiGraphics graphics, int mouseX, int mouseY) {
         int x = leftPos + DISK_LIST_X;
         int y = topPos  + DISK_LIST_Y;
@@ -282,9 +256,6 @@ public class DiskMenuScreen extends Screen {
         graphics.disableScissor();
     }
 
-    // =====================
-    // EQUIPMENT SLOTS
-    // =====================
     private void renderEquipmentSlots(GuiGraphics graphics, int mouseX, int mouseY) {
         int[] slotXs = {leftPos + SLOT_1_X, leftPos + SLOT_2_X, leftPos + SLOT_3_X};
         int slotY = topPos + SLOT_Y;
@@ -294,7 +265,7 @@ public class DiskMenuScreen extends Screen {
 
             String equippedDiskId = diskData.getEquippedDisk(slot);
             if (equippedDiskId != null && !equippedDiskId.equals(heldDiskId)) {
-                int innerPad = 2; //4
+                int innerPad = 2;
                 renderDiskAt(graphics, equippedDiskId,
                         slotX + innerPad, slotY + innerPad, SLOT_SIZE - innerPad * 2);
                 if (isMouseOver(mouseX, mouseY, slotX, slotY, SLOT_SIZE, SLOT_SIZE)) {
@@ -304,8 +275,6 @@ public class DiskMenuScreen extends Screen {
 
             if (isMouseOver(mouseX, mouseY, slotX, slotY, SLOT_SIZE, SLOT_SIZE)) {
                 graphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, 0x4066FF66);
-
-                // Slot 1 MYTHIC tip when empty
                 if (slot == 0 && equippedDiskId == null) {
                     renderMythicTip(graphics, slotX, slotY);
                 }
@@ -327,9 +296,6 @@ public class DiskMenuScreen extends Screen {
         graphics.drawString(this.font, "§7Press §eX §7to activate ability", tipX + 4, tipY + 16, 0xFFFFFF, false);
     }
 
-    // =====================
-    // INFO PANEL
-    // =====================
     private void renderInfoPanel(GuiGraphics graphics, int mouseX, int mouseY) {
         String diskId = hoveredDiskId;
         if (diskId == null) return;
@@ -339,22 +305,19 @@ public class DiskMenuScreen extends Screen {
 
         int x = leftPos + INFO_X;
         int y = topPos  + INFO_Y;
-        int level     = diskData.getDiskLevel(diskId);
+        int level       = diskData.getDiskLevel(diskId);
         int rarityColor = disk.getRarity().getColor();
 
-        // Disk name — bold + underlined + rarity color
         String nameText = disk.getDisplayName();
         graphics.drawString(this.font,
                 Component.literal(nameText)
                         .withStyle(s -> s.withBold(true).withUnderlined(true).withColor(rarityColor)),
                 x, y, rarityColor, false);
 
-        // Level — just to the right with some spacing, not all the way to the edge
         String levelText = "Lv." + level;
         int levelX = leftPos + INFO_X + INFO_W - this.font.width(levelText) - 18;
-        graphics.drawString(this.font, levelText, levelX, y, 0xFFFF55, false);;
+        graphics.drawString(this.font, levelText, levelX, y, 0xFFFF55, false);
 
-        // Description with auto line-return + scrollable
         String rawDescription = disk.getDescriptionForLevel(level);
         descLines = new ArrayList<>();
         for (String paragraph : rawDescription.split("\n")) {
@@ -375,7 +338,6 @@ public class DiskMenuScreen extends Screen {
         }
         graphics.disableScissor();
 
-        // Upgrade button
         if (disk.canUpgrade(level)) {
             int xpCost   = disk.getRarity().getXpCostForLevel(level);
             int playerXP = diskData.getTotalXP(minecraft.player);
@@ -393,7 +355,6 @@ public class DiskMenuScreen extends Screen {
                     Component.translatable("gui.upgrading.disk_menu.upgrade"),
                     leftPos + BUTTON_X + BUTTON_W / 2, topPos + BUTTON_Y + 6, 0xFFFFFF);
 
-            // XP icon
             RenderSystem.enableBlend();
             graphics.blit(XP_ICON_TEXTURE,
                     leftPos + XP_ICON_X, topPos + XP_ICON_Y,
@@ -402,11 +363,43 @@ public class DiskMenuScreen extends Screen {
             RenderSystem.disableBlend();
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-            // XP cost text
             int costColor = canAfford ? 0x55FF55 : 0xFF5555;
             graphics.drawString(this.font, xpCost + " XP",
                     leftPos + XP_ICON_X + XP_ICON_W + 3, topPos + XP_ICON_Y + 1, costColor, false);
+
+            if (level == 11) {
+                int fragmentCost = UpgradeDiskPacket.getFragmentCost(disk.getRarity());
+                int playerFragments = countPlayerFragments();
+                boolean hasFragments = playerFragments >= fragmentCost;
+
+                int fragIconX = leftPos + XP_ICON_X + XP_ICON_W + 3 + this.font.width(xpCost + " XP") + 6;
+                int fragIconY = topPos + XP_ICON_Y;
+
+                // Fragment icon
+                RenderSystem.enableBlend();
+                graphics.blit(FRAGMENT_ICON_TEXTURE, fragIconX, fragIconY,
+                        XP_ICON_W, XP_ICON_H, 0, 0, 16, 16, 16, 16);
+                RenderSystem.disableBlend();
+                RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+
+                // Fragment count
+                int fragColor = hasFragments ? 0x55FF55 : 0xFF5555;
+                graphics.drawString(this.font, fragmentCost + " Fragments",
+                        fragIconX + XP_ICON_W + 3, fragIconY + 1, fragColor, false);
+            }
         }
+    }
+
+    private int countPlayerFragments() {
+        assert minecraft != null;
+        if (minecraft.player == null) return 0;
+        int count = 0;
+        for (net.minecraft.world.item.ItemStack stack : minecraft.player.getInventory().items) {
+            if (stack.is(com.nedraw.upgrading.item.ModItems.ENCRYPTED_FRAGMENT.get())) {
+                count += stack.getCount();
+            }
+        }
+        return count;
     }
 
     private List<String> manualWrap(String text, int maxWidth) {
@@ -426,28 +419,22 @@ public class DiskMenuScreen extends Screen {
         return lines;
     }
 
-    // =====================
-    // NINE-SLICED BUTTON
-    // =====================
     private void renderNineSlicedButton(GuiGraphics graphics, int x, int y, int w, int h, int vOffset) {
         int c = BTN_CORNER;
         int tw = BTN_TEX_W;
-        int th = 27; // total texture height (3 states * 9)
+        int th = 27;
         int iw = w - c * 2;
         int ih = h - c * 2;
 
-        // Corners
-        graphics.blit(BUTTON_TEXTURE, x,         y,         c,  c,  0,    vOffset,         c,  c,  tw, th);
-        graphics.blit(BUTTON_TEXTURE, x+w-c,     y,         c,  c,  tw-c, vOffset,         c,  c,  tw, th);
-        graphics.blit(BUTTON_TEXTURE, x,         y+h-c,     c,  c,  0,    vOffset+BTN_TEX_W-c, c, c, tw, th);
-        graphics.blit(BUTTON_TEXTURE, x+w-c,     y+h-c,     c,  c,  tw-c, vOffset+BTN_TEX_W-c, c, c, tw, th);
-        // Edges
-        graphics.blit(BUTTON_TEXTURE, x+c,       y,         iw, c,  c,    vOffset,         1,  c,  tw, th);
-        graphics.blit(BUTTON_TEXTURE, x+c,       y+h-c,     iw, c,  c,    vOffset+BTN_TEX_W-c, 1, c, tw, th);
-        graphics.blit(BUTTON_TEXTURE, x,         y+c,       c,  ih, 0,    vOffset+c,       c,  1,  tw, th);
-        graphics.blit(BUTTON_TEXTURE, x+w-c,     y+c,       c,  ih, tw-c, vOffset+c,       c,  1,  tw, th);
-        // Center
-        graphics.blit(BUTTON_TEXTURE, x+c,       y+c,       iw, ih, c,    vOffset+c,       1,  1,  tw, th);
+        graphics.blit(BUTTON_TEXTURE, x,     y,     c,  c,  0,    vOffset,         c,  c,  tw, th);
+        graphics.blit(BUTTON_TEXTURE, x+w-c, y,     c,  c,  tw-c, vOffset,         c,  c,  tw, th);
+        graphics.blit(BUTTON_TEXTURE, x,     y+h-c, c,  c,  0,    vOffset+BTN_TEX_W-c, c, c, tw, th);
+        graphics.blit(BUTTON_TEXTURE, x+w-c, y+h-c, c,  c,  tw-c, vOffset+BTN_TEX_W-c, c, c, tw, th);
+        graphics.blit(BUTTON_TEXTURE, x+c,   y,     iw, c,  c,    vOffset,         1,  c,  tw, th);
+        graphics.blit(BUTTON_TEXTURE, x+c,   y+h-c, iw, c,  c,    vOffset+BTN_TEX_W-c, 1, c, tw, th);
+        graphics.blit(BUTTON_TEXTURE, x,     y+c,   c,  ih, 0,    vOffset+c,       c,  1,  tw, th);
+        graphics.blit(BUTTON_TEXTURE, x+w-c, y+c,   c,  ih, tw-c, vOffset+c,       c,  1,  tw, th);
+        graphics.blit(BUTTON_TEXTURE, x+c,   y+c,   iw, ih, c,    vOffset+c,       1,  1,  tw, th);
     }
 
     // =====================
@@ -455,11 +442,18 @@ public class DiskMenuScreen extends Screen {
     // =====================
     private void renderDiskAt(GuiGraphics graphics, String diskId, int x, int y, int size) {
         UpgradeDisk disk = DiskRegistry.getDisk(diskId);
-        if (disk != null && disk.isAnimated()) {
+        if (disk == null) return;
+
+        if (disk.isAnimated()) {
             renderAnimatedDiskAt(graphics, disk, x, y, size);
         } else {
             renderStaticDiskAt(graphics, diskId, x, y, size);
         }
+
+        if (diskData.getDiskLevel(diskId) >= 12) {
+            renderPlatinumOverlay(graphics, disk, x, y, size);
+        }
+
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
     }
 
@@ -474,7 +468,7 @@ public class DiskMenuScreen extends Screen {
     private void renderAnimatedDiskAt(GuiGraphics graphics, UpgradeDisk disk, int x, int y, int size) {
         ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(
                 UpgradingMod.MODID, "textures/gui/disks/" + disk.getId() + "_disk.png");
-        int frameSize = disk.getFrameSize();
+        int frameSize  = disk.getFrameSize();
         int frameCount = disk.getFrameCount();
         int currentFrame = (animationTick / disk.getTicksPerFrame()) % frameCount;
         int vOffset = currentFrame * frameSize;
@@ -483,6 +477,25 @@ public class DiskMenuScreen extends Screen {
         graphics.blit(texture, x, y, size, size, 0, vOffset,
                 frameSize, frameSize, frameSize, frameCount * frameSize);
         RenderSystem.disableBlend();
+    }
+
+    private void renderPlatinumOverlay(GuiGraphics graphics, UpgradeDisk disk, int x, int y, int size) {
+        ResourceLocation overlayTexture = getPlatinumOverlay(disk);
+        RenderSystem.enableBlend();
+
+        if (disk.isAnimated()) {
+            int frameSize  = disk.getFrameSize();
+            int frameCount = disk.getFrameCount();
+            int currentFrame = (animationTick / disk.getTicksPerFrame()) % frameCount;
+            int vOffset = currentFrame * frameSize;
+            graphics.blit(overlayTexture, x, y, size, size, 0, vOffset,
+                    frameSize, frameSize, frameSize, frameCount * frameSize);
+        } else {
+            graphics.blit(overlayTexture, x, y, 0, 0, size, size, size, size);
+        }
+
+        RenderSystem.disableBlend();
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
     }
 
     // =====================
@@ -499,11 +512,11 @@ public class DiskMenuScreen extends Screen {
             int currentLevel = diskData.getDiskLevel(hoveredDiskId);
             UpgradeDisk disk = DiskRegistry.getDisk(hoveredDiskId);
             if (disk != null && disk.canUpgrade(currentLevel)) {
-                int xpCost = disk.getRarity().getXpCostForLevel(currentLevel);
+                int xpCost   = disk.getRarity().getXpCostForLevel(currentLevel);
                 int playerXP = diskData.getTotalXP(minecraft.player);
                 if (playerXP >= xpCost) {
                     PacketDistributor.sendToServer(new UpgradeDiskPacket(hoveredDiskId));
-                    diskData.upgradeDisk(hoveredDiskId);
+                    //diskData.upgradeDisk(hoveredDiskId);
                     minecraft.getSoundManager().play(
                             net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(
                                     net.minecraft.sounds.SoundEvents.UI_BUTTON_CLICK, 1.0f));
@@ -519,7 +532,6 @@ public class DiskMenuScreen extends Screen {
             return true;
         }
 
-        // Disk list
         int listX = leftPos + DISK_LIST_X + (DISK_LIST_WIDTH - DISK_SIZE) / 2;
         int listY = topPos  + DISK_LIST_Y;
         int index = 0;
@@ -534,7 +546,6 @@ public class DiskMenuScreen extends Screen {
             index++;
         }
 
-        // Slots
         int[] slotXs = {leftPos + SLOT_1_X, leftPos + SLOT_2_X, leftPos + SLOT_3_X};
         for (int slot = 0; slot < 3; slot++) {
             int slotX = slotXs[slot];
@@ -567,14 +578,14 @@ public class DiskMenuScreen extends Screen {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (searchFocused) {
-            if (keyCode == 259) { // Backspace
+            if (keyCode == 259) {
                 if (!searchText.isEmpty()) {
                     searchText = searchText.substring(0, searchText.length() - 1);
                     applySearch();
                 }
                 return true;
             }
-            if (keyCode == 256) { searchFocused = false; return true; } // Escape
+            if (keyCode == 256) { searchFocused = false; return true; }
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
