@@ -1,0 +1,10 @@
+{
+  "values": [
+    "upgrading:board_basic",
+    "upgrading:board_ender",
+    "upgrading:board_enchanted",
+    "upgrading:board_piston",
+    "upgrading:board_wool",
+    "upgrading:board_corrupted"
+  ]
+}

@@ -15,19 +15,14 @@ public class SwiftFeetDisk extends UpgradeDisk {
     private static final ResourceLocation SPEED_MODIFIER_ID =
             ResourceLocation.fromNamespaceAndPath("upgrading", "swift_feet_speed");
 
-    // Per-player cooldown tracking
     private static final Map<UUID, Long> DASH_COOLDOWNS = new HashMap<>();
-    private static final long DASH_COOLDOWN = 10000; // 10 seconds
+    private static final long DASH_COOLDOWN = 10000; // 10s
 
-    // Track which level is currently applied to each player
     private static final Map<UUID, Integer> APPLIED_LEVELS = new HashMap<>();
-
-    // Track previous vertical velocity for dash detection
-    private static final Map<UUID, Double> LAST_Y_VELOCITY = new HashMap<>();
 
     public SwiftFeetDisk() {
         super("swift_feet", "Swift Feet", DiskRarity.BASIC);
-        // No descriptions anymore (hell yeah !)
+        // No descriptions here anymore (hell yeah !)
     }
 
     @Override
@@ -35,37 +30,60 @@ public class SwiftFeetDisk extends UpgradeDisk {
         UUID playerId = player.getUUID();
         Integer appliedLevel = APPLIED_LEVELS.get(playerId);
 
-        // Only update attributes if level changed
         if (appliedLevel == null || appliedLevel != level) {
-            // Calculate speed multiplier (3% per level)
+
             double speedMultiplier = (level * 3) / 100.0;
 
             var speedAttribute = player.getAttribute(Attributes.MOVEMENT_SPEED);
-
             if (speedAttribute != null) {
-                // Remove old modifier if exists
                 speedAttribute.removeModifier(SPEED_MODIFIER_ID);
-
-                // Add new modifier
-                AttributeModifier speedModifier = new AttributeModifier(
+                speedAttribute.addPermanentModifier(new AttributeModifier(
                         SPEED_MODIFIER_ID,
                         speedMultiplier,
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE
-                );
-
-                speedAttribute.addPermanentModifier(speedModifier);
+                ));
             }
 
-            // Mark this level as applied
             APPLIED_LEVELS.put(playerId, level);
         }
     }
 
+    private static final ResourceLocation SPRINT_MODIFIER_ID =
+            ResourceLocation.fromNamespaceAndPath("upgrading", "swift_feet_sprint");
+
+    private static final Map<UUID, Integer> SPRINT_TICKS = new HashMap<>();
+
     @Override
     public void applyTickEffect(Player player, int level) {
-        // ONLY check for dash if level 12+ (to minimize performance impact)
+        if (player.level().isClientSide) return;
+
+        var speedAttribute = player.getAttribute(Attributes.MOVEMENT_SPEED);
+        if (speedAttribute == null) return;
+
         if (level >= 12) {
-            handleDashDetection(player);
+            // Sprint speed bonus
+            if (player.isSprinting()) {
+                if (!speedAttribute.hasModifier(SPRINT_MODIFIER_ID)) {
+                    speedAttribute.addPermanentModifier(new AttributeModifier(
+                            SPRINT_MODIFIER_ID, 0.20,
+                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE
+                    ));
+                }
+
+                // Track consecutive sprint ticks for advancement
+                UUID id = player.getUUID();
+                int ticks = SPRINT_TICKS.getOrDefault(id, 0) + 1;
+                SPRINT_TICKS.put(id, ticks);
+
+                // 5 seconds = 100 ticks
+                if (ticks == 100 && player instanceof ServerPlayer sp) {
+                    ModAdvancementTriggers.AERIAL_DASH(sp);
+                    SPRINT_TICKS.put(id, 0); // reset so it doesn't spam
+                }
+            } else {
+                speedAttribute.removeModifier(SPRINT_MODIFIER_ID);
+                SPRINT_TICKS.put(player.getUUID(), 0); // reset on stop
+            }
         }
     }
 
@@ -74,76 +92,11 @@ public class SwiftFeetDisk extends UpgradeDisk {
         var speedAttribute = player.getAttribute(Attributes.MOVEMENT_SPEED);
         if (speedAttribute != null) {
             speedAttribute.removeModifier(SPEED_MODIFIER_ID);
+            speedAttribute.removeModifier(SPRINT_MODIFIER_ID);
+            SPRINT_TICKS.remove(player.getUUID());
         }
 
-        // Clear tracking
         UUID playerId = player.getUUID();
         APPLIED_LEVELS.remove(playerId);
-        LAST_Y_VELOCITY.remove(playerId);
-    }
-
-    private void handleDashDetection(Player player) {
-        UUID playerId = player.getUUID();
-
-        // Don't run on client side
-        if (player.level().isClientSide) return;
-
-        long currentTime = System.currentTimeMillis();
-        long lastDash = DASH_COOLDOWNS.getOrDefault(playerId, 0L);
-
-        // Check if player is in air and cooldown is ready
-        if (!player.onGround() && (currentTime - lastDash) >= DASH_COOLDOWN) {
-            double currentYVel = player.getDeltaMovement().y;
-            Double lastYVel = LAST_Y_VELOCITY.get(playerId);
-
-            // Debug logging
-            //System.out.println("Player in air - Current Y vel: " + currentYVel + ", Last Y vel: " + lastYVel);
-
-            // Detect jump: sudden upward velocity change
-            if (lastYVel != null && currentYVel > 0.3 && lastYVel < 0.3) {
-                //System.out.println("DASH TRIGGERED!");
-                performDash(player);
-            }
-
-            LAST_Y_VELOCITY.put(playerId, currentYVel);
-        } else if (player.onGround()) {
-            // Reset velocity tracking when on ground
-            LAST_Y_VELOCITY.put(playerId, 0.0);
-        }
-    }
-
-    private void performDash(Player player) {
-        UUID playerId = player.getUUID();
-
-        // Get player's look direction (horizontal only)
-        float yaw = player.getYRot();
-        double yawRadians = Math.toRadians(yaw);
-
-        // Dash in the direction player is looking
-        double dashPower = 0.85;
-        double motionX = -Math.sin(yawRadians) * dashPower;
-        double motionZ = Math.cos(yawRadians) * dashPower;
-
-        // Apply velocity boost
-        player.setDeltaMovement(motionX, 0.385, motionZ);
-        player.hurtMarked = true;
-
-        //adv
-        if (player instanceof ServerPlayer sp) {
-            ModAdvancementTriggers.AERIAL_DASH(sp);
-        }
-
-        // Update cooldown
-        DASH_COOLDOWNS.put(playerId, System.currentTimeMillis());
-
-        // Play sound effect
-        player.level().playSound(
-                null,
-                player.blockPosition(),
-                net.minecraft.sounds.SoundEvents.ENDER_DRAGON_FLAP,
-                net.minecraft.sounds.SoundSource.PLAYERS,
-                0.7f,
-                1.8f
-        );
     }
 }

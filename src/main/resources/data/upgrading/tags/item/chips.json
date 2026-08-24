@@ -1,0 +1,12 @@
+{
+  "values": [
+    "upgrading:chip_basic",
+    "upgrading:chip_heart",
+    "upgrading:chip_diamond",
+    "upgrading:chip_spade",
+    "upgrading:chip_club",
+    "upgrading:chip_food",
+    "upgrading:chip_portal",
+    "upgrading:chip_dark"
+  ]
+}

@@ -46,7 +46,7 @@ public record EquipDiskPacket(String diskId, int slot, boolean unequip) implemen
 
                 // Play sound
                 serverPlayer.level().playSound(
-                        null,
+                        serverPlayer,
                         serverPlayer.blockPosition(),
                         packet.unequip() ? SoundEvents.ITEM_PICKUP : SoundEvents.ARMOR_EQUIP_GENERIC.value(),
                         SoundSource.PLAYERS,

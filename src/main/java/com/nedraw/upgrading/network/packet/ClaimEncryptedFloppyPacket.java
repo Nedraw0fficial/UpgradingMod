@@ -67,6 +67,9 @@ public record ClaimEncryptedFloppyPacket(String rarityName) implements CustomPac
                 }
 
                 UpgradeDisk chosenDisk = allRarityDisks.get(new Random().nextInt(allRarityDisks.size()));
+
+                diskData.updatePittyMeter(rarity);
+
                 boolean alreadyUnlocked = diskData.isDiskUnlocked(chosenDisk.getId());
 
                 if (alreadyUnlocked) {
@@ -130,7 +133,7 @@ public record ClaimEncryptedFloppyPacket(String rarityName) implements CustomPac
                 }
 
                 // Sound
-                player.level().playSound(null, player.blockPosition(),
+                player.level().playSound(player, player.blockPosition(),
                         SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0f, 1.0f);
 
                 ServerEvents.syncDiskData(player);

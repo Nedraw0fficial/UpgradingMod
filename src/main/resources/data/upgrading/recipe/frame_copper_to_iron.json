@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "F",
+    "F",
+    "M"
+  ],
+  "key": {
+    "F": {
+      "item": "upgrading:frame_copper"
+    },
+    "M": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "id": "upgrading:frame_iron",
+    "count": 1
+  }
+}

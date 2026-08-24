@@ -11,15 +11,31 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import java.util.*;
 
 public class PlayerDiskData implements INBTSerializable<CompoundTag> {
-    // Storage
+
     private final Set<String> unlockedDisks = new HashSet<>();
     private final Map<String, Integer> diskLevels = new HashMap<>();
-    private final String[] equippedSlots = new String[3]; // 3 equipment slots
+    private final String[] equippedSlots = new String[3];
     private final Map<String, Long> abilityCooldowns = new HashMap<>();
 
-    // Get data from player
+    private float pittyMeter = 0.0f;
+
     public static PlayerDiskData get(Player player) {
         return player.getData(ModAttachments.PLAYER_DISK_DATA);
+    }
+
+    public float getPittyMeter() {
+        return pittyMeter;
+    }
+
+    public void updatePittyMeter(com.nedraw.upgrading.disk.DiskRarity rarity) {
+        switch (rarity) {
+            case BASIC     -> pittyMeter += 0.032f;
+            case RARE      -> pittyMeter += 0.015f;
+            case EPIC      -> pittyMeter -= 0.125f;
+            case LEGENDARY -> pittyMeter -= 0.30f;
+            case MYTHIC    -> pittyMeter  -= 0.85f;
+        }
+        pittyMeter = Math.max(-0.85f, Math.min(1.0f, pittyMeter));
     }
 
     public long getAbilityCooldown(String diskId) {
@@ -30,8 +46,6 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
         abilityCooldowns.put(diskId, timestamp);
     }
 
-    // === DISK UNLOCKING ===
-
     public boolean isDiskUnlocked(String diskId) {
         return unlockedDisks.contains(diskId);
     }
@@ -39,15 +53,10 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
     public void unlockDisk(String diskId) {
         if (!unlockedDisks.contains(diskId)) {
             unlockedDisks.add(diskId);
-
-            // Get the disk to check its rarity
             var disk = com.nedraw.upgrading.disk.DiskRegistry.getDisk(diskId);
             if (disk != null) {
-                // Set starting level based on rarity
-                int startLevel = disk.getRarity().getStartLevel();
-                diskLevels.put(diskId, startLevel);
+                diskLevels.put(diskId, disk.getRarity().getStartLevel());
             } else {
-                // Fallback to level 1 if disk not found
                 diskLevels.put(diskId, 1);
             }
         }
@@ -57,29 +66,23 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
         return Collections.unmodifiableSet(unlockedDisks);
     }
 
-    // === DISK LEVELS ===
-
     public int getDiskLevel(String diskId) {
         return diskLevels.getOrDefault(diskId, 1);
     }
 
     public void setDiskLevel(String diskId, int level) {
         if (unlockedDisks.contains(diskId)) {
-            diskLevels.put(diskId, Math.min(level, 12)); // Max level 12
+            diskLevels.put(diskId, Math.min(level, 12));
         }
     }
 
     public boolean upgradeDisk(String diskId) {
         if (!unlockedDisks.contains(diskId)) return false;
-
         int currentLevel = getDiskLevel(diskId);
         if (currentLevel >= 12) return false;
-
         setDiskLevel(diskId, currentLevel + 1);
         return true;
     }
-
-    // === EQUIPMENT SLOTS ===
 
     public String getEquippedDisk(int slot) {
         if (slot < 0 || slot >= 3) return null;
@@ -89,29 +92,20 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
     public boolean equipDisk(String diskId, int slot) {
         if (slot < 0 || slot >= 3) return false;
         if (!unlockedDisks.contains(diskId)) return false;
-
-        // Check if disk is already equipped in another slot
         for (int i = 0; i < 3; i++) {
-            if (i != slot && diskId.equals(equippedSlots[i])) {
-                return false; // Already equipped elsewhere
-            }
+            if (i != slot && diskId.equals(equippedSlots[i])) return false;
         }
-
         equippedSlots[slot] = diskId;
         return true;
     }
 
     public void unequipSlot(int slot) {
-        if (slot >= 0 && slot < 3) {
-            equippedSlots[slot] = null;
-        }
+        if (slot >= 0 && slot < 3) equippedSlots[slot] = null;
     }
 
     public boolean isDiskEquipped(String diskId) {
         for (String equipped : equippedSlots) {
-            if (diskId != null && diskId.equals(equipped)) {
-                return true;
-            }
+            if (diskId != null && diskId.equals(equipped)) return true;
         }
         return false;
     }
@@ -120,69 +114,58 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
         return equippedSlots.clone();
     }
 
-    // === NBT SERIALIZATION ===
-
     @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();
 
-        // Save unlocked disks
         ListTag unlockedList = new ListTag();
         for (String diskId : unlockedDisks) {
             unlockedList.add(StringTag.valueOf(diskId));
         }
         tag.put("UnlockedDisks", unlockedList);
 
-        // Save disk levels
         CompoundTag levelsTag = new CompoundTag();
         for (Map.Entry<String, Integer> entry : diskLevels.entrySet()) {
             levelsTag.putInt(entry.getKey(), entry.getValue());
         }
         tag.put("DiskLevels", levelsTag);
 
-        // Save equipped slots
         CompoundTag equippedTag = new CompoundTag();
         for (int i = 0; i < 3; i++) {
-            if (equippedSlots[i] != null) {
-                equippedTag.putString("Slot" + i, equippedSlots[i]);
-            }
+            if (equippedSlots[i] != null) equippedTag.putString("Slot" + i, equippedSlots[i]);
         }
         tag.put("EquippedSlots", equippedTag);
 
-        // Save ability cooldowns
         CompoundTag cooldownsTag = new CompoundTag();
         for (Map.Entry<String, Long> entry : abilityCooldowns.entrySet()) {
             cooldownsTag.putLong(entry.getKey(), entry.getValue());
         }
         tag.put("AbilityCooldowns", cooldownsTag);
 
+        tag.putFloat("PittyMeter", pittyMeter);
+
         return tag;
     }
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-        // Load unlocked disks
         unlockedDisks.clear();
         ListTag unlockedList = tag.getList("UnlockedDisks", Tag.TAG_STRING);
         for (int i = 0; i < unlockedList.size(); i++) {
             unlockedDisks.add(unlockedList.getString(i));
         }
 
-        // Load disk levels
         diskLevels.clear();
         CompoundTag levelsTag = tag.getCompound("DiskLevels");
         for (String key : levelsTag.getAllKeys()) {
             diskLevels.put(key, levelsTag.getInt(key));
         }
 
-        // Load equipped slots
         Arrays.fill(equippedSlots, null);
         CompoundTag equippedTag = tag.getCompound("EquippedSlots");
         for (int i = 0; i < 3; i++) {
             String key = "Slot" + i;
-            if (equippedTag.contains(key)) {
-                equippedSlots[i] = equippedTag.getString(key);
-            }
+            if (equippedTag.contains(key)) equippedSlots[i] = equippedTag.getString(key);
         }
 
         abilityCooldowns.clear();
@@ -190,15 +173,13 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
         for (String key : cooldownsTag.getAllKeys()) {
             abilityCooldowns.put(key, cooldownsTag.getLong(key));
         }
-    }
 
-    // === XP MANAGEMENT ===
+        pittyMeter = tag.contains("PittyMeter") ? tag.getFloat("PittyMeter") : 0.0f;
+    }
 
     public int getTotalXP(Player player) {
         int points = 0;
         int level = player.experienceLevel;
-
-        // XP from completed levels
         if (level >= 32) {
             points = (int) (4.5 * level * level - 162.5 * level + 2220);
         } else if (level >= 17) {
@@ -206,10 +187,7 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
         } else {
             points = level * level + 6 * level;
         }
-
-        // XP from current progress
         points += (int) (player.experienceProgress * player.getXpNeededForNextLevel());
-
         return points;
     }
 
@@ -218,15 +196,10 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
     }
 
     public void consumeXP(Player player, int amount) {
-        int totalXP = getTotalXP(player);
-        int remaining = totalXP - amount;
-
+        int remaining = getTotalXP(player) - amount;
         player.experienceLevel = 0;
         player.experienceProgress = 0.0f;
         player.totalExperience = 0;
-
-        // Re-add remaining XP
         player.giveExperiencePoints(remaining);
     }
-
 }

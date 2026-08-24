@@ -19,6 +19,7 @@ import java.util.Random;
 public class NecroArcherClientHandler {
 
     private static final Random RANDOM = new Random();
+    private static int tickCounter = 0;
 
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event) {
@@ -26,13 +27,32 @@ public class NecroArcherClientHandler {
         if (mc.player == null || mc.level == null) return;
 
         LocalPlayer player = mc.player;
+        tickCounter++;
 
-        // 1. Tornado around OWNER during boost
+        // Boost tornado — only runs when player is boosted, which is rare
         if (NecroArcherHandler.isPlayerBoosted(player.getUUID())) {
             spawnBoostTornado(player);
         }
 
-        // 2. Aura on ALL entities with Necromisis
+        // Only scan for Necromisis entities every 4 ticks instead of every tick
+        // AND only if the local player has the Necro-Archer disk equipped
+        if (tickCounter % 4 != 0) return;
+
+        // Quick check: does the local player even have Necro-Archer equipped?
+        // If not, skip the expensive entity scan entirely
+        boolean hasNecroArcher = false;
+        var data = com.nedraw.upgrading.data.PlayerDiskData.get(player);
+        for (int slot = 0; slot < 3; slot++) {
+            String diskId = data.getEquippedDisk(slot);
+            if ("necro_archer".equals(diskId)) {
+                hasNecroArcher = true;
+                break;
+            }
+        }
+
+        if (!hasNecroArcher) return;
+
+        // Only now do we iterate entities
         for (Entity entity : mc.level.entitiesForRendering()) {
             if (!(entity instanceof LivingEntity living)) continue;
             if (!living.hasEffect(ModEffects.NECROMISIS)) continue;
@@ -41,12 +61,9 @@ public class NecroArcherClientHandler {
     }
 
     private static void spawnBoostTornado(LocalPlayer player) {
-        // 3 particles per tick (down from 5) — less cluttered
-        // Biased toward the lower body using a squared random distribution
         for (int i = 0; i < 3; i++) {
-            // squaring the random value biases spawn points toward 0 (feet)
             double t = Math.random();
-            double spawnY = player.getY() + (t * t) * 1.8; // max 1.2 blocks up (roughly waist)
+            double spawnY = player.getY() + (t * t) * 1.8;
 
             player.level().addParticle(
                     ModParticles.NECROMISIS.get(),
@@ -59,11 +76,10 @@ public class NecroArcherClientHandler {
     }
 
     private static void spawnNecromisisTornado(LivingEntity entity) {
-        // ~3 particles per second = 1 particle every 7 ticks
-        if (RANDOM.nextInt(7) != 0) return;
+        if (RANDOM.nextInt(2) != 0) return;
 
         double t = Math.random();
-        double spawnY = entity.getY() + (t * t) * (entity.getBbHeight() * 1.0);
+        double spawnY = entity.getY() + (t * t) * entity.getBbHeight();
 
         entity.level().addParticle(
                 ModParticles.NECROMISIS.get(),

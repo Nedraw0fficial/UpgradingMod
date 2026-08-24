@@ -37,10 +37,8 @@ public class LightweightDisk extends UpgradeDisk {
             float preventChance = getPreventChance(level);
 
             if (RANDOM.nextFloat() < preventChance) {
-                // Prevention succeeded - restore hunger
                 foodData.setFoodLevel(lastFood);
 
-                // Track timestamp of this prevention
                 long now = System.currentTimeMillis();
                 List<Long> timestamps = PREVENTION_TIMESTAMPS.computeIfAbsent(playerId, k -> new ArrayList<>());
                 timestamps.add(now);
@@ -48,8 +46,8 @@ public class LightweightDisk extends UpgradeDisk {
                 // Remove timestamps older than 60 seconds
                 timestamps.removeIf(t -> now - t > 60_000);
 
-                // Fire advancement if 5+ preventions in the last minute
-                if (timestamps.size() >= 5 && player instanceof ServerPlayer sp) {
+                // Fire advancement if 3+ preventions in the last minute
+                if (timestamps.size() >= 3 && player instanceof ServerPlayer sp) {
                     ModAdvancementTriggers.HUNGER_DRAIN_PREVENTED_5(sp);
                     timestamps.clear(); // Reset so it doesn't spam
                 }
@@ -68,19 +66,19 @@ public class LightweightDisk extends UpgradeDisk {
 
     private float getPreventChance(int level) {
         return switch (level) {
-            case 1  -> 0.05f;
-            case 2  -> 0.10f;
-            case 3  -> 0.15f;
-            case 4  -> 0.20f;
-            case 5  -> 0.25f;
-            case 6  -> 0.30f;
-            case 7  -> 0.35f;
-            case 8  -> 0.40f;
-            case 9  -> 0.45f;
-            case 10 -> 0.50f;
-            case 11 -> 0.55f;
-            case 12 -> 0.60f;
-            default -> 0.05f;
+            case 1  -> 0.03f;
+            case 2  -> 0.05f;
+            case 3  -> 0.08f;
+            case 4  -> 0.10f;
+            case 5  -> 0.13f;
+            case 6  -> 0.16f;
+            case 7  -> 0.19f;
+            case 8  -> 0.22f;
+            case 9  -> 0.25f;
+            case 10 -> 0.28f;
+            case 11 -> 0.31f;
+            case 12 -> 0.35f;
+            default -> 0.03f;
         };
     }
 

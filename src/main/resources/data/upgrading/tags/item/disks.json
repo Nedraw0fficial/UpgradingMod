@@ -1,0 +1,9 @@
+{
+  "values": [
+    "#upgrading:basic_disks",
+    "#upgrading:rare_disks",
+    "#upgrading:epic_disks",
+    "#upgrading:legendary_disks",
+    "#upgrading:mythic_disks"
+  ]
+}

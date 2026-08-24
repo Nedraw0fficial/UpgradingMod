@@ -18,10 +18,11 @@ public class ModCreativeTabs {
                     .title(Component.translatable("itemGroup.upgrading"))
                     .icon(() -> new ItemStack(ModItems.BERSERKER_DISK.get()))
                     .displayItems((parameters, output) -> {
-                        // Encrypted Disk
+                        // Encrypted items
                         output.accept(ModItems.ENCRYPTED_FLOPPY.get());
+                        output.accept(ModItems.ENCRYPTED_FRAGMENT.get());
 
-                        // BASIC disks (alphabetical)
+                        // BASIC disks
                         output.accept(ModItems.EFFICIENT_DISK.get());
                         output.accept(ModItems.FEATHER_FALL_DISK.get());
                         output.accept(ModItems.LIGHTWEIGHT_DISK.get());
@@ -42,11 +43,11 @@ public class ModCreativeTabs {
                         output.accept(ModItems.TREASURE_SENSE_DISK.get());
 
                         // EPIC disks
+                        output.accept(ModItems.BASHER_DISK.get());
                         output.accept(ModItems.GLUTTON_DISK.get());
                         output.accept(ModItems.MOUNTAIN_GOAT_DISK.get());
                         output.accept(ModItems.SOAPY_HANDS_DISK.get());
                         output.accept(ModItems.WARCHEMIST_DISK.get());
-                        output.accept(ModItems.BASHER_DISK.get());
 
                         // LEGENDARY disks
                         output.accept(ModItems.ARCHITECTS_MIND_DISK.get());
@@ -55,6 +56,44 @@ public class ModCreativeTabs {
 
                         // MYTHIC disks
                         output.accept(ModItems.NECRO_ARCHER_DISK.get());
+
+                        // =====================
+                        // Z-SLOT COMPONENTS
+                        // =====================
+
+                        // Frames (flat progression)
+                        output.accept(ModItems.FRAME_FABRIC.get());
+                        output.accept(ModItems.FRAME_WOODEN.get());
+                        output.accept(ModItems.FRAME_COPPER.get());
+                        output.accept(ModItems.FRAME_IRON.get());
+                        output.accept(ModItems.FRAME_GOLDEN.get());
+                        output.accept(ModItems.FRAME_AMETHYST.get());
+
+                        // Frames (special)
+                        output.accept(ModItems.FRAME_CACTUS.get());
+                        output.accept(ModItems.FRAME_GLASS.get());
+                        output.accept(ModItems.FRAME_ROSE_GOLD.get());
+                        output.accept(ModItems.FRAME_SPONGE.get());
+                        output.accept(ModItems.FRAME_MUSHROOM.get());
+                        output.accept(ModItems.FRAME_VOID.get());
+
+                        // Boards
+                        output.accept(ModItems.BOARD_BASIC.get());
+                        output.accept(ModItems.BOARD_ENDER.get());
+                        output.accept(ModItems.BOARD_ENCHANTED.get());
+                        output.accept(ModItems.BOARD_PISTON.get());
+                        output.accept(ModItems.BOARD_WOOL.get());
+                        output.accept(ModItems.BOARD_CORRUPTED.get());
+
+                        // Chips
+                        output.accept(ModItems.CHIP_BASIC.get());
+                        output.accept(ModItems.CHIP_HEART.get());
+                        output.accept(ModItems.CHIP_DIAMOND.get());
+                        output.accept(ModItems.CHIP_SPADE.get());
+                        output.accept(ModItems.CHIP_CLUB.get());
+                        output.accept(ModItems.CHIP_FOOD.get());
+                        output.accept(ModItems.CHIP_PORTAL.get());
+                        output.accept(ModItems.CHIP_DARK.get());
                     })
                     .build()
     );

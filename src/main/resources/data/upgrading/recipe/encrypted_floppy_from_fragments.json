@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["FF", "FF"],
+  "key": {"F": {"item": "upgrading:encrypted_fragment"}},
+  "result": {"id": "upgrading:encrypted_floppy", "count": 1}
+}

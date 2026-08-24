@@ -16,7 +16,7 @@ public class FlameWalkerDisk extends UpgradeDisk {
 
     private static final Map<UUID, Integer> APPLIED_LEVELS = new HashMap<>();
     private static final Map<BlockPos, Long> TEMPORARY_MAGMA_BLOCKS = new HashMap<>();
-    private static final long MAGMA_BLOCK_DURATION = 100;
+    private static final long MAGMA_BLOCK_DURATION = 40;
 
     public FlameWalkerDisk() {
         super("flame_walker", "Flame Walker", DiskRarity.RARE);
@@ -73,13 +73,19 @@ public class FlameWalkerDisk extends UpgradeDisk {
     }
 
     public float reduceFireDamage(float originalDamage, int level) {
-        int levelsAboveStart = level - 3;
-        if (level >= 12) {
-            return originalDamage * (1.0f - 0.556f);
-        } else {
-            float reduction = (levelsAboveStart * 5.2f) / 100.0f;
-            return originalDamage * (1.0f - reduction);
-        }
+        float reduction = switch (level) {
+            case 4  -> 0.04f;
+            case 5  -> 0.08f;
+            case 6  -> 0.12f;
+            case 7  -> 0.16f;
+            case 8  -> 0.20f;
+            case 9  -> 0.24f;
+            case 10 -> 0.28f;
+            case 11 -> 0.33f;
+            case 12 -> 0.40f;
+            default -> 0.04f;
+        };
+        return originalDamage * (1.0f - reduction);
     }
 
     public int getAppliedLevel(UUID playerId) {

@@ -1,0 +1,16 @@
+{
+  "values": [
+    "upgrading:frame_fabric",
+    "upgrading:frame_wooden",
+    "upgrading:frame_copper",
+    "upgrading:frame_iron",
+    "upgrading:frame_golden",
+    "upgrading:frame_amethyst",
+    "upgrading:frame_cactus",
+    "upgrading:frame_glass",
+    "upgrading:frame_rose_gold",
+    "upgrading:frame_sponge",
+    "upgrading:frame_mushroom",
+    "upgrading:frame_void"
+  ]
+}

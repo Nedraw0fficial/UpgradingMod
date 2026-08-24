@@ -38,25 +38,15 @@ public class SeaFishDisk extends UpgradeDisk {
             var speedAttribute = player.getAttribute(Attributes.MOVEMENT_SPEED);
             var swimSpeedAttribute = player.getAttribute(net.neoforged.neoforge.common.NeoForgeMod.SWIM_SPEED);
 
-            if (level < 12) {
-                if (speedAttribute != null) {
-                    speedAttribute.removeModifier(SPEED_MODIFIER_ID);
-                    double speedPenalty = -(22 - (level * 2)) / 100.0;
-                    speedAttribute.addPermanentModifier(new AttributeModifier(
-                            SPEED_MODIFIER_ID, speedPenalty,
-                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-                }
-                if (swimSpeedAttribute != null) {
-                    swimSpeedAttribute.removeModifier(SWIM_SPEED_MODIFIER_ID);
-                }
-            } else {
-                if (speedAttribute != null) speedAttribute.removeModifier(SPEED_MODIFIER_ID);
-                if (swimSpeedAttribute != null) {
-                    swimSpeedAttribute.removeModifier(SWIM_SPEED_MODIFIER_ID);
-                    swimSpeedAttribute.addPermanentModifier(new AttributeModifier(
-                            SWIM_SPEED_MODIFIER_ID, 0.12,
-                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-                }
+            // Remove all modifiers first
+            if (speedAttribute != null) speedAttribute.removeModifier(SPEED_MODIFIER_ID);
+            if (swimSpeedAttribute != null) swimSpeedAttribute.removeModifier(SWIM_SPEED_MODIFIER_ID);
+
+            // L12 only: add swim speed bonus
+            if (level >= 12 && swimSpeedAttribute != null) {
+                swimSpeedAttribute.addPermanentModifier(new AttributeModifier(
+                        SWIM_SPEED_MODIFIER_ID, 0.12,
+                        AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
             }
 
             APPLIED_LEVELS.put(playerId, level);
@@ -74,18 +64,30 @@ public class SeaFishDisk extends UpgradeDisk {
             int ticks = UNDERWATER_TICKS.getOrDefault(playerId, 0) + 1;
             UNDERWATER_TICKS.put(playerId, ticks);
 
-            // Fire advancement at exactly 600 ticks (30 seconds)
-            if (ticks == 600 && player instanceof ServerPlayer sp) {
+            //
+            if (ticks == 500 && player instanceof ServerPlayer sp) {
                 ModAdvancementTriggers.UNDERWATER_30S(sp);
             }
 
             // Bonus air logic (unchanged)
             boolean bonusUsed = BONUS_AIR_USED.getOrDefault(playerId, false);
             if (player.getAirSupply() <= 0 && !bonusUsed) {
-                int airBonus = level < 12
-                        ? Math.toIntExact(2 + round(level * level * 0.1))
-                        : 20;
-                player.setAirSupply(airBonus * 20);
+                int bonusSeconds = switch (level) {
+                    case 1  -> 1;
+                    case 2  -> 2;
+                    case 3  -> 3;
+                    case 4  -> 4;
+                    case 5  -> 5;
+                    case 6  -> 6;
+                    case 7  -> 7;
+                    case 8  -> 8;
+                    case 9  -> 9;
+                    case 10 -> 10;
+                    case 11 -> 12;
+                    case 12 -> 15;
+                    default -> 1;
+                };
+                player.setAirSupply(bonusSeconds * 20);
                 BONUS_AIR_USED.put(playerId, true);
             }
         } else {

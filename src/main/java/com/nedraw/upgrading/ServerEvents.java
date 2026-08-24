@@ -22,6 +22,20 @@ public class ServerEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            syncDiskData(serverPlayer);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            syncDiskData(serverPlayer);
+        }
+    }
+
     public static void syncDiskData(ServerPlayer player) {
         PlayerDiskData data = PlayerDiskData.get(player);
 

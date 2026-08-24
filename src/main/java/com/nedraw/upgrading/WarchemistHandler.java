@@ -38,14 +38,13 @@ public class WarchemistHandler {
             MobEffects.MOVEMENT_SLOWDOWN,
             MobEffects.WEAKNESS,
             MobEffects.POISON,
-            MobEffects.BLINDNESS,
             MobEffects.GLOWING,
             MobEffects.HUNGER
     );
 
     @SubscribeEvent
-    public static void onDamageDealt(LivingDamageEvent.Post event) {
-        if (!(event.getSource().getEntity() instanceof Player player)) return;
+    public static void onDamageReceived(LivingDamageEvent.Post event) {
+        if (!(event.getEntity() instanceof Player player)) return;
         if (player.level().isClientSide) return;
 
         PlayerDiskData diskData = PlayerDiskData.get(player);
@@ -59,34 +58,19 @@ public class WarchemistHandler {
                     int durationTicks = getDurationTicks(level);
                     int amplifier = level >= 12 ? 1 : 0;
 
+                    // Apply random positive effect to player when hit
                     Holder<MobEffect> positiveEffect = POSITIVE_EFFECTS.get(RANDOM.nextInt(POSITIVE_EFFECTS.size()));
                     player.addEffect(new MobEffectInstance(positiveEffect, durationTicks, amplifier, false, true));
 
-                    // Check if player now has ALL 8 positive effects simultaneously
+                    // Check advancement
                     if (player instanceof ServerPlayer sp && hasAllEightEffects(player)) {
                         ModAdvancementTriggers.ALL_8_EFFECTS(sp);
                     }
-                }
-                return;
-            }
-        }
-    }
 
-    @SubscribeEvent
-    public static void onDamageReceived(LivingDamageEvent.Post event) {
-        if (!(event.getEntity() instanceof Player player)) return;
-        if (player.level().isClientSide) return;
-        if (!(event.getSource().getEntity() instanceof LivingEntity attacker)) return;
-
-        PlayerDiskData diskData = PlayerDiskData.get(player);
-
-        for (int slot = 0; slot < 3; slot++) {
-            String diskId = diskData.getEquippedDisk(slot);
-            if (diskId != null && diskId.equals("warchemist")) {
-                var disk = DiskRegistry.getDisk(diskId);
-                if (disk instanceof WarchemistDisk) {
-                    int level = diskData.getDiskLevel(diskId);
-                    if (level >= 12) applyNegativeEffect(attacker);
+                    // Apply negative effect to attacker (L12 now applies at all levels for rework)
+                    if (event.getSource().getEntity() instanceof LivingEntity attacker) {
+                        applyNegativeEffect(attacker, level);
+                    }
                 }
                 return;
             }
@@ -104,7 +88,10 @@ public class WarchemistHandler {
                 player.hasEffect(MobEffects.ABSORPTION);
     }
 
-    private static void applyNegativeEffect(LivingEntity target) {
+    private static void applyNegativeEffect(LivingEntity target, int level) {
+        // Negative effect on attacker only at L12
+        if (level < 12) return;
+
         Holder<MobEffect> effect = NEGATIVE_EFFECTS.get(RANDOM.nextInt(NEGATIVE_EFFECTS.size()));
         if (target.isInvertedHealAndHarm() && effect == MobEffects.POISON) {
             effect = MobEffects.WITHER;

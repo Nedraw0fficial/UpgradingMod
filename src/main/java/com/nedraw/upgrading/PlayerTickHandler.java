@@ -15,66 +15,52 @@ import java.util.UUID;
 @EventBusSubscriber(modid = UpgradingMod.MODID)
 public class PlayerTickHandler {
 
-    // Track equipped disks with their levels per player
-    private static final Map<UUID, Map<String, Integer>> LAST_ACTIVE_DISKS = new HashMap<>();
+    private static final Map<UUID, String[]> LAST_DISK_IDS = new HashMap<>();
+    private static final Map<UUID, int[]> LAST_DISK_LEVELS = new HashMap<>();
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
-
-        // Only run on server side
         if (player.level().isClientSide) return;
 
         PlayerDiskData diskData = PlayerDiskData.get(player);
         UUID playerId = player.getUUID();
 
-        // Get current equipped disks with levels
-        Map<String, Integer> currentDisks = new HashMap<>();
+        String[] lastIds = LAST_DISK_IDS.computeIfAbsent(playerId, k -> new String[3]);
+        int[] lastLevels = LAST_DISK_LEVELS.computeIfAbsent(playerId, k -> new int[3]);
+
         for (int slot = 0; slot < 3; slot++) {
             String diskId = diskData.getEquippedDisk(slot);
-            if (diskId != null) {
-                int level = diskData.getDiskLevel(diskId);
-                currentDisks.put(diskId, level);
+            String lastId = lastIds[slot];
+            int currentLevel = diskId != null ? diskData.getDiskLevel(diskId) : 0;
+            int lastLevel = lastLevels[slot];
+
+            // Disk unequipped
+            if (diskId == null && lastId != null) {
+                UpgradeDisk oldDisk = DiskRegistry.getDisk(lastId);
+                if (oldDisk != null) oldDisk.removeEffect(player);
+                lastIds[slot] = null;
+                lastLevels[slot] = 0;
+                continue;
             }
-        }
 
-        // Get last tick's state
-        Map<String, Integer> lastDisks = LAST_ACTIVE_DISKS.getOrDefault(playerId, new HashMap<>());
-
-        // Apply effects for new disks or changed levels
-        for (Map.Entry<String, Integer> entry : currentDisks.entrySet()) {
-            String diskId = entry.getKey();
-            int currentLevel = entry.getValue();
-            Integer lastLevel = lastDisks.get(diskId);
+            if (diskId == null) continue;
 
             UpgradeDisk disk = DiskRegistry.getDisk(diskId);
             if (disk == null) continue;
 
-            // Apply if disk is new OR level changed
-            if (lastLevel == null || lastLevel != currentLevel) {
-                // Remove old effect first if it existed
-                if (lastLevel != null) {
-                    disk.removeEffect(player);
+            // Disk changed or level changed
+            if (!diskId.equals(lastId) || currentLevel != lastLevel) {
+                if (lastId != null && !lastId.equals(diskId)) {
+                    UpgradeDisk oldDisk = DiskRegistry.getDisk(lastId);
+                    if (oldDisk != null) oldDisk.removeEffect(player);
                 }
-                // Apply new effect (one-time setup like attributes)
                 disk.applyEffect(player, currentLevel);
+                lastIds[slot] = diskId;
+                lastLevels[slot] = currentLevel;
             }
 
-            // ALWAYS call applyTickEffect every tick for continuous effects
             disk.applyTickEffect(player, currentLevel);
         }
-
-        // Remove effects from unequipped disks
-        for (String diskId : lastDisks.keySet()) {
-            if (!currentDisks.containsKey(diskId)) {
-                UpgradeDisk disk = DiskRegistry.getDisk(diskId);
-                if (disk != null) {
-                    disk.removeEffect(player);
-                }
-            }
-        }
-
-        // Update tracking
-        LAST_ACTIVE_DISKS.put(playerId, currentDisks);
     }
 }

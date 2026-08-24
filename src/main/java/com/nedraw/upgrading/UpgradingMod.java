@@ -8,12 +8,16 @@ import com.nedraw.upgrading.disk.*;
 
 import com.nedraw.upgrading.effect.ModEffects;
 import com.nedraw.upgrading.item.ModItems;
+import com.nedraw.upgrading.loot.ModLootFunctions;
 import com.nedraw.upgrading.network.ModNetwork;
 import com.nedraw.upgrading.particle.ModParticles;
+import com.nedraw.upgrading.recipe.ModRecipes;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.joml.sampling.PoissonSampling;
 import org.slf4j.Logger;
 
@@ -25,7 +29,15 @@ public class UpgradingMod {
     public UpgradingMod(IEventBus modEventBus, ModContainer modContainer) {
         LOGGER.info("UPGRADING! Mod initializing...");
 
-        // Register disks FIRST
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            modEventBus.addListener(ClientSetup::onRegisterAdditionalModels);
+            modEventBus.addListener(ClientSetup::onModelsBaked);
+        }
+
+        ModLootFunctions.LOOT_FUNCTIONS.register(modEventBus);
+        ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
+
+        // Registerng disks FIRST
         LOGGER.info("Registering Upgrade Disks...");
         // --- DISKS ---
         // - BASIC -
@@ -90,4 +102,6 @@ public class UpgradingMod {
     private void commonSetup(FMLCommonSetupEvent event) {
         // Common setup tasks (currently empty)
     }
+
+
 }

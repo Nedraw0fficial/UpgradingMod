@@ -75,7 +75,7 @@ public record UpgradeDiskPacket(String diskId) implements CustomPacketPayload {
 
                 // Play level-up sound
                 serverPlayer.level().playSound(
-                        null,
+                        serverPlayer,
                         serverPlayer.blockPosition(),
                         SoundEvents.PLAYER_LEVELUP,
                         SoundSource.PLAYERS,

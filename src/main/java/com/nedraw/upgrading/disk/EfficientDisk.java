@@ -51,7 +51,7 @@ public class EfficientDisk extends UpgradeDisk {
                         savedThisTick = true;
                     }
                 } else {
-                    if (level >= 12 && RANDOM.nextFloat() < 0.07f) {
+                    if (level >= 12 && RANDOM.nextFloat() < 0.06f) {
                         stack.setDamageValue(lastDamage);
                         savedThisTick = true;
                     }
@@ -67,11 +67,9 @@ public class EfficientDisk extends UpgradeDisk {
             List<Long> timestamps = SAVE_TIMESTAMPS.computeIfAbsent(playerId, k -> new ArrayList<>());
             timestamps.add(now);
 
-            // Remove timestamps older than 60 seconds
             timestamps.removeIf(t -> now - t > 60_000);
 
-            // Fire advancement if 5+ saves in the last minute
-            if (timestamps.size() >= 5 && player instanceof ServerPlayer sp) {
+            if (timestamps.size() >= 4 && player instanceof ServerPlayer sp) {
                 ModAdvancementTriggers.DURABILITY_SAVED_5(sp);
                 timestamps.clear(); // Reset to prevent spam
             }
@@ -87,19 +85,19 @@ public class EfficientDisk extends UpgradeDisk {
 
     private float getToolPreventChance(int level) {
         return switch (level) {
-            case 1  -> 0.05f;
-            case 2  -> 0.06f;
-            case 3  -> 0.07f;
-            case 4  -> 0.08f;
-            case 5  -> 0.10f;
-            case 6  -> 0.12f;
-            case 7  -> 0.14f;
-            case 8  -> 0.16f;
-            case 9  -> 0.18f;
-            case 10 -> 0.20f;
-            case 11 -> 0.22f;
-            case 12 -> 0.24f;
-            default -> 0.05f;
+            case 1  -> 0.03f;
+            case 2  -> 0.04f;
+            case 3  -> 0.05f;
+            case 4  -> 0.06f;
+            case 5  -> 0.07f;
+            case 6  -> 0.09f;
+            case 7  -> 0.11f;
+            case 8  -> 0.13f;
+            case 9  -> 0.15f;
+            case 10 -> 0.17f;
+            case 11 -> 0.19f;
+            case 12 -> 0.22f;
+            default -> 0.03f;
         };
     }
 }

@@ -1,0 +1,5 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {"tag": "upgrading:legendary_disks"},
+  "result": {"id": "upgrading:encrypted_fragment", "count": 6}
+}

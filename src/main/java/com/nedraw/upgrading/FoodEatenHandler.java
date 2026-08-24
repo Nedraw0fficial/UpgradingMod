@@ -15,15 +15,12 @@ public class FoodEatenHandler {
 
     @SubscribeEvent
     public static void onFoodFinish(LivingEntityUseItemEvent.Finish event) {
-        // Only handle players
         if (!(event.getEntity() instanceof Player player)) return;
 
-        // Server-side only
         if (player.level().isClientSide) return;
 
         ItemStack stack = event.getItem();
 
-        // Only handle food items
         if (!stack.has(net.minecraft.core.component.DataComponents.FOOD)) return;
 
         PlayerDiskData diskData = PlayerDiskData.get(player);

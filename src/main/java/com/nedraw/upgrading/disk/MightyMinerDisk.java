@@ -44,7 +44,21 @@ public class MightyMinerDisk extends UpgradeDisk {
             if (miningAttribute != null) {
                 miningAttribute.removeModifier(MINING_SPEED_MODIFIER_ID);
 
-                double miningBonus = 2 + round(Math.pow(level, 2.8) / 20) / 100.0;
+                double miningBonus = switch (level) {
+                    case 1  -> 0.02;
+                    case 2  -> 0.02;
+                    case 3  -> 0.03;
+                    case 4  -> 0.04;
+                    case 5  -> 0.07;
+                    case 6  -> 0.10;
+                    case 7  -> 0.14;
+                    case 8  -> 0.19;
+                    case 9  -> 0.25;
+                    case 10 -> 0.34;
+                    case 11 -> 0.43;
+                    case 12 -> 0.55;
+                    default -> 0.02;
+                };
 
                 miningAttribute.addPermanentModifier(new AttributeModifier(
                         MINING_SPEED_MODIFIER_ID,
@@ -78,7 +92,7 @@ public class MightyMinerDisk extends UpgradeDisk {
             if (block == Blocks.STONE || block == Blocks.DEEPSLATE ||
                     block == Blocks.COBBLESTONE || block == Blocks.COBBLED_DEEPSLATE) {
 
-                if (RANDOM.nextDouble() < 0.06) {
+                if (RANDOM.nextDouble() < 0.01) {
                     int roll = RANDOM.nextInt(100);
                     Item selectedOre;
 

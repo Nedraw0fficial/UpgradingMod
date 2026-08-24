@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "F",
+    "F",
+    "M"
+  ],
+  "key": {
+    "F": {
+      "item": "upgrading:frame_golden"
+    },
+    "M": {
+      "item": "minecraft:amethyst_shard"
+    }
+  },
+  "result": {
+    "id": "upgrading:frame_amethyst",
+    "count": 1
+  }
+}
