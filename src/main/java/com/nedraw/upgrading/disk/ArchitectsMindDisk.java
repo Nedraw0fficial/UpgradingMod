@@ -15,11 +15,9 @@ public class ArchitectsMindDisk extends UpgradeDisk {
     }
 
     @Override
-    public void applyEffect(Player player, int level) {
-        // Get reach bonus based on level
-        double reachBonus = getReachBonus(level);
+    public void applyEffect(Player player, int level, int slot, float efficiency) {
+        double reachBonus = getReachBonus(level) * efficiency;
 
-        // Apply to BLOCK_INTERACTION_RANGE attribute (for block placement/breaking)
         var reachAttr = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE);
         if (reachAttr != null) {
             reachAttr.removeModifier(REACH_MODIFIER_ID);

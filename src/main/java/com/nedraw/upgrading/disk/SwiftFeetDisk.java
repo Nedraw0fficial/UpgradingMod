@@ -14,75 +14,59 @@ import java.util.UUID;
 public class SwiftFeetDisk extends UpgradeDisk {
     private static final ResourceLocation SPEED_MODIFIER_ID =
             ResourceLocation.fromNamespaceAndPath("upgrading", "swift_feet_speed");
-
-    private static final Map<UUID, Long> DASH_COOLDOWNS = new HashMap<>();
-    private static final long DASH_COOLDOWN = 10000; // 10s
+    private static final ResourceLocation SPRINT_MODIFIER_ID =
+            ResourceLocation.fromNamespaceAndPath("upgrading", "swift_feet_sprint");
 
     private static final Map<UUID, Integer> APPLIED_LEVELS = new HashMap<>();
+    private static final Map<UUID, Integer> SPRINT_TICKS = new HashMap<>();
 
     public SwiftFeetDisk() {
         super("swift_feet", "Swift Feet", DiskRarity.BASIC);
-        // No descriptions here anymore (hell yeah !)
     }
 
     @Override
-    public void applyEffect(Player player, int level) {
+    public void applyEffect(Player player, int level, int slot, float efficiency) {
         UUID playerId = player.getUUID();
         Integer appliedLevel = APPLIED_LEVELS.get(playerId);
 
         if (appliedLevel == null || appliedLevel != level) {
-
-            double speedMultiplier = (level * 3) / 100.0;
+            double speedMultiplier = (level * 3 / 100.0) * efficiency;
 
             var speedAttribute = player.getAttribute(Attributes.MOVEMENT_SPEED);
             if (speedAttribute != null) {
                 speedAttribute.removeModifier(SPEED_MODIFIER_ID);
                 speedAttribute.addPermanentModifier(new AttributeModifier(
-                        SPEED_MODIFIER_ID,
-                        speedMultiplier,
-                        AttributeModifier.Operation.ADD_MULTIPLIED_BASE
-                ));
+                        SPEED_MODIFIER_ID, speedMultiplier,
+                        AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
             }
-
             APPLIED_LEVELS.put(playerId, level);
         }
     }
 
-    private static final ResourceLocation SPRINT_MODIFIER_ID =
-            ResourceLocation.fromNamespaceAndPath("upgrading", "swift_feet_sprint");
-
-    private static final Map<UUID, Integer> SPRINT_TICKS = new HashMap<>();
-
     @Override
-    public void applyTickEffect(Player player, int level) {
+    public void applyTickEffect(Player player, int level, int slot, float efficiency) {
         if (player.level().isClientSide) return;
 
         var speedAttribute = player.getAttribute(Attributes.MOVEMENT_SPEED);
         if (speedAttribute == null) return;
 
         if (level >= 12) {
-            // Sprint speed bonus
             if (player.isSprinting()) {
                 if (!speedAttribute.hasModifier(SPRINT_MODIFIER_ID)) {
                     speedAttribute.addPermanentModifier(new AttributeModifier(
-                            SPRINT_MODIFIER_ID, 0.20,
-                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE
-                    ));
+                            SPRINT_MODIFIER_ID, 0.20 * efficiency,
+                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
                 }
-
-                // Track consecutive sprint ticks for advancement
                 UUID id = player.getUUID();
                 int ticks = SPRINT_TICKS.getOrDefault(id, 0) + 1;
                 SPRINT_TICKS.put(id, ticks);
-
-                // 5 seconds = 100 ticks
                 if (ticks == 100 && player instanceof ServerPlayer sp) {
                     ModAdvancementTriggers.AERIAL_DASH(sp);
-                    SPRINT_TICKS.put(id, 0); // reset so it doesn't spam
+                    SPRINT_TICKS.put(id, 0);
                 }
             } else {
                 speedAttribute.removeModifier(SPRINT_MODIFIER_ID);
-                SPRINT_TICKS.put(player.getUUID(), 0); // reset on stop
+                SPRINT_TICKS.put(player.getUUID(), 0);
             }
         }
     }
@@ -93,10 +77,9 @@ public class SwiftFeetDisk extends UpgradeDisk {
         if (speedAttribute != null) {
             speedAttribute.removeModifier(SPEED_MODIFIER_ID);
             speedAttribute.removeModifier(SPRINT_MODIFIER_ID);
-            SPRINT_TICKS.remove(player.getUUID());
         }
-
         UUID playerId = player.getUUID();
         APPLIED_LEVELS.remove(playerId);
+        SPRINT_TICKS.remove(playerId);
     }
 }

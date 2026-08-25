@@ -58,9 +58,14 @@
   "item.upgrading.golden_sweet_berries": "Golden Sweet Berries",
 
   "item.upgrading.z_slot": "Z-Slot",
+  "item.upgrading.z_slot.mythic": "Mythic Z-Slot",
   "tooltip.upgrading.zslot.frame": "  > %s",
   "tooltip.upgrading.zslot.chip": "  > %s",
   "tooltip.upgrading.zslot.board": "  > %s",
+
+  "key.upgrading.activate_slot_1": "Activate Slot 1",
+  "key.upgrading.activate_slot_2": "Activate Slot 2",
+  "key.upgrading.activate_slot_3": "Activate Slot 3",
 
 
   "item.upgrading.frame_fabric": "Fabric Frame",
@@ -76,6 +81,7 @@
   "item.upgrading.frame_mushroom": "Mushroom Frame",
   "item.upgrading.frame_void": "Void Frame",
 
+
   "tooltip.upgrading.frame.fabric": " >> +2% Disk efficiency",
   "tooltip.upgrading.frame.wooden": " >> +5% Disk efficiency",
   "tooltip.upgrading.frame.copper": " >> +8% Disk efficiency",
@@ -88,7 +94,6 @@
   "tooltip.upgrading.frame.sponge": " >> +1.6% Disk efficiency per disk level",
   "tooltip.upgrading.frame.mushroom": " >> +20% Disk efficiency, -3% per rarity tier of the equipped disk",
   "tooltip.upgrading.frame.void": " >> Contains the 3rd of a power to unveil immense power",
-
 
   "item.upgrading.board_basic": "Basic Board",
   "item.upgrading.board_ender": "Ender Board",
@@ -105,6 +110,38 @@
   "tooltip.upgrading.board.corrupted": " >> Contains the 3rd of a power to unveil immense power",
 
 
+  "tooltip.upgrading.frame.fabric.short": "+2% Disk efficiency",
+  "tooltip.upgrading.frame.wooden.short": "+5% Disk efficiency",
+  "tooltip.upgrading.frame.copper.short": "+8% Disk efficiency",
+  "tooltip.upgrading.frame.iron.short": "+12% Disk efficiency",
+  "tooltip.upgrading.frame.golden.short": "+16% Disk efficiency",
+  "tooltip.upgrading.frame.amethyst.short": "+20% Disk efficiency",
+  "tooltip.upgrading.frame.cactus.short": "+18% efficiency, -6% for both other slots",
+  "tooltip.upgrading.frame.glass.short": "+10% efficiency, +5% per empty slot",
+  "tooltip.upgrading.frame.rose_gold.short": "+7% per slot with a Rose Gold Frame",
+  "tooltip.upgrading.frame.sponge.short": "+1.6% efficiency per disk level",
+  "tooltip.upgrading.frame.mushroom.short": "+20% efficiency, -3% per rarity tier",
+  "tooltip.upgrading.frame.void.short": "Contains the 3rd of a power...",
+
+  "tooltip.upgrading.board.basic.short": "no special effect",
+  "tooltip.upgrading.board.ender.short": "sends equipped disk to your spawn point",
+  "tooltip.upgrading.board.enchanted.short": "grants 10 XP",
+  "tooltip.upgrading.board.piston.short": "pushes equipped disk to the next slot",
+  "tooltip.upgrading.board.wool.short": "heals 2 HP",
+  "tooltip.upgrading.board.corrupted.short": "Contains the 3rd of a power...",
+
+  "tooltip.upgrading.chip.basic.short": "under no condition",
+  "tooltip.upgrading.chip.heart.short": "when you heal",
+  "tooltip.upgrading.chip.diamond.short": "when you kill an entity",
+  "tooltip.upgrading.chip.spade.short": "when you damage an entity",
+  "tooltip.upgrading.chip.club.short": "just before you die",
+  "tooltip.upgrading.chip.food.short": "when you eat",
+  "tooltip.upgrading.chip.portal.short": "when you change dimension",
+  "tooltip.upgrading.chip.dark.short": "Contains the 3rd of a power...",
+
+  "tooltip.upgrading.z_slot.mythic": "Press the slot's keybind to activate the Mythic Ability",
+
+
   "item.upgrading.chip_basic": "Basic Chip",
   "item.upgrading.chip_heart": "Heart Chip",
   "item.upgrading.chip_diamond": "Diamond Chip",
@@ -114,7 +151,7 @@
   "item.upgrading.chip_portal": "Portal Chip",
   "item.upgrading.chip_dark": "Dark Chip",
 
-  "tooltip.upgrading.chip.basic": " >> No trigger condition",
+  "tooltip.upgrading.chip.basic": " >> No trigger",
   "tooltip.upgrading.chip.heart": " >> Triggers when you heal",
   "tooltip.upgrading.chip.diamond": " >> Triggers when you kill an entity",
   "tooltip.upgrading.chip.spade": " >> Triggers when you damage an entity",

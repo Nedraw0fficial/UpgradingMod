@@ -1,6 +1,5 @@
 package com.nedraw.upgrading.item;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -10,8 +9,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 import java.util.List;
 import java.util.TreeMap;
@@ -59,13 +58,54 @@ public class ZSlotItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public Component getName(ItemStack stack) {
+        if (isMythic(stack)) {
+            return Component.translatable("item.upgrading.z_slot.mythic")
+                    .withStyle(s -> s.withColor(0x2A139E).withBold(true));
+        }
+        return super.getName(stack);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context,
+                                List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+
+        if (isMythic(stack)) {
+            if (FMLEnvironment.dist == Dist.CLIENT) {
+                Component key1 = com.nedraw.upgrading.client.ModKeyBinds.ACTIVATE_SLOT_1
+                        .getKey().getDisplayName()
+                        .copy().withStyle(s -> s.withBold(true).withUnderlined(true).withColor(0x2A139E));
+                Component key2 = com.nedraw.upgrading.client.ModKeyBinds.ACTIVATE_SLOT_2
+                        .getKey().getDisplayName()
+                        .copy().withStyle(s -> s.withBold(true).withUnderlined(true).withColor(0x2A139E));
+                Component key3 = com.nedraw.upgrading.client.ModKeyBinds.ACTIVATE_SLOT_3
+                        .getKey().getDisplayName()
+                        .copy().withStyle(s -> s.withBold(true).withUnderlined(true).withColor(0x2A139E));
+
+                tooltipComponents.add(
+                        Component.translatable("tooltip.upgrading.z_slot.mythic")
+                                .withStyle(s -> s.withColor(0xCCCCCC))
+                );
+                tooltipComponents.add(
+                        Component.literal("[")
+                                .withStyle(s -> s.withColor(0xCCCCCC))
+                                .append(key1)
+                                .append(Component.literal("/").withStyle(s -> s.withColor(0xCCCCCC)))
+                                .append(key2)
+                                .append(Component.literal("/").withStyle(s -> s.withColor(0xCCCCCC)))
+                                .append(key3)
+                                .append(Component.literal("]").withStyle(s -> s.withColor(0xCCCCCC)))
+                );
+            }
+            return;
+        }
 
         String frame = getFrame(stack);
         String board = getBoard(stack);
         String chip  = getChip(stack);
 
+        // Shift hint
         if (FMLEnvironment.dist == Dist.CLIENT) {
             if (Screen.hasShiftDown()) {
                 Component keyName = com.nedraw.upgrading.client.ModKeyBinds.OPEN_DISK_MENU
@@ -91,29 +131,14 @@ public class ZSlotItem extends Item {
             }
         }
 
-        String frameDesc = strip(Component.translatable("tooltip.upgrading.frame." + frame).getString());
+        // Frame line using .short key
+        String frameDesc = Component.translatable("tooltip.upgrading.frame." + frame + ".short").getString();
         tooltipComponents.add(colorizePercents(Component.literal("| " + frameDesc)));
 
-        String boardDesc = stripBoard(Component.translatable("tooltip.upgrading.board." + board).getString());
-        String chipDesc  = stripChip(Component.translatable("tooltip.upgrading.chip." + chip).getString());
+        // Board + chip on same line using .short keys
+        String boardDesc = Component.translatable("tooltip.upgrading.board." + board + ".short").getString();
+        String chipDesc  = Component.translatable("tooltip.upgrading.chip." + chip + ".short").getString();
         tooltipComponents.add(colorizePercents(Component.literal("| " + boardDesc + " " + chipDesc)));
-    }
-
-    private static String strip(String raw) {
-        if (raw.startsWith(" >>")) return raw.substring(3).trim();
-        return raw.trim();
-    }
-
-    private static String stripBoard(String raw) {
-        String s = strip(raw);
-        if (s.startsWith("On trigger: ")) return s.substring("On trigger: ".length());
-        return s;
-    }
-
-    private static String stripChip(String raw) {
-        String s = strip(raw);
-        if (s.startsWith("Triggers ")) return s.substring("Triggers ".length());
-        return s;
     }
 
     private static Component colorizePercents(MutableComponent base) {

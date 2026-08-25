@@ -58,9 +58,14 @@
   "item.upgrading.golden_sweet_berries": "Baies sucrées dorées",
 
   "item.upgrading.z_slot": "Z-Slot",
+  "item.upgrading.z_slot.mythic": "Z-Slot Mythique",
   "tooltip.upgrading.zslot.frame": "  > %s",
   "tooltip.upgrading.zslot.chip": "  > %s",
   "tooltip.upgrading.zslot.board": "  > %s",
+
+  "key.upgrading.activate_slot_1": "Activer le Slot 1",
+  "key.upgrading.activate_slot_2": "Activer le Slot 2",
+  "key.upgrading.activate_slot_3": "Activer le Slot 3",
 
   "item.upgrading.frame_fabric": "Cadre en Tissu",
   "item.upgrading.frame_wooden": "Cadre en Bois",
@@ -86,7 +91,42 @@
   "tooltip.upgrading.frame.rose_gold": " >> +7% pour chaque slot avec ce cadre",
   "tooltip.upgrading.frame.sponge": " >> +1,6% d'efficacité du disque par niveau du disque équipé",
   "tooltip.upgrading.frame.mushroom": " >> +20% d'efficacité du disque, -3% par tier de rareté du disque équipé",
-  "tooltip.upgrading.frame.void": " >> Contient le 3ème d'un pouvoir pour dévoiler une immense puissance",
+  "tooltip.upgrading.frame.void": " >> Contient le tiers d'un pouvoir pour dévoiler une immense puissance",
+
+
+
+  "tooltip.upgrading.frame.fabric.short": "+2% d'efficacité du disque",
+  "tooltip.upgrading.frame.wooden.short": "+5% d'efficacité du disque",
+  "tooltip.upgrading.frame.copper.short": "+8% d'efficacité du disque",
+  "tooltip.upgrading.frame.iron.short": "+12% d'efficacité du disque",
+  "tooltip.upgrading.frame.golden.short": "+16% d'efficacité du disque",
+  "tooltip.upgrading.frame.amethyst.short": "+20% d'efficacité du disque",
+  "tooltip.upgrading.frame.cactus.short": "+18% d'efficacité, -6% pour les deux autres slots",
+  "tooltip.upgrading.frame.glass.short": "+10% d'efficacité, +5% par slot vide",
+  "tooltip.upgrading.frame.rose_gold.short": "+7% par slot avec un Cadre en Or Rose",
+  "tooltip.upgrading.frame.sponge.short": "+1,6% d'efficacité par niveau du disque",
+  "tooltip.upgrading.frame.mushroom.short": "+20% d'efficacité, -3% par tier de rareté",
+  "tooltip.upgrading.frame.void.short": "Contient le tiers d'un pouvoir...",
+
+  "tooltip.upgrading.board.basic.short": "aucun effet spécial",
+  "tooltip.upgrading.board.ender.short": "envoie le disque équipé à votre point de réapparition",
+  "tooltip.upgrading.board.enchanted.short": "octroie 10 XP",
+  "tooltip.upgrading.board.piston.short": "pousse le disque équipé vers le slot suivant",
+  "tooltip.upgrading.board.wool.short": "soigne 2 PV",
+  "tooltip.upgrading.board.corrupted.short": "Contient le tiers d'un pouvoir...",
+
+  "tooltip.upgrading.chip.basic.short": "sous aucune condition",
+  "tooltip.upgrading.chip.heart.short": "lorsque vous vous soignez",
+  "tooltip.upgrading.chip.diamond.short": "lorsque vous tuez une entité",
+  "tooltip.upgrading.chip.spade.short": "lorsque vous infligez des dégâts",
+  "tooltip.upgrading.chip.club.short": "juste avant votre mort",
+  "tooltip.upgrading.chip.food.short": "lorsque vous mangez",
+  "tooltip.upgrading.chip.portal.short": "lorsque vous changez de dimension",
+  "tooltip.upgrading.chip.dark.short": "Contient le tiers d'un pouvoir...",
+
+  "tooltip.upgrading.z_slot.mythic": "Appuyez sur la touche du slot pour activer la Capacité Mythique",
+
+
 
   "item.upgrading.board_basic": "Carte de Base",
   "item.upgrading.board_ender": "Carte de l'Ender",
@@ -100,11 +140,11 @@
   "tooltip.upgrading.board.enchanted": " >> Au déclenchement : octroie 10 XP",
   "tooltip.upgrading.board.piston": " >> Au déclenchement : pousse le disque équipé vers le slot suivant",
   "tooltip.upgrading.board.wool": " >> Au déclenchement : soigne 2 PV",
-  "tooltip.upgrading.board.corrupted": " >> Contient le 3ème d'un pouvoir pour dévoiler une immense puissance",
+  "tooltip.upgrading.board.corrupted": " >> Contient le tiers d'un pouvoir pour dévoiler une immense puissance",
 
   "item.upgrading.chip_basic": "Puce de Base",
   "item.upgrading.chip_heart": "Puce Cœur",
-  "item.upgrading.chip_diamond": "Puce Diamant",
+  "item.upgrading.chip_diamond": "Puce Carreau",
   "item.upgrading.chip_spade": "Puce Pique",
   "item.upgrading.chip_club": "Puce Trèfle",
   "item.upgrading.chip_food": "Puce Nourriture",
@@ -118,7 +158,7 @@
   "tooltip.upgrading.chip.club": " >> Se déclenche juste avant votre mort",
   "tooltip.upgrading.chip.food": " >> Se déclenche lorsque vous mangez",
   "tooltip.upgrading.chip.portal": " >> Se déclenche lorsque vous changez de dimension",
-  "tooltip.upgrading.chip.dark": " >> Contient le 3ème d'un pouvoir pour dévoiler une immense puissance",
+  "tooltip.upgrading.chip.dark": " >> Contient le tiers d'un pouvoir pour dévoiler une immense puissance",
 
 
   "item.upgrading.encrypted_floppy": "Disquette cryptée",

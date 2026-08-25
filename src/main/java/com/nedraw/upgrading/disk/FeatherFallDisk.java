@@ -9,40 +9,23 @@ public class FeatherFallDisk extends UpgradeDisk {
     }
 
     @Override
-    public void applyEffect(Player player, int level) {
-        // Fall damage is handled in event listener
-    }
+    public void applyEffect(Player player, int level) {}
 
     @Override
-    public void removeEffect(Player player) {
-        // Nothing to clean up
-    }
+    public void removeEffect(Player player) {}
 
-    // Called from damage event handler
-    public float reduceFallDamage(float originalDamage, int level) {
-        // Level 12 bonus: Negate small falls (under 5 blocks ~ 2-3 damage)
-        if (level >= 12 && originalDamage <= 2.0f) {
-            return 0.0f;
-        }
-
-        float reduction = getReductionPercent(level);
-        return originalDamage * (1.0f - reduction);
+    public float reduceFallDamage(float originalDamage, int level, float efficiency) {
+        if (level >= 12 && originalDamage <= 2.0f * efficiency) return 0.0f;
+        float reduction = getReductionPercent(level) * efficiency;
+        return originalDamage * (1.0f - Math.min(reduction, 0.95f));
     }
 
     private float getReductionPercent(int level) {
         return switch (level) {
-            case 1 -> 0.05f;   // 5%
-            case 2 -> 0.08f;   // 8%
-            case 3 -> 0.11f;   // 11%
-            case 4 -> 0.14f;   // 14%
-            case 5 -> 0.17f;   // 17%
-            case 6 -> 0.20f;   // 20%
-            case 7 -> 0.23f;   // 23%
-            case 8 -> 0.26f;   // 26%
-            case 9 -> 0.29f;   // 29%
-            case 10 -> 0.32f;  // 32%
-            case 11 -> 0.36f;  // 36%
-            case 12 -> 0.40f;  // 40%
+            case 1 -> 0.05f; case 2 -> 0.08f; case 3 -> 0.11f;
+            case 4 -> 0.14f; case 5 -> 0.17f; case 6 -> 0.20f;
+            case 7 -> 0.23f; case 8 -> 0.26f; case 9 -> 0.29f;
+            case 10 -> 0.32f; case 11 -> 0.36f; case 12 -> 0.40f;
             default -> 0.05f;
         };
     }

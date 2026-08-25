@@ -73,7 +73,8 @@ public class TreasureSenseHandler {
                     blockEntityData.putBoolean(LOOTED_TAG, true);
                     blockEntity.setChanged();
 
-                    float chance = treasureDisk.getDuplicationChance(level);
+                    float efficiency = ZSlotEffects.getEfficiencyMultiplier(player, slot);
+                    float chance = treasureDisk.getDuplicationChance(level, efficiency);
 
                     if (RANDOM.nextFloat() < chance) {
                         int duplicateCount = treasureDisk.getDuplicationCount(level);

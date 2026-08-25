@@ -21,15 +21,11 @@ public class MagnetDisk extends UpgradeDisk {
 
     @Override
     public void applyEffect(Player player, int level) {
-        UUID playerId = player.getUUID();
-        Integer appliedLevel = APPLIED_LEVELS.get(playerId);
-        if (appliedLevel == null || appliedLevel != level) {
-            APPLIED_LEVELS.put(playerId, level);
-        }
+        APPLIED_LEVELS.put(player.getUUID(), level);
     }
 
     @Override
-    public void applyTickEffect(Player player, int level) {
+    public void applyTickEffect(Player player, int level, int slot, float efficiency) {
         if (player.level().isClientSide) return;
 
         double radius;
@@ -37,11 +33,11 @@ public class MagnetDisk extends UpgradeDisk {
         boolean requiresCrouch;
 
         if (level < 12) {
-            radius = 0.5 + (level * 0.5);
+            radius = (0.5 + (level * 0.5)) * efficiency;
             instantPickup = false;
             requiresCrouch = true;
         } else {
-            radius = 8.0;
+            radius = 8.0 * efficiency;
             instantPickup = true;
             requiresCrouch = false;
         }
@@ -50,13 +46,10 @@ public class MagnetDisk extends UpgradeDisk {
 
         AABB searchBox = player.getBoundingBox().inflate(radius);
         List<ItemEntity> nearbyItems = player.level().getEntitiesOfClass(ItemEntity.class, searchBox);
-
         int itemsAffected = 0;
 
         for (ItemEntity item : nearbyItems) {
-            if (!item.isAlive()) continue;
-            if (item.hasPickUpDelay()) continue;
-            if (player.distanceTo(item) > radius) continue;
+            if (!item.isAlive() || item.hasPickUpDelay() || player.distanceTo(item) > radius) continue;
 
             if (instantPickup) {
                 item.setPos(player.getX(), player.getY(), player.getZ());
@@ -64,18 +57,14 @@ public class MagnetDisk extends UpgradeDisk {
                 double dx = player.getX() - item.getX();
                 double dy = player.getY() - item.getY();
                 double dz = player.getZ() - item.getZ();
-                double pullStrength = 0.1;
                 item.setDeltaMovement(
-                        item.getDeltaMovement().x + dx * pullStrength,
-                        item.getDeltaMovement().y + dy * pullStrength,
-                        item.getDeltaMovement().z + dz * pullStrength
-                );
+                        item.getDeltaMovement().x + dx * 0.1,
+                        item.getDeltaMovement().y + dy * 0.1,
+                        item.getDeltaMovement().z + dz * 0.1);
             }
-
             itemsAffected++;
         }
 
-        // Fire advancement if 20+ items were affected in a single tick
         if (itemsAffected >= 20 && player instanceof ServerPlayer sp) {
             ModAdvancementTriggers.MAGNET_PICKUP_20(sp);
         }

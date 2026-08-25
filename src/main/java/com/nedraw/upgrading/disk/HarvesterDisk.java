@@ -29,29 +29,22 @@ public class HarvesterDisk extends UpgradeDisk {
 
     @Override
     public void applyEffect(Player player, int level) {
-        UUID playerId = player.getUUID();
-        Integer appliedLevel = APPLIED_LEVELS.get(playerId);
-        if (appliedLevel == null || appliedLevel != level) {
-            APPLIED_LEVELS.put(playerId, level);
-        }
+        APPLIED_LEVELS.put(player.getUUID(), level);
     }
-
-    @Override
-    public void applyTickEffect(Player player, int level) {}
 
     @Override
     public void removeEffect(Player player) {
         APPLIED_LEVELS.remove(player.getUUID());
     }
 
-    public void handleCropBreak(Player player, BlockState state, BlockPos pos, int level) {
+    public void handleCropBreak(Player player, BlockState state, BlockPos pos, int level, float efficiency) {
         if (!(player.level() instanceof ServerLevel serverLevel)) return;
 
         Block block = state.getBlock();
         boolean isValidCrop = false;
 
-        if (block instanceof CropBlock cropBlock) {
-            if (cropBlock.isMaxAge(state)) isValidCrop = true;
+        if (block instanceof CropBlock cropBlock && cropBlock.isMaxAge(state)) {
+            isValidCrop = true;
         } else if (block == Blocks.SWEET_BERRY_BUSH) {
             int age = state.getValue(net.minecraft.world.level.block.SweetBerryBushBlock.AGE);
             if (age >= 2) isValidCrop = true;
@@ -62,38 +55,31 @@ public class HarvesterDisk extends UpgradeDisk {
 
         if (!isValidCrop) return;
 
-        float dupChance = level < 12 ? (level - 3) * 3 / 100.0f : 0.37f;
+        float dupChance = (level < 12 ? (level - 3) * 3 / 100.0f : 0.37f) * efficiency;
 
         if (RANDOM.nextFloat() < dupChance) {
             ItemStack cropDrop = getCropDrop(block);
-            if (!cropDrop.isEmpty()) {
-                Block.popResource(serverLevel, pos, cropDrop.copy());
-            }
+            if (!cropDrop.isEmpty()) Block.popResource(serverLevel, pos, cropDrop.copy());
         }
 
-        // Level 12: Bonus items (5% chance)
-        if (level >= 12 && RANDOM.nextFloat() < 0.05f) {
+        if (level >= 12 && RANDOM.nextFloat() < 0.05f * efficiency) {
             Item bonusItem = getBonusItem(block, player, serverLevel, pos);
-            if (bonusItem != null) {
-                Block.popResource(serverLevel, pos, new ItemStack(bonusItem));
-            }
+            if (bonusItem != null) Block.popResource(serverLevel, pos, new ItemStack(bonusItem));
         }
+    }
+
+    // Keep old signature for backwards compat
+    public void handleCropBreak(Player player, BlockState state, BlockPos pos, int level) {
+        handleCropBreak(player, state, pos, level, 1.0f);
     }
 
     private Item getBonusItem(Block cropBlock, Player player, ServerLevel serverLevel, BlockPos pos) {
         int roll = RANDOM.nextInt(100);
-
-        if (roll < 50) {
-            return Items.BONE_MEAL;
-        } else if (roll < 80) {
-            return getCropItemType(cropBlock);
-        } else {
-            // 20% - Golden crop! Fire advancement
-            Item goldenItem = getGoldenCropVariant(cropBlock);
-            if (player instanceof ServerPlayer sp) {
-                ModAdvancementTriggers.GOLDEN_CROP_FOUND(sp);
-            }
-            return goldenItem;
+        if (roll < 50) return Items.BONE_MEAL;
+        else if (roll < 80) return getCropItemType(cropBlock);
+        else {
+            if (player instanceof ServerPlayer sp) ModAdvancementTriggers.GOLDEN_CROP_FOUND(sp);
+            return getGoldenCropVariant(cropBlock);
         }
     }
 

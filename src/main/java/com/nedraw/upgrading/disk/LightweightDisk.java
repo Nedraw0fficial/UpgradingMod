@@ -11,8 +11,6 @@ public class LightweightDisk extends UpgradeDisk {
 
     private static final Map<UUID, Integer> LAST_FOOD_LEVEL = new HashMap<>();
     private static final Random RANDOM = new Random();
-
-    // Track timestamps (ms) of each successful prevention for the 5-in-1-minute check
     private static final Map<UUID, List<Long>> PREVENTION_TIMESTAMPS = new HashMap<>();
 
     public LightweightDisk() {
@@ -25,35 +23,26 @@ public class LightweightDisk extends UpgradeDisk {
     }
 
     @Override
-    public void applyTickEffect(Player player, int level) {
+    public void applyTickEffect(Player player, int level, int slot, float efficiency) {
         if (player.level().isClientSide) return;
-
         UUID playerId = player.getUUID();
         FoodData foodData = player.getFoodData();
         int currentFood = foodData.getFoodLevel();
         int lastFood = LAST_FOOD_LEVEL.getOrDefault(playerId, currentFood);
 
         if (currentFood < lastFood) {
-            float preventChance = getPreventChance(level);
-
-            if (RANDOM.nextFloat() < preventChance) {
+            if (RANDOM.nextFloat() < getPreventChance(level) * efficiency) {
                 foodData.setFoodLevel(lastFood);
-
                 long now = System.currentTimeMillis();
                 List<Long> timestamps = PREVENTION_TIMESTAMPS.computeIfAbsent(playerId, k -> new ArrayList<>());
                 timestamps.add(now);
-
-                // Remove timestamps older than 60 seconds
                 timestamps.removeIf(t -> now - t > 60_000);
-
-                // Fire advancement if 3+ preventions in the last minute
                 if (timestamps.size() >= 3 && player instanceof ServerPlayer sp) {
                     ModAdvancementTriggers.HUNGER_DRAIN_PREVENTED_5(sp);
-                    timestamps.clear(); // Reset so it doesn't spam
+                    timestamps.clear();
                 }
             }
         }
-
         LAST_FOOD_LEVEL.put(playerId, foodData.getFoodLevel());
     }
 
@@ -66,18 +55,10 @@ public class LightweightDisk extends UpgradeDisk {
 
     private float getPreventChance(int level) {
         return switch (level) {
-            case 1  -> 0.03f;
-            case 2  -> 0.05f;
-            case 3  -> 0.08f;
-            case 4  -> 0.10f;
-            case 5  -> 0.13f;
-            case 6  -> 0.16f;
-            case 7  -> 0.19f;
-            case 8  -> 0.22f;
-            case 9  -> 0.25f;
-            case 10 -> 0.28f;
-            case 11 -> 0.31f;
-            case 12 -> 0.35f;
+            case 1  -> 0.03f; case 2  -> 0.05f; case 3  -> 0.08f;
+            case 4  -> 0.10f; case 5  -> 0.13f; case 6  -> 0.16f;
+            case 7  -> 0.19f; case 8  -> 0.22f; case 9  -> 0.25f;
+            case 10 -> 0.28f; case 11 -> 0.31f; case 12 -> 0.35f;
             default -> 0.03f;
         };
     }

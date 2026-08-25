@@ -9,7 +9,7 @@ public class UpgradeDisk {
     private final String id;
     private final String displayName;
     private final DiskRarity rarity;
-    private final List<String> descriptions; // One for each level (1-12)
+    private final List<String> descriptions;
 
     public UpgradeDisk(String id, String displayName, DiskRarity rarity) {
         this.id = id;
@@ -18,100 +18,58 @@ public class UpgradeDisk {
         this.descriptions = new ArrayList<>();
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
 
     public String getDisplayName() {
-        //return displayName;
         return Component.translatable("disk.upgrading." + id).getString();
     }
 
-    public DiskRarity getRarity() {
-        return rarity;
-    }
+    public DiskRarity getRarity() { return rarity; }
 
-    // Add descriptions for each level
     public UpgradeDisk withDescription(int level, String description) {
-        while (descriptions.size() < level) {
-            descriptions.add("");
-        }
+        while (descriptions.size() < level) descriptions.add("");
         descriptions.set(level - 1, description);
         return this;
     }
 
     public String getDescriptionForLevel(int level) {
-        if (level < 1 || level > 12) {
-            return "No description";
-        }
-
-        //First, trying to get a translated description
-        // Translation key format: "description.upgrading.{disk_id}.{level}"
+        if (level < 1 || level > 12) return "No description";
         String translationKey = "description.upgrading." + id + "." + level;
         Component translated = Component.translatable(translationKey);
         String result = translated.getString();
-
-        // Check if translation exists (if it's the same as the key, translation doesn't exist)
-        if (!result.equals(translationKey)) {
-            return result;
-        }
-
-        // Fallback to hardcoded descriptions (for old disks)
-        if (level <= descriptions.size() && !descriptions.get(level - 1).isEmpty()) {
+        if (!result.equals(translationKey)) return result;
+        if (level <= descriptions.size() && !descriptions.get(level - 1).isEmpty())
             return descriptions.get(level - 1);
-        }
-
         return "No description";
     }
 
-    // Called when disk is equipped OR when level changes
-    // Use this for one-time setup (attributes, etc.)
-    public void applyEffect(Player player, int level) {
-        // Override this in specific disk implementations
+    public void applyEffect(Player player, int level, int slot, float efficiency) {
+        applyEffect(player, level); // backwards compat
     }
 
-    // Called EVERY TICK for continuous effects (magnet pull, air bonus, dash detection, etc.)
-    // Only override this if your disk needs tick-based logic
-    // Leave empty by default for performance
-    public void applyTickEffect(Player player, int level) {
-        // Override this in specific disk implementations that need tick updates
+    public void applyEffect(Player player, int level) {}
+
+    public void applyTickEffect(Player player, int level, int slot, float efficiency) {
+        applyTickEffect(player, level); // backwards compat
     }
 
-    // Called when disk is unequipped
-    public void removeEffect(Player player) {
-        // Override in specific disks to remove their effects
-    }
+    public void applyTickEffect(Player player, int level) {}
 
-    // Check if this disk can be upgraded
-    public boolean canUpgrade(int currentLevel) {
-        return currentLevel < 12;
-    }
+    public void removeEffect(Player player) {}
 
-    public int getMaxLevel() {
-        return 12;
-    }
+    public boolean canUpgrade(int currentLevel) { return currentLevel < 12; }
 
-    public void activateAbility(Player player, int level) {
-        // Override in MYTHIC disk implementations
-    }
+    public int getMaxLevel() { return 12; }
 
-    public long getAbilityCooldownMs(int level) {
-        return 60000; // Default: 60s
-    }
+    public void activateAbility(Player player, int level) {}
 
-    public boolean isAnimated() {
-        return false;
-    }
+    public long getAbilityCooldownMs(int level) { return 60000; }
 
-    public int getFrameCount() {
-        return 1;
-    }
+    public boolean isAnimated() { return false; }
 
-    public int getTicksPerFrame() {
-        return 2; // default: 2 ticks per frame = 10fps
-    }
+    public int getFrameCount() { return 1; }
 
-    public int getFrameSize() {
-        return 48; // default GUI disk size
-    }
+    public int getTicksPerFrame() { return 2; }
+
+    public int getFrameSize() { return 48; }
 }

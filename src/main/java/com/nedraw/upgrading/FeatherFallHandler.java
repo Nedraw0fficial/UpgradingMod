@@ -28,19 +28,16 @@ public class FeatherFallHandler {
                 UpgradeDisk disk = DiskRegistry.getDisk(diskId);
                 if (disk instanceof FeatherFallDisk featherFallDisk) {
                     int level = diskData.getDiskLevel(diskId);
+                    float efficiency = ZSlotEffects.getEfficiencyMultiplier(player, slot);
 
                     float originalDamage = event.getOriginalDamage();
-                    float newDamage = featherFallDisk.reduceFallDamage(originalDamage, level);
-
+                    float newDamage = featherFallDisk.reduceFallDamage(originalDamage, level, efficiency);
                     event.setNewDamage(newDamage);
 
-                    // Fire advancement if the fall would have been lethal without the disk
-                    // and the disk saved us (newDamage < player.getHealth() but originalDamage >= it)
                     if (originalDamage >= player.getHealth() && newDamage < player.getHealth()
                             && player instanceof ServerPlayer sp) {
                         ModAdvancementTriggers.LETHAL_FALL_SURVIVED(sp);
                     }
-
                     return;
                 }
             }

@@ -23,8 +23,14 @@ public class InputHandler {
             mc.setScreen(new DiskMenuScreen());
         }
 
-        if (ModKeyBinds.ACTIVATE_MYTHIC.consumeClick()) {
-            PacketDistributor.sendToServer(new ActivateMythicPacket());
+        if (ModKeyBinds.ACTIVATE_SLOT_1.consumeClick()) {
+            PacketDistributor.sendToServer(new ActivateMythicPacket(0));
+        }
+        if (ModKeyBinds.ACTIVATE_SLOT_2.consumeClick()) {
+            PacketDistributor.sendToServer(new ActivateMythicPacket(1));
+        }
+        if (ModKeyBinds.ACTIVATE_SLOT_3.consumeClick()) {
+            PacketDistributor.sendToServer(new ActivateMythicPacket(2));
         }
     }
 }

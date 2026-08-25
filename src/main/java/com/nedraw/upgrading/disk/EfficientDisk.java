@@ -11,8 +11,6 @@ public class EfficientDisk extends UpgradeDisk {
 
     private static final Random RANDOM = new Random();
     private static final Map<UUID, Map<Integer, Integer>> LAST_DURABILITY = new HashMap<>();
-
-    // Track timestamps of successful durability saves for the 5-in-1-minute check
     private static final Map<UUID, List<Long>> SAVE_TIMESTAMPS = new HashMap<>();
 
     public EfficientDisk() {
@@ -25,18 +23,15 @@ public class EfficientDisk extends UpgradeDisk {
     }
 
     @Override
-    public void applyTickEffect(Player player, int level) {
+    public void applyTickEffect(Player player, int level, int slotID, float efficiency) {
         if (player.level().isClientSide) return;
-
         UUID playerId = player.getUUID();
         Map<Integer, Integer> playerDurability = LAST_DURABILITY.computeIfAbsent(playerId, k -> new HashMap<>());
-
         int mainHandSlot = player.getInventory().selected;
         boolean savedThisTick = false;
 
         for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
             ItemStack stack = player.getInventory().getItem(slot);
-
             if (stack.isEmpty() || !stack.isDamageableItem()) continue;
 
             int currentDamage = stack.getDamageValue();
@@ -44,34 +39,27 @@ public class EfficientDisk extends UpgradeDisk {
 
             if (currentDamage > lastDamage) {
                 boolean isMainHand = (slot == mainHandSlot);
-
                 if (isMainHand) {
-                    if (RANDOM.nextFloat() < getToolPreventChance(level)) {
+                    if (RANDOM.nextFloat() < getToolPreventChance(level) * efficiency) {
                         stack.setDamageValue(lastDamage);
                         savedThisTick = true;
                     }
-                } else {
-                    if (level >= 12 && RANDOM.nextFloat() < 0.06f) {
-                        stack.setDamageValue(lastDamage);
-                        savedThisTick = true;
-                    }
+                } else if (level >= 12 && RANDOM.nextFloat() < 0.06f * efficiency) {
+                    stack.setDamageValue(lastDamage);
+                    savedThisTick = true;
                 }
             }
-
             playerDurability.put(slot, stack.getDamageValue());
         }
 
-        // Track save and check for advancement
         if (savedThisTick) {
             long now = System.currentTimeMillis();
             List<Long> timestamps = SAVE_TIMESTAMPS.computeIfAbsent(playerId, k -> new ArrayList<>());
             timestamps.add(now);
-
             timestamps.removeIf(t -> now - t > 60_000);
-
             if (timestamps.size() >= 4 && player instanceof ServerPlayer sp) {
                 ModAdvancementTriggers.DURABILITY_SAVED_5(sp);
-                timestamps.clear(); // Reset to prevent spam
+                timestamps.clear();
             }
         }
     }
@@ -85,18 +73,10 @@ public class EfficientDisk extends UpgradeDisk {
 
     private float getToolPreventChance(int level) {
         return switch (level) {
-            case 1  -> 0.03f;
-            case 2  -> 0.04f;
-            case 3  -> 0.05f;
-            case 4  -> 0.06f;
-            case 5  -> 0.07f;
-            case 6  -> 0.09f;
-            case 7  -> 0.11f;
-            case 8  -> 0.13f;
-            case 9  -> 0.15f;
-            case 10 -> 0.17f;
-            case 11 -> 0.19f;
-            case 12 -> 0.22f;
+            case 1  -> 0.03f; case 2  -> 0.04f; case 3  -> 0.05f;
+            case 4  -> 0.06f; case 5  -> 0.07f; case 6  -> 0.09f;
+            case 7  -> 0.11f; case 8  -> 0.13f; case 9  -> 0.15f;
+            case 10 -> 0.17f; case 11 -> 0.19f; case 12 -> 0.22f;
             default -> 0.03f;
         };
     }

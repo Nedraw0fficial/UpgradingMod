@@ -14,21 +14,17 @@ public class BeastWhispererDisk extends UpgradeDisk {
 
     @Override
     public void applyEffect(Player player, int level) {
-        // Breeding speed is handled in event listener
     }
 
     @Override
     public void removeEffect(Player player) {
-        // Nothing to clean up
     }
 
-    // Called from breeding event
     public int getReducedBreedingCooldown(int originalCooldown, int level) {
         float reduction = getBreedingSpeedBonus(level);
         return (int) (originalCooldown * (1.0f - reduction));
     }
 
-    // Called from breeding event (level 12 bonus)
     public boolean shouldSpawnTwin(int level) {
         if (level >= 12) {
             return RANDOM.nextFloat() < 0.12f;

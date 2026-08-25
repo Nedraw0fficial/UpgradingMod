@@ -14,30 +14,23 @@ public class DamageHandler {
 
     @SubscribeEvent
     public static void onLivingDamage(LivingDamageEvent.Pre event) {
-        // Only handle player damage
         if (!(event.getEntity() instanceof Player player)) return;
 
-        // Check if damage is fire-related
         var damageSource = event.getSource();
         if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_FIRE)) {
             PlayerDiskData diskData = PlayerDiskData.get(player);
 
-            // Check all equipped disks for Flame Walker
             for (int slot = 0; slot < 3; slot++) {
                 String diskId = diskData.getEquippedDisk(slot);
                 if ("flame_walker".equals(diskId)) {
                     UpgradeDisk disk = DiskRegistry.getDisk(diskId);
                     if (disk instanceof FlameWalkerDisk flameWalker) {
                         int level = diskData.getDiskLevel(diskId);
-
-                        // Reduce fire damage
-                        float originalDamage = event.getOriginalDamage();
-                        float reducedDamage = flameWalker.reduceFireDamage(originalDamage, level);
-
-                        // Set new damage amount
+                        float efficiency = ZSlotEffects.getEfficiencyMultiplier(player, slot);
+                        float reducedDamage = flameWalker.reduceFireDamage(event.getOriginalDamage(), level, efficiency);
                         event.setNewDamage(reducedDamage);
                     }
-                    break; // Only one Flame Walker can be equipped
+                    break;
                 }
             }
         }

@@ -9,42 +9,33 @@ public class TreasureSenseDisk extends UpgradeDisk {
     }
 
     @Override
-    public void applyEffect(Player player, int level) {
-        // Chest duplication handled in TreasureSenseHandler
-        // Glowing handled in client rendering
-    }
+    public void applyEffect(Player player, int level) {}
 
     @Override
-    public void removeEffect(Player player) {
-        // Nothing to clean up
-    }
+    public void removeEffect(Player player) {}
 
-    public float getDuplicationChance(int level) {
-        return switch (level) {
-            case 4 -> 0.08f;    // 8%
-            case 5 -> 0.116f;   // 11.6%
-            case 6 -> 0.152f;   // 15.2%
-            case 7 -> 0.188f;   // 18.8%
-            case 8 -> 0.224f;   // 22.4%
-            case 9 -> 0.26f;    // 26%
-            case 10 -> 0.296f;  // 29.6%
-            case 11 -> 0.332f;  // 33.2%
-            case 12 -> 0.348f;  // 34.8%
+    public float getDuplicationChance(int level, float efficiency) {
+        float base = switch (level) {
+            case 4  -> 0.08f;  case 5  -> 0.116f; case 6  -> 0.152f;
+            case 7  -> 0.188f; case 8  -> 0.224f; case 9  -> 0.26f;
+            case 10 -> 0.296f; case 11 -> 0.332f; case 12 -> 0.348f;
             default -> 0.08f;
         };
+        return Math.min(base * efficiency, 0.95f);
+    }
+
+    // Backwards compat
+    public float getDuplicationChance(int level) {
+        return getDuplicationChance(level, 1.0f);
     }
 
     public int getDuplicationCount(int level) {
         return switch (level) {
-            case 4, 5 -> 1;
-            case 6, 7, 8 -> 2;
-            case 9, 10 -> 3;
-            case 11, 12 -> 4;
+            case 4, 5 -> 1; case 6, 7, 8 -> 2;
+            case 9, 10 -> 3; case 11, 12 -> 4;
             default -> 1;
         };
     }
 
-    public boolean hasGlowingChests(int level) {
-        return level >= 12;
-    }
+    public boolean hasGlowingChests(int level) { return level >= 12; }
 }

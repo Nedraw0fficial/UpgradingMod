@@ -9,35 +9,24 @@ public class PawnbrokerDisk extends UpgradeDisk {
     }
 
     @Override
-    public void applyEffect(Player player, int level) {
-        // Passive effect - handled in event handler
-    }
+    public void applyEffect(Player player, int level) {}
 
     @Override
-    public void removeEffect(Player player) {
-        // No cleanup needed
-    }
+    public void removeEffect(Player player) {}
 
-    public double getDiscount(int level) {
-        return switch (level) {
-            case 4 -> 0.10;
-            case 5 -> 0.12;
-            case 6 -> 0.14;
-            case 7 -> 0.16;
-            case 8 -> 0.18;
-            case 9 -> 0.20;
-            case 10 -> 0.25;
-            case 11 -> 0.30;
-            case 12 -> 0.33;
+    public double getDiscount(int level, float efficiency) {
+        double base = switch (level) {
+            case 4  -> 0.10; case 5  -> 0.12; case 6  -> 0.14;
+            case 7  -> 0.16; case 8  -> 0.18; case 9  -> 0.20;
+            case 10 -> 0.25; case 11 -> 0.30; case 12 -> 0.33;
             default -> 0.0;
         };
+        return Math.min(base * efficiency, 0.90);
     }
 
-    public boolean canRefundEmeralds(int level) {
-        return level >= 12;
-    }
+    public double getDiscount(int level) { return getDiscount(level, 1.0f); }
 
-    public double getRefundChance() {
-        return 0.02; // 2%
-    }
+    public boolean canRefundEmeralds(int level) { return level >= 12; }
+
+    public double getRefundChance() { return 0.02; }
 }

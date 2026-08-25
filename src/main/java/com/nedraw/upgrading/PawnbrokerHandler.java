@@ -27,7 +27,8 @@ public class PawnbrokerHandler {
                 var disk = DiskRegistry.getDisk(diskId);
                 if (disk instanceof PawnbrokerDisk pawnbrokerDisk) {
                     int level = diskData.getDiskLevel(diskId);
-                    double discount = pawnbrokerDisk.getDiscount(level);
+                    float efficiency = ZSlotEffects.getEfficiencyMultiplier(player, slot);
+                    double discount = pawnbrokerDisk.getDiscount(level, efficiency);
 
                     MerchantOffer offer = event.getMerchantOffer();
 
