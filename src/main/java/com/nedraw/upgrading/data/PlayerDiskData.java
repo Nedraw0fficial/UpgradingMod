@@ -6,6 +6,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 
 import java.util.*;
@@ -16,6 +17,7 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
     private final Map<String, Integer> diskLevels = new HashMap<>();
     private final String[] equippedSlots = new String[3];
     private final Map<String, Long> abilityCooldowns = new HashMap<>();
+    private final ItemStack[] zSlots = new ItemStack[]{ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY};
 
     private float pittyMeter = 0.0f;
 
@@ -35,7 +37,8 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
             case LEGENDARY -> pittyMeter -= 0.30f;
             case MYTHIC    -> pittyMeter  -= 0.85f;
         }
-        pittyMeter = Math.max(-0.85f, Math.min(1.0f, pittyMeter));
+        //old : min -0.85 --> bit too harsh
+        pittyMeter = Math.max(-0.75f, Math.min(1.0f, pittyMeter));
     }
 
     public long getAbilityCooldown(String diskId) {
@@ -144,6 +147,14 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
 
         tag.putFloat("PittyMeter", pittyMeter);
 
+        CompoundTag zSlotsTag = new CompoundTag();
+        for (int i = 0; i < 3; i++) {
+            if (!zSlots[i].isEmpty()) {
+                zSlotsTag.put("ZSlot" + i, zSlots[i].save(provider));
+            }
+        }
+        tag.put("ZSlots", zSlotsTag);
+
         return tag;
     }
 
@@ -175,6 +186,15 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
         }
 
         pittyMeter = tag.contains("PittyMeter") ? tag.getFloat("PittyMeter") : 0.0f;
+
+        Arrays.fill(zSlots, ItemStack.EMPTY);
+        CompoundTag zSlotsTag = tag.getCompound("ZSlots");
+        for (int i = 0; i < 3; i++) {
+            String key = "ZSlot" + i;
+            if (zSlotsTag.contains(key)) {
+                zSlots[i] = ItemStack.parseOptional(provider, zSlotsTag.getCompound(key));
+            }
+        }
     }
 
     public int getTotalXP(Player player) {
@@ -201,5 +221,15 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
         player.experienceProgress = 0.0f;
         player.totalExperience = 0;
         player.giveExperiencePoints(remaining);
+    }
+
+    public ItemStack getZSlot(int slot) {
+        if (slot < 0 || slot >= 3) return ItemStack.EMPTY;
+        return zSlots[slot];
+    }
+
+    public void setZSlot(int slot, ItemStack stack) {
+        if (slot < 0 || slot >= 3) return;
+        zSlots[slot] = stack == null ? ItemStack.EMPTY : stack;
     }
 }

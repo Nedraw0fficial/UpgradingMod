@@ -6,12 +6,15 @@ import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.DiskRarity;
 import com.nedraw.upgrading.disk.UpgradeDisk;
+import com.nedraw.upgrading.item.ZSlotItem;
 import com.nedraw.upgrading.network.packet.EquipDiskPacket;
+import com.nedraw.upgrading.network.packet.EquipZSlotPacket;
 import com.nedraw.upgrading.network.packet.UpgradeDiskPacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +31,12 @@ public class DiskMenuScreen extends Screen {
             ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID, "textures/gui/xp_icon.png");
     private static final ResourceLocation FRAGMENT_ICON_TEXTURE =
             ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID, "textures/item/encrypted_fragment.png");
+    private static final ResourceLocation SOCKET_OFF_TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID, "textures/gui/socket_off.png");
+    private static final ResourceLocation SOCKET_ON_TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID, "textures/gui/socket_on.png");
+    private static final ResourceLocation SOCKET_MYTHIC_TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID, "textures/gui/socket_mythic.png");
 
     private static ResourceLocation getOverlayTexture(DiskRarity rarity) {
         String name = switch (rarity) {
@@ -40,7 +49,6 @@ public class DiskMenuScreen extends Screen {
         return ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID, "textures/gui/" + name + ".png");
     }
 
-    // Platinum overlay — per rarity for BASIC/RARE/EPIC, per disk for LEGENDARY/MYTHIC
     private static ResourceLocation getPlatinumOverlay(UpgradeDisk disk) {
         return switch (disk.getRarity()) {
             case BASIC, RARE, EPIC ->
@@ -52,8 +60,14 @@ public class DiskMenuScreen extends Screen {
         };
     }
 
+    private static ResourceLocation getZSlotLayerTexture(String type, String id) {
+        return ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID,
+                "textures/gui/zslot_layers/" + type + "s/" + type + "_" + id + ".png");
+    }
+
     private static final int BG_TEX_W = 200;
     private static final int BG_TEX_H = 120;
+    private static final int LAYER_TEX_SIZE = 32;
 
     private static final int SCREEN_WIDTH  = 400;
     private static final int SCREEN_HEIGHT = 240;
@@ -99,6 +113,15 @@ public class DiskMenuScreen extends Screen {
     private static final int XP_ICON_Y = 204;
     private static final int XP_ICON_W = 8;
     private static final int XP_ICON_H = 8;
+
+    // Socket: 22x17 in BG texture space → 44x34 in game space (2x)
+    private static final int SOCKET_TEX_W = 22;
+    private static final int SOCKET_TEX_H = 17;
+    private static final int SOCKET_W = SOCKET_TEX_W * 2; // 44
+    private static final int SOCKET_H = SOCKET_TEX_H * 2; // 34
+    // Item inside socket: 10x10 in BG texture space → 20x20 in game space
+    private static final int SOCKET_ITEM_TEX = 10;
+    private static final int SOCKET_ITEM_SIZE = SOCKET_ITEM_TEX * 2; // 20
 
     private PlayerDiskData diskData;
     private List<String> sortedDiskIds   = new ArrayList<>();
@@ -197,6 +220,7 @@ public class DiskMenuScreen extends Screen {
 
         renderSearchBar(graphics, mouseX, mouseY);
         renderDiskList(graphics, mouseX, mouseY);
+        renderZSlotSockets(graphics, mouseX, mouseY);
         renderEquipmentSlots(graphics, mouseX, mouseY);
 
         if (hoveredDiskId == null && previousHoveredDisk != null) {
@@ -259,25 +283,49 @@ public class DiskMenuScreen extends Screen {
     private void renderEquipmentSlots(GuiGraphics graphics, int mouseX, int mouseY) {
         int[] slotXs = {leftPos + SLOT_1_X, leftPos + SLOT_2_X, leftPos + SLOT_3_X};
         int slotY = topPos + SLOT_Y;
+        int innerPad = 2;
 
         for (int slot = 0; slot < 3; slot++) {
             int slotX = slotXs[slot];
+            int layerX = slotX;
+            int layerY = slotY;
+            int layerSize = SLOT_SIZE;
 
-            String equippedDiskId = diskData.getEquippedDisk(slot);
-            if (equippedDiskId != null && !equippedDiskId.equals(heldDiskId)) {
-                int innerPad = 2;
-                renderDiskAt(graphics, equippedDiskId,
-                        slotX + innerPad, slotY + innerPad, SLOT_SIZE - innerPad * 2);
-                if (isMouseOver(mouseX, mouseY, slotX, slotY, SLOT_SIZE, SLOT_SIZE)) {
-                    hoveredDiskId = equippedDiskId;
-                }
+            // Always render Z-Slot layers (even if no disk equipped)
+            ItemStack zSlot = diskData.getZSlot(slot);
+            if (!zSlot.isEmpty()) {
+                String frame = ZSlotItem.getFrame(zSlot);
+                String board = ZSlotItem.getBoard(zSlot);
+                String chip  = ZSlotItem.getChip(zSlot);
+
+                RenderSystem.enableBlend();
+                int layerRenderSize = 64;
+                int layerOffset = (SLOT_SIZE - layerRenderSize) / 2;
+                graphics.blit(getZSlotLayerTexture("board", board),
+                        slotX + layerOffset, slotY + layerOffset,
+                        layerRenderSize, layerRenderSize,
+                        0, 0, LAYER_TEX_SIZE, LAYER_TEX_SIZE, LAYER_TEX_SIZE, LAYER_TEX_SIZE);
+                graphics.blit(getZSlotLayerTexture("chip", chip),
+                        slotX + layerOffset, slotY + layerOffset,
+                        layerRenderSize, layerRenderSize,
+                        0, 0, LAYER_TEX_SIZE, LAYER_TEX_SIZE, LAYER_TEX_SIZE, LAYER_TEX_SIZE);
+                graphics.blit(getZSlotLayerTexture("frame", frame),
+                        slotX + layerOffset, slotY + layerOffset,
+                        layerRenderSize, layerRenderSize,
+                        0, 0, LAYER_TEX_SIZE, LAYER_TEX_SIZE, LAYER_TEX_SIZE, LAYER_TEX_SIZE);
+                RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
             }
 
-            if (isMouseOver(mouseX, mouseY, slotX, slotY, SLOT_SIZE, SLOT_SIZE)) {
-                graphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, 0x4066FF66);
-                if (slot == 0 && equippedDiskId == null) {
-                    renderMythicTip(graphics, slotX, slotY);
+            // Render disk ON TOP (only if equipped)
+            String equippedDiskId = diskData.getEquippedDisk(slot);
+            if (equippedDiskId != null && !equippedDiskId.equals(heldDiskId)) {
+                renderDiskAt(graphics, equippedDiskId, slotX + innerPad, slotY + innerPad, SLOT_SIZE - innerPad * 2);
+                if (isMouseOver(mouseX, mouseY, slotX, slotY, SLOT_SIZE, SLOT_SIZE)) {
+                    hoveredDiskId = equippedDiskId;
+                    graphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, 0x4066FF66);
                 }
+            } else if (isMouseOver(mouseX, mouseY, slotX, slotY, SLOT_SIZE, SLOT_SIZE)) {
+                graphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, 0x4066FF66);
             }
         }
     }
@@ -294,6 +342,65 @@ public class DiskMenuScreen extends Screen {
         graphics.fill(tipX, tipY, tipX + tipW, tipY + 1, 0xFF4444FF);
         graphics.drawString(this.font, "§bMYTHIC slot", tipX + 4, tipY + 5, 0xFFFFFF, false);
         graphics.drawString(this.font, "§7Press §eX §7to activate ability", tipX + 4, tipY + 16, 0xFFFFFF, false);
+    }
+
+    private void renderZSlotSockets(GuiGraphics graphics, int mouseX, int mouseY) {
+        int[] slotXs = {leftPos + SLOT_1_X, leftPos + SLOT_2_X, leftPos + SLOT_3_X};
+        int slotY = topPos + SLOT_Y;
+
+        for (int slot = 0; slot < 3; slot++) {
+            int slotX = slotXs[slot];
+            int socketX = slotX + (SLOT_SIZE - SOCKET_W) / 2;
+            int socketY = slotY - SOCKET_H;
+
+            ItemStack zSlot = diskData.getZSlot(slot);
+            boolean hasZSlot = !zSlot.isEmpty();
+            boolean isMythic = hasZSlot && ZSlotItem.isMythic(zSlot);
+
+            ResourceLocation socketTex = isMythic ? SOCKET_MYTHIC_TEXTURE
+                    : hasZSlot ? SOCKET_ON_TEXTURE
+                    : SOCKET_OFF_TEXTURE;
+
+            RenderSystem.enableBlend();
+
+            graphics.blit(socketTex, socketX, socketY, SOCKET_W, SOCKET_H,
+                    0, 0, SOCKET_TEX_W, SOCKET_TEX_H, SOCKET_TEX_W, SOCKET_TEX_H);
+            RenderSystem.disableBlend();
+            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+
+            // Render Z-Slot item layers inside socket at 2x scale
+            if (hasZSlot) {
+                String frame = ZSlotItem.getFrame(zSlot);
+                String board = ZSlotItem.getBoard(zSlot);
+                String chip  = ZSlotItem.getChip(zSlot);
+
+                int itemX = socketX + (SOCKET_W - SOCKET_ITEM_SIZE) / 2;
+                int itemY = socketY + (SOCKET_H - SOCKET_ITEM_SIZE) / 2;
+
+                RenderSystem.enableBlend();
+                graphics.blit(ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID,
+                        "textures/item/board_" + board + ".png"),
+                        itemX, itemY, SOCKET_ITEM_SIZE, SOCKET_ITEM_SIZE,
+                        0, 0, LAYER_TEX_SIZE, LAYER_TEX_SIZE, LAYER_TEX_SIZE, LAYER_TEX_SIZE);
+                graphics.blit(ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID,
+                                "textures/item/chip_" + chip + "_zslot.png"),
+                        itemX, itemY, SOCKET_ITEM_SIZE, SOCKET_ITEM_SIZE,
+                        0, 0, LAYER_TEX_SIZE, LAYER_TEX_SIZE, LAYER_TEX_SIZE, LAYER_TEX_SIZE);
+                graphics.blit(ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID,
+                                "textures/item/frame_" + frame + ".png"),
+                        itemX, itemY, SOCKET_ITEM_SIZE, SOCKET_ITEM_SIZE,
+                        0, 0, LAYER_TEX_SIZE, LAYER_TEX_SIZE, LAYER_TEX_SIZE, LAYER_TEX_SIZE);
+                RenderSystem.disableBlend();
+                RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            }
+
+            if (isMouseOver(mouseX, mouseY, socketX, socketY, SOCKET_W, SOCKET_H)) {
+                int intX = socketX + 6 * 2;
+                int intY = socketY + 4 * 2;
+                int intSize = 10 * 2;
+                graphics.fill(intX, intY, intX + intSize, intY + intSize, 0x60FFFFFF);
+            }
+        }
     }
 
     private void renderInfoPanel(GuiGraphics graphics, int mouseX, int mouseY) {
@@ -375,14 +482,12 @@ public class DiskMenuScreen extends Screen {
                 int fragIconX = leftPos + XP_ICON_X + XP_ICON_W + 3 + this.font.width(xpCost + " XP") + 6;
                 int fragIconY = topPos + XP_ICON_Y;
 
-                // Fragment icon
                 RenderSystem.enableBlend();
                 graphics.blit(FRAGMENT_ICON_TEXTURE, fragIconX, fragIconY,
                         XP_ICON_W, XP_ICON_H, 0, 0, 16, 16, 16, 16);
                 RenderSystem.disableBlend();
                 RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-                // Fragment count
                 int fragColor = hasFragments ? 0x55FF55 : 0xFF5555;
                 graphics.drawString(this.font, fragmentCost + " Fragments",
                         fragIconX + XP_ICON_W + 3, fragIconY + 1, fragColor, false);
@@ -391,10 +496,9 @@ public class DiskMenuScreen extends Screen {
     }
 
     private int countPlayerFragments() {
-        assert minecraft != null;
         if (minecraft.player == null) return 0;
         int count = 0;
-        for (net.minecraft.world.item.ItemStack stack : minecraft.player.getInventory().items) {
+        for (ItemStack stack : minecraft.player.getInventory().items) {
             if (stack.is(com.nedraw.upgrading.item.ModItems.ENCRYPTED_FRAGMENT.get())) {
                 count += stack.getCount();
             }
@@ -426,20 +530,17 @@ public class DiskMenuScreen extends Screen {
         int iw = w - c * 2;
         int ih = h - c * 2;
 
-        graphics.blit(BUTTON_TEXTURE, x,     y,     c,  c,  0,    vOffset,         c,  c,  tw, th);
-        graphics.blit(BUTTON_TEXTURE, x+w-c, y,     c,  c,  tw-c, vOffset,         c,  c,  tw, th);
+        graphics.blit(BUTTON_TEXTURE, x,     y,     c,  c,  0,    vOffset,             c, c, tw, th);
+        graphics.blit(BUTTON_TEXTURE, x+w-c, y,     c,  c,  tw-c, vOffset,             c, c, tw, th);
         graphics.blit(BUTTON_TEXTURE, x,     y+h-c, c,  c,  0,    vOffset+BTN_TEX_W-c, c, c, tw, th);
         graphics.blit(BUTTON_TEXTURE, x+w-c, y+h-c, c,  c,  tw-c, vOffset+BTN_TEX_W-c, c, c, tw, th);
-        graphics.blit(BUTTON_TEXTURE, x+c,   y,     iw, c,  c,    vOffset,         1,  c,  tw, th);
+        graphics.blit(BUTTON_TEXTURE, x+c,   y,     iw, c,  c,    vOffset,             1, c, tw, th);
         graphics.blit(BUTTON_TEXTURE, x+c,   y+h-c, iw, c,  c,    vOffset+BTN_TEX_W-c, 1, c, tw, th);
-        graphics.blit(BUTTON_TEXTURE, x,     y+c,   c,  ih, 0,    vOffset+c,       c,  1,  tw, th);
-        graphics.blit(BUTTON_TEXTURE, x+w-c, y+c,   c,  ih, tw-c, vOffset+c,       c,  1,  tw, th);
-        graphics.blit(BUTTON_TEXTURE, x+c,   y+c,   iw, ih, c,    vOffset+c,       1,  1,  tw, th);
+        graphics.blit(BUTTON_TEXTURE, x,     y+c,   c,  ih, 0,    vOffset+c,           c, 1, tw, th);
+        graphics.blit(BUTTON_TEXTURE, x+w-c, y+c,   c,  ih, tw-c, vOffset+c,           c, 1, tw, th);
+        graphics.blit(BUTTON_TEXTURE, x+c,   y+c,   iw, ih, c,    vOffset+c,           1, 1, tw, th);
     }
 
-    // =====================
-    // DISK RENDERING
-    // =====================
     private void renderDiskAt(GuiGraphics graphics, String diskId, int x, int y, int size) {
         UpgradeDisk disk = DiskRegistry.getDisk(diskId);
         if (disk == null) return;
@@ -498,15 +599,32 @@ public class DiskMenuScreen extends Screen {
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
     }
 
-    // =====================
-    // INPUT
-    // =====================
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (button != 0) return super.mouseClicked(mouseX, mouseY, button);
         int mx = (int) mouseX, my = (int) mouseY;
 
         searchFocused = isMouseOver(mx, my, leftPos + SEARCH_X, topPos + SEARCH_Y, SEARCH_W, SEARCH_H);
+
+        // Socket clicks
+        int[] socketSlotXs = {leftPos + SLOT_1_X, leftPos + SLOT_2_X, leftPos + SLOT_3_X};
+        for (int slot = 0; slot < 3; slot++) {
+            int slotX = socketSlotXs[slot];
+            int socketX = slotX + (SLOT_SIZE - SOCKET_W) / 2;
+            int socketY = topPos + SLOT_Y - SOCKET_H - 1;
+
+            if (isMouseOver(mx, my, socketX, socketY, SOCKET_W, SOCKET_H)) {
+                ItemStack held = minecraft.player.getMainHandItem();
+                ItemStack zSlotInSocket = diskData.getZSlot(slot);
+
+                if (!held.isEmpty() && held.getItem() instanceof com.nedraw.upgrading.item.ZSlotItem) {
+                    PacketDistributor.sendToServer(new EquipZSlotPacket(slot, true));
+                } else if (!zSlotInSocket.isEmpty()) {
+                    PacketDistributor.sendToServer(new EquipZSlotPacket(slot, false));
+                }
+                return true;
+            }
+        }
 
         if (hoveringUpgradeButton && hoveredDiskId != null) {
             int currentLevel = diskData.getDiskLevel(hoveredDiskId);
@@ -516,7 +634,6 @@ public class DiskMenuScreen extends Screen {
                 int playerXP = diskData.getTotalXP(minecraft.player);
                 if (playerXP >= xpCost) {
                     PacketDistributor.sendToServer(new UpgradeDiskPacket(hoveredDiskId));
-                    //diskData.upgradeDisk(hoveredDiskId);
                     minecraft.getSoundManager().play(
                             net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(
                                     net.minecraft.sounds.SoundEvents.UI_BUTTON_CLICK, 1.0f));

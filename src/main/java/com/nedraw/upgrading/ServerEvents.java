@@ -43,7 +43,6 @@ public class ServerEvents {
         String slot1 = data.getEquippedDisk(1);
         String slot2 = data.getEquippedDisk(2);
 
-        // Build disk levels map
         Map<String, Integer> diskLevels = new HashMap<>();
         for (String diskId : data.getUnlockedDisks()) {
             diskLevels.put(diskId, data.getDiskLevel(diskId));
@@ -51,12 +50,16 @@ public class ServerEvents {
 
         SyncDiskDataPacket packet = new SyncDiskDataPacket(
                 new HashSet<>(data.getUnlockedDisks()),
-                diskLevels,  // Include levels now
+                diskLevels,
                 slot0 != null ? slot0 : "",
                 slot1 != null ? slot1 : "",
-                slot2 != null ? slot2 : ""
+                slot2 != null ? slot2 : "",
+                data.getZSlot(0),
+                data.getZSlot(1),
+                data.getZSlot(2)
         );
 
         PacketDistributor.sendToPlayer(player, packet);
     }
+
 }

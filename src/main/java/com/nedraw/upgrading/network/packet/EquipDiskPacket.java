@@ -44,7 +44,6 @@ public record EquipDiskPacket(String diskId, int slot, boolean unequip) implemen
                     data.equipDisk(packet.diskId(), packet.slot());
                 }
 
-                // Play sound
                 serverPlayer.level().playSound(
                         serverPlayer,
                         serverPlayer.blockPosition(),
@@ -54,7 +53,6 @@ public record EquipDiskPacket(String diskId, int slot, boolean unequip) implemen
                         packet.unequip() ? 0.8f : 1.2f
                 );
 
-                // Sync back to client
                 ServerEvents.syncDiskData(serverPlayer);
             }
         });

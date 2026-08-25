@@ -34,18 +34,22 @@ public class ModNetwork {
                 ClaimEncryptedFloppyPacket::handle
         );
 
-        // WALL JUMP PACKET
         registrar.playToServer(
                 WallJumpPacket.TYPE,
                 WallJumpPacket.STREAM_CODEC,
                 WallJumpPacket::handle
         );
 
-        //Mythic disks' keybind packet
         registrar.playToServer(
                 ActivateMythicPacket.TYPE,
                 ActivateMythicPacket.STREAM_CODEC,
                 ActivateMythicPacket::handle
+        );
+
+        registrar.playToServer(
+                EquipZSlotPacket.TYPE,
+                EquipZSlotPacket.STREAM_CODEC,
+                EquipZSlotPacket::handle
         );
     }
 
