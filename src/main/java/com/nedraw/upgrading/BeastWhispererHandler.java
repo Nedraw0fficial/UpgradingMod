@@ -36,6 +36,7 @@ public class BeastWhispererHandler {
                 var disk = DiskRegistry.getDisk(diskId);
                 if (disk instanceof BeastWhispererDisk beastDisk) {
                     int level = diskData.getDiskLevel(diskId);
+                    float efficiency = ZSlotEffects.getEfficiencyMultiplier(player, slot);
 
                     if (player.level() instanceof ServerLevel serverLevel) {
                         Animal parentA = (Animal) event.getParentA();
@@ -45,18 +46,18 @@ public class BeastWhispererHandler {
                                 serverLevel.getServer().getTickCount() + 1,
                                 () -> {
                                     if (parentA != null) {
-                                        int reducedCooldown = beastDisk.getReducedBreedingCooldown(6000, level);
+                                        int reducedCooldown = beastDisk.getReducedBreedingCooldown(6000, level, efficiency);
                                         parentA.setAge(reducedCooldown);
                                     }
                                     if (parentB != null) {
-                                        int reducedCooldown = beastDisk.getReducedBreedingCooldown(6000, level);
+                                        int reducedCooldown = beastDisk.getReducedBreedingCooldown(6000, level, efficiency);
                                         parentB.setAge(reducedCooldown);
                                     }
                                 }
                         ));
 
                         if (level >= 12 && event.getChild() != null && parentA != null) {
-                            spawnRecursiveTwins(event.getChild(), serverLevel, parentA, 0, player);
+                            spawnRecursiveTwins(event.getChild(), serverLevel, parentA, 0, player, efficiency);
                         }
                     }
                 }
@@ -66,10 +67,10 @@ public class BeastWhispererHandler {
     }
 
     private static void spawnRecursiveTwins(AgeableMob originalBaby, ServerLevel level,
-                                            Animal parentReference, int depth, Player player) {
+                                            Animal parentReference, int depth, Player player, float efficiency) {
         if (depth > 10) return;
 
-        if (RANDOM.nextFloat() < 0.12f) {
+        if (RANDOM.nextFloat() < Math.min(0.12f * efficiency, 0.50f)) {
             double x = parentReference.getX();
             double y = parentReference.getY();
             double z = parentReference.getZ();
@@ -79,28 +80,16 @@ public class BeastWhispererHandler {
             babyData.remove("UUID");
 
             Entity twin = originalBaby.getType().create(level);
-
             if (twin != null) {
                 twin.load(babyData);
-
-                if (twin instanceof AgeableMob ageableTwin) {
-                    ageableTwin.setAge(-24000);
-                }
-
+                if (twin instanceof AgeableMob ageableTwin) ageableTwin.setAge(-24000);
                 twin.setUUID(UUID.randomUUID());
                 twin.moveTo(x, y, z, 0, 0);
-
                 boolean added = level.addFreshEntity(twin);
-
                 if (added) {
-                    // Fire advancement when a twin is successfully born
-                    if (player instanceof ServerPlayer sp) {
-                        ModAdvancementTriggers.TWIN_BORN(sp);
-                    }
-
-                    if (twin instanceof AgeableMob ageableTwin) {
-                        spawnRecursiveTwins(ageableTwin, level, parentReference, depth + 1, player);
-                    }
+                    if (player instanceof ServerPlayer sp) ModAdvancementTriggers.TWIN_BORN(sp);
+                    if (twin instanceof AgeableMob ageableTwin)
+                        spawnRecursiveTwins(ageableTwin, level, parentReference, depth + 1, player, efficiency);
                 }
             }
         }

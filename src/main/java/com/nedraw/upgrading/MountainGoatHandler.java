@@ -35,12 +35,14 @@ public class MountainGoatHandler {
         PlayerDiskData data = PlayerDiskData.get(player);
         UpgradeDisk disk = null;
         int level = 0;
+        int foundSlot = -1;
 
         for (int slot = 0; slot < 3; slot++) {
             String diskId = data.getEquippedDisk(slot);
             if (diskId != null && diskId.equals("mountain_goat")) {
                 disk = DiskRegistry.getDisk(diskId);
                 level = data.getDiskLevel(diskId);
+                foundSlot = slot;
                 break;
             }
         }
@@ -53,10 +55,11 @@ public class MountainGoatHandler {
             return;
         }
 
-        handleCling(player, level);
+        float efficiency = ZSlotEffects.getEfficiencyMultiplier(player, foundSlot);
+        handleCling(player, level, efficiency);
     }
 
-    private static void handleCling(Player player, int level) {
+    private static void handleCling(Player player, int level, float efficiency) {
         UUID id = player.getUUID();
         long now = System.currentTimeMillis();
 
@@ -87,7 +90,7 @@ public class MountainGoatHandler {
             CLING_WALL.put(id, wall);
         }
 
-        long duration = (long)(getDuration(level) * 1000);
+        long duration = (long)(getDuration(level) * efficiency * 1000);
         long elapsed = now - CLING_START.get(id);
 
         if (elapsed > duration) {
@@ -104,7 +107,6 @@ public class MountainGoatHandler {
 
     public static void performWallJump(Player player, Direction wall) {
         UUID id = player.getUUID();
-
         CLING_START.remove(id);
         CLING_WALL.remove(id);
         CLING_EXPIRED.remove(id);
@@ -116,14 +118,11 @@ public class MountainGoatHandler {
         player.level().playSound(null, player.blockPosition(),
                 SoundEvents.GOAT_LONG_JUMP, SoundSource.PLAYERS, 1.0f, 1.2f);
 
-        // Fire advancement on wall jump
-        if (player instanceof ServerPlayer sp) {
-            ModAdvancementTriggers.WALL_JUMP(sp);
-        }
+        if (player instanceof ServerPlayer sp) ModAdvancementTriggers.WALL_JUMP(sp);
     }
 
     private static double getDuration(int level) {
-        return switch(level) {
+        return switch (level) {
             case 7 -> 1.0;   case 8 -> 1.25;  case 9 -> 1.5;
             case 10 -> 1.75; case 11 -> 2.0;  case 12 -> 2.5;
             default -> 0;

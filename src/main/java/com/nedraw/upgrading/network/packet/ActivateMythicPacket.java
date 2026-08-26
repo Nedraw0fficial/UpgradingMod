@@ -1,6 +1,7 @@
 package com.nedraw.upgrading.network.packet;
 
 import com.nedraw.upgrading.UpgradingMod;
+import com.nedraw.upgrading.ZSlotEffects;
 import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.DiskRarity;
@@ -47,8 +48,9 @@ public record ActivateMythicPacket(int slot) implements CustomPacketPayload {
 
             long currentTime = System.currentTimeMillis();
             long lastActivation = data.getAbilityCooldown(diskId);
-            long cooldownMs = disk.getAbilityCooldownMs(data.getDiskLevel(diskId));
-
+            float efficiency = ZSlotEffects.getEfficiencyMultiplier(serverPlayer, slot);
+            int level = data.getDiskLevel(diskId);
+            long cooldownMs = (long)(disk.getAbilityCooldownMs(level) / efficiency);
             if (currentTime - lastActivation < cooldownMs) {
                 long remainingSeconds = (cooldownMs - (currentTime - lastActivation)) / 1000;
                 serverPlayer.displayClientMessage(

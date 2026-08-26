@@ -8,7 +8,6 @@ import java.util.UUID;
 
 public class SoapyHandsDisk extends UpgradeDisk {
 
-    // Track which level is currently applied to each player
     private static final Map<UUID, Integer> APPLIED_LEVELS = new HashMap<>();
 
     public SoapyHandsDisk() {
@@ -17,20 +16,7 @@ public class SoapyHandsDisk extends UpgradeDisk {
 
     @Override
     public void applyEffect(Player player, int level) {
-        UUID playerId = player.getUUID();
-        Integer appliedLevel = APPLIED_LEVELS.get(playerId);
-
-        // Update tracking
-        if (appliedLevel == null || appliedLevel != level) {
-            APPLIED_LEVELS.put(playerId, level);
-        }
-
-        // Effect is handled in attack event
-    }
-
-    @Override
-    public void applyTickEffect(Player player, int level) {
-        // No continuous effects needed
+        APPLIED_LEVELS.put(player.getUUID(), level);
     }
 
     @Override
@@ -38,21 +24,14 @@ public class SoapyHandsDisk extends UpgradeDisk {
         APPLIED_LEVELS.remove(player.getUUID());
     }
 
-    // Calculate drop chance based on level
-    public float getDropChance(int level) {
-        if (level < 12) {
-            // Levels 7-11: 2% per level above start
-            return ((level - 6) * 2) / 100.0f;
-        } else {
-            // Level 12: 15% for main hand, 8% for others
-            return 0.15f; // This is used for main hand only
-        }
+    public float getDropChance(int level, float efficiency) {
+        float base = level < 12 ? ((level - 6) * 2) / 100.0f : 0.15f;
+        return Math.min(base * efficiency, 0.80f);
     }
 
-    // Check if should drop armor (level 12 only)
-    public boolean canDropArmor(int level) {
-        return level >= 12;
-    }
+    public float getDropChance(int level) { return getDropChance(level, 1.0f); }
+
+    public boolean canDropArmor(int level) { return level >= 12; }
 
     public int getAppliedLevel(UUID playerId) {
         return APPLIED_LEVELS.getOrDefault(playerId, 0);

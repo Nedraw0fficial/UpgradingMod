@@ -96,7 +96,8 @@ public class DiskMenuScreen extends Screen {
     private static final int INFO_W = 290 - INFO_PADDING;
 
     private static final int DESC_Y = 162;
-    private static final int DESC_W = 268;
+    //268 vvv
+    private static final int DESC_W = 262;
     private static final int DESC_H = 34;
 
     private static final int BUTTON_X = 106;
@@ -415,6 +416,14 @@ public class DiskMenuScreen extends Screen {
         int level       = diskData.getDiskLevel(diskId);
         int rarityColor = disk.getRarity().getColor();
 
+        float efficiency = 1.0f;
+        for (int s = 0; s < 3; s++) {
+            if (diskId.equals(diskData.getEquippedDisk(s))) {
+                efficiency = com.nedraw.upgrading.ZSlotEffects.getEfficiencyMultiplier(minecraft.player, s);
+                break;
+            }
+        }
+
         String nameText = disk.getDisplayName();
         graphics.drawString(this.font,
                 Component.literal(nameText)
@@ -425,10 +434,12 @@ public class DiskMenuScreen extends Screen {
         int levelX = leftPos + INFO_X + INFO_W - this.font.width(levelText) - 18;
         graphics.drawString(this.font, levelText, levelX, y, 0xFFFF55, false);
 
+        final float finalEfficiency = efficiency;
+
         String rawDescription = disk.getDescriptionForLevel(level);
         descLines = new ArrayList<>();
         for (String paragraph : rawDescription.split("\n")) {
-            descLines.addAll(manualWrap(paragraph, DESC_W));
+            descLines.addAll(manualWrap(paragraph, DESC_W, finalEfficiency));
         }
         descMaxScroll = Math.max(0, (descLines.size() * 10) - DESC_H);
 
@@ -437,9 +448,15 @@ public class DiskMenuScreen extends Screen {
 
         graphics.enableScissor(descX, descY, descX + DESC_W, descY + DESC_H);
         int lineY = descY - descScrollOffset;
+        //final float finalEfficiency = efficiency;
         for (String line : descLines) {
             if (lineY + 10 >= descY && lineY <= descY + DESC_H) {
-                graphics.drawString(this.font, line, descX, lineY, 0xCCCCCC, false);
+                if (finalEfficiency != 1.0f) {
+                    renderEfficiencyDescription(graphics, line, descX, lineY, finalEfficiency);
+                } else {
+                    String cleanLine = line.replaceAll("\\{([0-9.]+)\\}", "$1");
+                    graphics.drawString(this.font, cleanLine, descX, lineY, 0xCCCCCC, false);
+                }
             }
             lineY += 10;
         }
@@ -495,6 +512,74 @@ public class DiskMenuScreen extends Screen {
         }
     }
 
+    private void renderEfficiencyDescription(GuiGraphics graphics, String line, int x, int y, float efficiency) {
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\{([0-9.]+)\\}");
+        java.util.regex.Matcher matcher = pattern.matcher(line);
+
+        net.minecraft.network.chat.MutableComponent result = net.minecraft.network.chat.Component.empty();
+        int last = 0;
+
+        while (matcher.find()) {
+
+            if (last < matcher.start()) {
+                result.append(net.minecraft.network.chat.Component.literal(line.substring(last, matcher.start()))
+                        .withStyle(s -> s.withColor(0xCCCCCC)));
+            }
+
+            float originalValue = Float.parseFloat(matcher.group(1));
+            float scaledValue = originalValue * efficiency;
+
+            String originalStr = formatValue(originalValue);
+            String scaledStr = formatValue(scaledValue);
+
+            result.append(net.minecraft.network.chat.Component.literal(originalStr)
+                    .withStyle(s -> s.withColor(0x555555).withStrikethrough(true)));
+
+            result.append(net.minecraft.network.chat.Component.literal(" "));
+
+            result.append(net.minecraft.network.chat.Component.literal(scaledStr)
+                    .withStyle(s -> s.withColor(0x55FF55)));
+
+            last = matcher.end();
+        }
+
+        if (last < line.length()) {
+            result.append(net.minecraft.network.chat.Component.literal(line.substring(last))
+                    .withStyle(s -> s.withColor(0xCCCCCC)));
+        }
+
+        graphics.drawString(this.font, result, x, y, 0xCCCCCC, false);
+    }
+
+    private String formatValue(float value) {
+        if (value == Math.floor(value)) {
+            return String.valueOf((int) value);
+        }
+        return String.format("%.1f", value);
+    }
+
+    private int getEfficiencyLineWidth(String line, float efficiency) {
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\{([0-9.]+)\\}");
+        java.util.regex.Matcher matcher = pattern.matcher(line);
+        int width = 0;
+        int last = 0;
+
+        while (matcher.find()) {
+            //Plain
+            width += this.font.width(line.substring(last, matcher.start()));
+
+            float original = Float.parseFloat(matcher.group(1));
+            float scaled = original * efficiency;
+
+            // Old
+            width += this.font.width(formatValue(original) + " " + formatValue(scaled));
+            last = matcher.end();
+        }
+        width += this.font.width(line.substring(last));
+        return width;
+    }
+
+
     private int countPlayerFragments() {
         if (minecraft.player == null) return 0;
         int count = 0;
@@ -506,13 +591,16 @@ public class DiskMenuScreen extends Screen {
         return count;
     }
 
-    private List<String> manualWrap(String text, int maxWidth) {
+    private List<String> manualWrap(String text, int maxWidth, float efficiency) {
         List<String> lines = new ArrayList<>();
         String[] words = text.split(" ");
         StringBuilder current = new StringBuilder();
         for (String word : words) {
             String test = current.isEmpty() ? word : current + " " + word;
-            if (this.font.width(test) <= maxWidth) {
+            int testWidth = efficiency != 1.0f
+                    ? getEfficiencyLineWidth(test, efficiency)
+                    : this.font.width(test);
+            if (testWidth <= maxWidth) {
                 current = new StringBuilder(test);
             } else {
                 if (!current.isEmpty()) lines.add(current.toString());
@@ -521,6 +609,10 @@ public class DiskMenuScreen extends Screen {
         }
         if (!current.isEmpty()) lines.add(current.toString());
         return lines;
+    }
+
+    private List<String> manualWrap(String text, int maxWidth) {
+        return manualWrap(text, maxWidth, 1.0f);
     }
 
     private void renderNineSlicedButton(GuiGraphics graphics, int x, int y, int w, int h, int vOffset) {

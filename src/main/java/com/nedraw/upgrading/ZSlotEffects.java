@@ -39,14 +39,14 @@ public class ZSlotEffects {
             }
 
             if (frame.equals("rose_gold")) {
-                for (int other = 0; other < 3; other++) {
-                    if (other != slot) {
-                        ItemStack otherZSlot = data.getZSlot(other);
-                        if (!otherZSlot.isEmpty() && "rose_gold".equals(ZSlotItem.getFrame(otherZSlot))) {
-                            modifiers[slot] += 0.07f;
-                        }
+                int roseGoldCount = 0;
+                for (int s = 0; s < 3; s++) {
+                    ItemStack otherZSlot = data.getZSlot(s);
+                    if (!otherZSlot.isEmpty() && "rose_gold".equals(ZSlotItem.getFrame(otherZSlot))) {
+                        roseGoldCount++;
                     }
                 }
+                modifiers[slot] += roseGoldCount * 0.09f;
             }
         }
 
@@ -67,23 +67,23 @@ public class ZSlotEffects {
             case "iron"     -> 0.12f;
             case "golden"   -> 0.16f;
             case "amethyst" -> 0.20f;
-            case "cactus"   -> 0.18f;
+            case "cactus"   -> 0.26f;
             case "glass"    -> {
                 int emptySlots = 0;
                 for (int s = 0; s < 3; s++) {
                     if (s != slot && data.getEquippedDisk(s) == null) emptySlots++;
                 }
-                yield 0.10f + (emptySlots * 0.05f);
+                yield 0.09f + (emptySlots * 0.08f);
             }
             case "rose_gold" -> 0.00f;
-            case "sponge"    -> diskLevel * 0.01f;
+            case "sponge"    -> diskLevel * 0.021f;
             case "mushroom"  -> {
                 String equippedId = data.getEquippedDisk(slot);
                 if (equippedId == null) yield 0.15f;
                 var disk = com.nedraw.upgrading.disk.DiskRegistry.getDisk(equippedId);
                 if (disk == null) yield 0.15f;
                 int tier = disk.getRarity().ordinal(); // BASIC=0, RARE=1, EPIC=2, LEGENDARY=3, MYTHIC=4
-                yield 0.15f - (tier * 0.03f);
+                yield 0.25f - (tier * 0.04f);
             }
             case "void" -> 0.00f;
             default     -> 0.00f;

@@ -36,9 +36,10 @@ public class AttackHandler {
                 UpgradeDisk disk = DiskRegistry.getDisk(diskId);
                 if (disk instanceof SoapyHandsDisk soapyHands) {
                     int level = diskData.getDiskLevel(diskId);
+                    float efficiency = ZSlotEffects.getEfficiencyMultiplier(player, slot);
 
                     if (level < 12) {
-                        float dropChance = soapyHands.getDropChance(level);
+                        float dropChance = soapyHands.getDropChance(level, efficiency);
                         if (RANDOM.nextFloat() < dropChance) {
                             ItemStack mainHandItem = target.getMainHandItem();
                             if (!mainHandItem.isEmpty()) {
@@ -49,11 +50,10 @@ public class AttackHandler {
                             }
                         }
                     } else {
-                        // Level 12: track how many slots are disarmed
                         int slotsDisarmed = 0;
+                        float baseChance = soapyHands.getDropChance(level, efficiency);
 
-                        // Main hand (15%)
-                        if (RANDOM.nextFloat() < 0.15f) {
+                        if (RANDOM.nextFloat() < baseChance) {
                             ItemStack item = target.getMainHandItem();
                             if (!item.isEmpty()) {
                                 target.level().addFreshEntity(new ItemEntity(
@@ -64,8 +64,8 @@ public class AttackHandler {
                             }
                         }
 
-                        // Off-hand (8%)
-                        if (RANDOM.nextFloat() < 0.08f) {
+                        float otherChance = 0.08f * efficiency;
+                        if (RANDOM.nextFloat() < otherChance) {
                             ItemStack item = target.getOffhandItem();
                             if (!item.isEmpty()) {
                                 target.level().addFreshEntity(new ItemEntity(
@@ -76,11 +76,10 @@ public class AttackHandler {
                             }
                         }
 
-                        // Armor slots (8% each)
                         for (EquipmentSlot armorSlot : new EquipmentSlot[]{
                                 EquipmentSlot.HEAD, EquipmentSlot.CHEST,
                                 EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
-                            if (RANDOM.nextFloat() < 0.08f) {
+                            if (RANDOM.nextFloat() < otherChance) {
                                 ItemStack item = target.getItemBySlot(armorSlot);
                                 if (!item.isEmpty()) {
                                     target.level().addFreshEntity(new ItemEntity(
@@ -92,24 +91,6 @@ public class AttackHandler {
                             }
                         }
 
-                        // Inventory slots (8% each, mobs with containers)
-                        if (target instanceof net.minecraft.world.entity.Mob mob &&
-                                mob instanceof net.minecraft.world.Container container) {
-                            for (int i = 0; i < container.getContainerSize(); i++) {
-                                if (RANDOM.nextFloat() < 0.08f) {
-                                    ItemStack item = container.getItem(i);
-                                    if (!item.isEmpty()) {
-                                        target.level().addFreshEntity(new ItemEntity(
-                                                target.level(), target.getX(), target.getY(), target.getZ(), item));
-                                        container.setItem(i, ItemStack.EMPTY);
-                                        playPickupSound(player, target);
-                                        slotsDisarmed++;
-                                    }
-                                }
-                            }
-                        }
-
-                        // Fire advancement if 3+ slots disarmed in one hit (main + offhand + at least 1 armor)
                         if (slotsDisarmed >= 3 && player instanceof ServerPlayer sp) {
                             ModAdvancementTriggers.FULL_DISARM(sp);
                         }

@@ -34,9 +34,9 @@ public class NecroArcherHandler {
     private static final Map<UUID, Integer> BOOST_LEVELS = new HashMap<>();
     private static final Set<UUID> DETONATION_FIRED = new HashSet<>();
 
-    public static void activateBoost(Player player, int level) {
+    public static void activateBoost(Player player, int level, float efficiency) {
         UUID id = player.getUUID();
-        long boostDurationMs = level >= 12 ? 10_000L : 7_000L;
+        long boostDurationMs = (long)((level >= 12 ? 10_000L : 7_000L) * efficiency);
 
         BOOST_END_TIMES.put(id, System.currentTimeMillis() + boostDurationMs);
         BOOST_LEVELS.put(id, level);
@@ -44,7 +44,7 @@ public class NecroArcherHandler {
 
         if (!(player instanceof ServerPlayer serverPlayer)) return;
 
-        double speedBoost = level >= 12 ? 0.40 : 0.35;
+        double speedBoost = (level >= 12 ? 0.40 : 0.35) * efficiency;
         var speedAttr = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED);
         if (speedAttr != null) {
             ResourceLocation boostId = ResourceLocation.fromNamespaceAndPath(UpgradingMod.MODID, "necro_archer_boost");
@@ -64,6 +64,10 @@ public class NecroArcherHandler {
         serverPlayer.level().playSound(null, serverPlayer.blockPosition(),
                 net.minecraft.sounds.SoundEvents.WITHER_SPAWN,
                 net.minecraft.sounds.SoundSource.PLAYERS, 0.6f, 1.8f);
+    }
+
+    public static void activateBoost(Player player, int level) {
+        activateBoost(player, level, 1.0f);
     }
 
     public static boolean isPlayerBoosted(UUID playerId) {

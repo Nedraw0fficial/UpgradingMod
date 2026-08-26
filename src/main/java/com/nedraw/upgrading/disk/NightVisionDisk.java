@@ -16,7 +16,6 @@ public class NightVisionDisk extends UpgradeDisk {
 
     private static final Map<UUID, Integer> BLINK_TIMERS = new HashMap<>();
     private static final Map<UUID, Boolean> IS_BLINK_ON = new HashMap<>();
-
     private static final int LIGHT_THRESHOLD = 7;
 
     public NightVisionDisk() {
@@ -24,16 +23,13 @@ public class NightVisionDisk extends UpgradeDisk {
     }
 
     @Override
-    public void applyEffect(Player player, int level) {
-        // Just track - actual logic in applyTickEffect
-    }
+    public void applyEffect(Player player, int level) {}
 
     @Override
-    public void applyTickEffect(Player player, int level) {
+    public void applyTickEffect(Player player, int level, int slot, float efficiency) {
         if (player.level().isClientSide) return;
 
         UUID playerId = player.getUUID();
-
         BlockPos pos = player.blockPosition();
         int lightLevel = player.level().getBrightness(net.minecraft.world.level.LightLayer.BLOCK, pos);
 
@@ -47,29 +43,25 @@ public class NightVisionDisk extends UpgradeDisk {
         if (level >= 12) {
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 220, 0, false, false, true));
 
-            // Find invisible entities and glow them
+            // Efficiency scales detection radius at L12
+            double detectRadius = 20.0 * efficiency;
             List<net.minecraft.world.entity.LivingEntity> invisible = player.level().getEntitiesOfClass(
                     net.minecraft.world.entity.LivingEntity.class,
-                    player.getBoundingBox().inflate(20),
+                    player.getBoundingBox().inflate(detectRadius),
                     entity -> entity.isInvisible() && entity != player
             );
 
             if (!invisible.isEmpty()) {
                 invisible.forEach(entity -> entity.addEffect(
-                        new MobEffectInstance(MobEffects.GLOWING, 40, 0, false, false, false)
-                ));
-
-                // Fire advancement when at least one invisible entity is detected
-                if (player instanceof ServerPlayer sp) {
-                    ModAdvancementTriggers.SEE_INVISIBLE(sp);
-                }
+                        new MobEffectInstance(MobEffects.GLOWING, 40, 0, false, false, false)));
+                if (player instanceof ServerPlayer sp) ModAdvancementTriggers.SEE_INVISIBLE(sp);
             }
             return;
         }
 
-        // Levels 1-11: BLINK MECHANIC
-        int onDuration = getOnDuration(level);
-        int offDuration = getOffDuration(level);
+        // Blink mechanic: efficiency increases ON duration and decreases OFF duration
+        int onDuration  = (int)(getOnDuration(level)  * efficiency);
+        int offDuration = (int)(getOffDuration(level) / efficiency);
 
         if (!BLINK_TIMERS.containsKey(playerId)) {
             BLINK_TIMERS.put(playerId, 0);
@@ -81,7 +73,6 @@ public class NightVisionDisk extends UpgradeDisk {
 
         if (isBlinkOn) {
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 40, 0, false, false, true));
-
             if (timer >= onDuration) {
                 IS_BLINK_ON.put(playerId, false);
                 BLINK_TIMERS.put(playerId, 0);
@@ -91,7 +82,6 @@ public class NightVisionDisk extends UpgradeDisk {
             }
         } else {
             player.removeEffect(MobEffects.NIGHT_VISION);
-
             if (timer >= offDuration) {
                 IS_BLINK_ON.put(playerId, true);
                 BLINK_TIMERS.put(playerId, 0);
@@ -111,9 +101,9 @@ public class NightVisionDisk extends UpgradeDisk {
 
     private int getOnDuration(int level) {
         return switch (level) {
-            case 1 -> 40;   case 2 -> 60;   case 3 -> 80;
-            case 4 -> 100;  case 5 -> 120;  case 6 -> 140;
-            case 7 -> 160;  case 8 -> 180;  case 9 -> 200;
+            case 1 -> 40;  case 2 -> 60;  case 3 -> 80;
+            case 4 -> 100; case 5 -> 120; case 6 -> 140;
+            case 7 -> 160; case 8 -> 180; case 9 -> 200;
             case 10 -> 220; case 11 -> 240;
             default -> 40;
         };
@@ -121,10 +111,10 @@ public class NightVisionDisk extends UpgradeDisk {
 
     private int getOffDuration(int level) {
         return switch (level) {
-            case 1 -> 160;  case 2 -> 140;  case 3 -> 120;
-            case 4 -> 100;  case 5 -> 80;   case 6 -> 60;
-            case 7 -> 40;   case 8 -> 20;   case 9 -> 10;
-            case 10 -> 6;   case 11 -> 4;
+            case 1 -> 160; case 2 -> 140; case 3 -> 120;
+            case 4 -> 100; case 5 -> 80;  case 6 -> 60;
+            case 7 -> 40;  case 8 -> 20;  case 9 -> 10;
+            case 10 -> 6;  case 11 -> 4;
             default -> 160;
         };
     }

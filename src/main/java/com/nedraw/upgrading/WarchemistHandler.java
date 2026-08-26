@@ -24,22 +24,14 @@ public class WarchemistHandler {
     private static final Random RANDOM = new Random();
 
     private static final List<Holder<MobEffect>> POSITIVE_EFFECTS = List.of(
-            MobEffects.REGENERATION,
-            MobEffects.SATURATION,
-            MobEffects.FIRE_RESISTANCE,
-            MobEffects.DAMAGE_RESISTANCE,
-            MobEffects.DAMAGE_BOOST,
-            MobEffects.MOVEMENT_SPEED,
-            MobEffects.JUMP,
-            MobEffects.ABSORPTION
+            MobEffects.REGENERATION, MobEffects.SATURATION, MobEffects.FIRE_RESISTANCE,
+            MobEffects.DAMAGE_RESISTANCE, MobEffects.DAMAGE_BOOST, MobEffects.MOVEMENT_SPEED,
+            MobEffects.JUMP, MobEffects.ABSORPTION
     );
 
     private static final List<Holder<MobEffect>> NEGATIVE_EFFECTS = List.of(
-            MobEffects.MOVEMENT_SLOWDOWN,
-            MobEffects.WEAKNESS,
-            MobEffects.POISON,
-            MobEffects.GLOWING,
-            MobEffects.HUNGER
+            MobEffects.MOVEMENT_SLOWDOWN, MobEffects.WEAKNESS, MobEffects.POISON,
+            MobEffects.GLOWING, MobEffects.HUNGER
     );
 
     @SubscribeEvent
@@ -55,21 +47,20 @@ public class WarchemistHandler {
                 var disk = DiskRegistry.getDisk(diskId);
                 if (disk instanceof WarchemistDisk) {
                     int level = diskData.getDiskLevel(diskId);
-                    int durationTicks = getDurationTicks(level);
+                    float efficiency = ZSlotEffects.getEfficiencyMultiplier(player, slot);
+
+                    int durationTicks = (int)(getDurationTicks(level) * efficiency);
                     int amplifier = level >= 12 ? 1 : 0;
 
-                    // Apply random positive effect to player when hit
                     Holder<MobEffect> positiveEffect = POSITIVE_EFFECTS.get(RANDOM.nextInt(POSITIVE_EFFECTS.size()));
                     player.addEffect(new MobEffectInstance(positiveEffect, durationTicks, amplifier, false, true));
 
-                    // Check advancement
                     if (player instanceof ServerPlayer sp && hasAllEightEffects(player)) {
                         ModAdvancementTriggers.ALL_8_EFFECTS(sp);
                     }
 
-                    // Apply negative effect to attacker (L12 now applies at all levels for rework)
                     if (event.getSource().getEntity() instanceof LivingEntity attacker) {
-                        applyNegativeEffect(attacker, level);
+                        applyNegativeEffect(attacker, level, efficiency);
                     }
                 }
                 return;
@@ -78,35 +69,23 @@ public class WarchemistHandler {
     }
 
     private static boolean hasAllEightEffects(Player player) {
-        return player.hasEffect(MobEffects.REGENERATION) &&
-                player.hasEffect(MobEffects.SATURATION) &&
-                player.hasEffect(MobEffects.FIRE_RESISTANCE) &&
-                player.hasEffect(MobEffects.DAMAGE_RESISTANCE) &&
-                player.hasEffect(MobEffects.DAMAGE_BOOST) &&
-                player.hasEffect(MobEffects.MOVEMENT_SPEED) &&
-                player.hasEffect(MobEffects.JUMP) &&
-                player.hasEffect(MobEffects.ABSORPTION);
+        return player.hasEffect(MobEffects.REGENERATION) && player.hasEffect(MobEffects.SATURATION) &&
+                player.hasEffect(MobEffects.FIRE_RESISTANCE) && player.hasEffect(MobEffects.DAMAGE_RESISTANCE) &&
+                player.hasEffect(MobEffects.DAMAGE_BOOST) && player.hasEffect(MobEffects.MOVEMENT_SPEED) &&
+                player.hasEffect(MobEffects.JUMP) && player.hasEffect(MobEffects.ABSORPTION);
     }
 
-    private static void applyNegativeEffect(LivingEntity target, int level) {
-        // Negative effect on attacker only at L12
+    private static void applyNegativeEffect(LivingEntity target, int level, float efficiency) {
         if (level < 12) return;
-
         Holder<MobEffect> effect = NEGATIVE_EFFECTS.get(RANDOM.nextInt(NEGATIVE_EFFECTS.size()));
-        if (target.isInvertedHealAndHarm() && effect == MobEffects.POISON) {
-            effect = MobEffects.WITHER;
-        }
-        target.addEffect(new MobEffectInstance(effect, 100, 0, false, true));
+        if (target.isInvertedHealAndHarm() && effect == MobEffects.POISON) effect = MobEffects.WITHER;
+        target.addEffect(new MobEffectInstance(effect, (int)(100 * efficiency), 0, false, true));
     }
 
     private static int getDurationTicks(int level) {
         return switch (level) {
-            case 7  -> 60;
-            case 8  -> 80;
-            case 9  -> 100;
-            case 10 -> 140;
-            case 11 -> 180;
-            case 12 -> 240;
+            case 7  -> 60;  case 8  -> 80;  case 9  -> 100;
+            case 10 -> 140; case 11 -> 180; case 12 -> 240;
             default -> 60;
         };
     }

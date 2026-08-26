@@ -32,13 +32,13 @@ public class PyroclasmHandler {
                 UpgradeDisk disk = DiskRegistry.getDisk(diskId);
                 if (disk instanceof PyroclasmDisk pyroclasm) {
                     int level = diskData.getDiskLevel(diskId);
-                    float fireChance = pyroclasm.getFireChance(level);
+                    float efficiency = ZSlotEffects.getEfficiencyMultiplier(player, slot);
+                    float fireChance = pyroclasm.getFireChance(level, efficiency);
 
-                    // Roll for igniting target
+
                     if (RANDOM.nextFloat() < fireChance) {
                         target.setRemainingFireTicks(200); // 10 seconds
 
-                        // Play sound
                         player.level().playSound(
                                 null,
                                 target.blockPosition(),
