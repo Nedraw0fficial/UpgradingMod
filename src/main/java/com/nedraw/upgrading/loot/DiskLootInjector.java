@@ -171,7 +171,7 @@ public class DiskLootInjector {
         addToLoot("chests/buried_treasure",             ModItems.CHIP_CLUB,       0.04f, 1, 1);
 
         addToLoot("chests/village/village_butcher",     ModItems.CHIP_FOOD,       0.06f, 1, 1);
-        addToLoot("chests/village/village_fisher",      ModItems.CHIP_FOOD,       0.06f, 1, 1);
+        addToLoot("chests/shipwreck_supply",      ModItems.CHIP_FOOD,       0.06f, 1, 1);
 
         addToLoot("chests/ruined_portal",            ModItems.CHIP_PORTAL,     0.05f, 1, 1);
         addToLoot("chests/stronghold_corridor",         ModItems.CHIP_PORTAL,     0.04f, 1, 1);

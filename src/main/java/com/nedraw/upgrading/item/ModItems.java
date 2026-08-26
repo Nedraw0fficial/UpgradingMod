@@ -11,6 +11,16 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS =
             DeferredRegister.createItems(UpgradingMod.MODID);
 
+    public static Item getDiskItem(String diskId) {
+        return ITEMS.getEntries().stream()
+                .filter(h -> h.getId().getPath().equals(diskId + "_disk"))
+                .map(h -> h.get())
+                .findFirst()
+                .orElse(null);
+    }
+
+
+
     // Golden Crops
     public static final DeferredHolder<Item, Item> GOLDEN_WHEAT = ITEMS.registerItem(
             "golden_wheat",
@@ -43,9 +53,7 @@ public class ModItems {
             Item::new
     );
 
-    // =====================
-    // FRAMES (stack 64)
-    // =====================
+
 
     // Flat frames - UNCOMMON
     public static final DeferredHolder<Item, ZSlotComponentItem> FRAME_FABRIC = ITEMS.registerItem(
@@ -99,9 +107,7 @@ public class ModItems {
             properties -> new ZSlotComponentItem(ZSlotComponentType.FRAME, "void", properties.stacksTo(64).rarity(Rarity.RARE))
     );
 
-    // =====================
-    // BOARDS (stack 32)
-    // =====================
+
 
     public static final DeferredHolder<Item, ZSlotComponentItem> BOARD_BASIC = ITEMS.registerItem(
             "board_basic",
@@ -128,9 +134,7 @@ public class ModItems {
             properties -> new ZSlotComponentItem(ZSlotComponentType.BOARD, "corrupted", properties.stacksTo(32).rarity(Rarity.RARE))
     );
 
-    // =====================
-    // CHIPS (stack 16)
-    // =====================
+
 
     public static final DeferredHolder<Item, ZSlotComponentItem> CHIP_BASIC = ITEMS.registerItem(
             "chip_basic",
@@ -165,18 +169,14 @@ public class ModItems {
             properties -> new ZSlotComponentItem(ZSlotComponentType.CHIP, "dark", properties.stacksTo(16).rarity(Rarity.RARE))
     );
 
-    // =====================
-    // Z-SLOT (stack 8)
-    // =====================
+
 
     public static final DeferredHolder<Item, ZSlotItem> Z_SLOT = ITEMS.registerItem(
             "z_slot",
             properties -> new ZSlotItem(properties.stacksTo(8))
     );
 
-    // =====================
-    // DISK REGISTRY
-    // =====================
+
 
     // BASIC
     public static final DeferredHolder<Item, DiskItem> SWIFT_FEET_DISK = ITEMS.registerItem(

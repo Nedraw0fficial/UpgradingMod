@@ -40,9 +40,6 @@ public class BowItemMixin {
             int level = diskData.getDiskLevel(diskId);
             float multiplier = getSpeedMultiplier(player.getUUID(), level);
 
-            // DEBUG: print which side this fired on
-            System.out.println("!!!!!!!!!! SIDE: " + (isClient ? "CLIENT" : "SERVER") + " | multiplier: " + multiplier + " | original: " + cir.getReturnValue());
-
             if (multiplier != 1.0f) {
                 int newDuration = Math.round(cir.getReturnValue() / multiplier);
                 cir.setReturnValue(Math.max(1, newDuration));

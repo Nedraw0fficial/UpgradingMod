@@ -37,7 +37,7 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
             case LEGENDARY -> pittyMeter -= 0.30f;
             case MYTHIC    -> pittyMeter  -= 0.85f;
         }
-        //old : min -0.85 --> bit too harsh
+        //-0.85
         pittyMeter = Math.max(-0.75f, Math.min(1.0f, pittyMeter));
     }
 
@@ -231,5 +231,13 @@ public class PlayerDiskData implements INBTSerializable<CompoundTag> {
     public void setZSlot(int slot, ItemStack stack) {
         if (slot < 0 || slot >= 3) return;
         zSlots[slot] = stack == null ? ItemStack.EMPTY : stack;
+    }
+
+    public void removeDisk(String diskId) {
+        unlockedDisks.remove(diskId);
+        diskLevels.remove(diskId);
+        for (int i = 0; i < 3; i++) {
+            if (diskId.equals(equippedSlots[i])) equippedSlots[i] = null;
+        }
     }
 }
