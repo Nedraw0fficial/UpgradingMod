@@ -652,7 +652,8 @@ public class DiskMenuScreen extends Screen {
 
     private void renderStaticDiskAt(GuiGraphics graphics, String diskId, int x, int y, int size) {
         ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(
-                UpgradingMod.MODID, "textures/gui/disks/" + diskId + "_disk.png");
+                //"textures/gui/disks/" + diskId + "_disk.png"
+                UpgradingMod.MODID, "textures/item/" + diskId + "_disk.png");
         RenderSystem.enableBlend();
         graphics.blit(texture, x, y, 0, 0, size, size, size, size);
         RenderSystem.disableBlend();
@@ -660,7 +661,8 @@ public class DiskMenuScreen extends Screen {
 
     private void renderAnimatedDiskAt(GuiGraphics graphics, UpgradeDisk disk, int x, int y, int size) {
         ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(
-                UpgradingMod.MODID, "textures/gui/disks/" + disk.getId() + "_disk.png");
+                //"textures/gui/disks/" + disk.getId() + "_disk.png"
+                UpgradingMod.MODID, "textures/item/" + disk.getId() + "_disk.png");
         int frameSize  = disk.getFrameSize();
         int frameCount = disk.getFrameCount();
         int currentFrame = (animationTick / disk.getTicksPerFrame()) % frameCount;

@@ -1,5 +1,5 @@
 {
-  "parent": "item/generated",
+  "parent": "upgrading:item/disk_item",
   "textures": {
     "layer0": "upgrading:item/necro_archer_disk"
   }
