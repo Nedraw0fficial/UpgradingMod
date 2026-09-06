@@ -35,17 +35,21 @@ public class ModCreativeTabs {
 
                         // RARE disks
                         output.accept(ModItems.BEAST_WHISPERER_DISK.get());
+                        output.accept(ModItems.BLOCK_O_ENCHANTING_DISK.get());
                         output.accept(ModItems.FLAME_WALKER_DISK.get());
                         output.accept(ModItems.HARVESTER_DISK.get());
                         output.accept(ModItems.IRON_GRIP_DISK.get());
                         output.accept(ModItems.PAWNBROKER_DISK.get());
                         output.accept(ModItems.STEP_ASSIST_DISK.get());
                         output.accept(ModItems.TREASURE_SENSE_DISK.get());
+                        output.accept(ModItems.WEATHERVANE_DISK.get());
 
                         // EPIC disks
                         output.accept(ModItems.BASHER_DISK.get());
+                        output.accept(ModItems.BREWMASTER_DISK.get());
                         output.accept(ModItems.GLUTTON_DISK.get());
                         output.accept(ModItems.MOUNTAIN_GOAT_DISK.get());
+                        output.accept(ModItems.PHANTOM_DISK.get());
                         output.accept(ModItems.SOAPY_HANDS_DISK.get());
                         output.accept(ModItems.WARCHEMIST_DISK.get());
 
@@ -53,6 +57,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.ARCHITECTS_MIND_DISK.get());
                         output.accept(ModItems.BERSERKER_DISK.get());
                         output.accept(ModItems.PYROCLASM_DISK.get());
+                        output.accept(ModItems.UNDERTAKER_DISK.get());
 
                         // MYTHIC disks
                         output.accept(ModItems.NECRO_ARCHER_DISK.get());

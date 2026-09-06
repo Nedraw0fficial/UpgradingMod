@@ -1,10 +1,7 @@
 package com.nedraw.upgrading;
 
 import com.nedraw.upgrading.data.PlayerDiskData;
-import com.nedraw.upgrading.disk.DiskRegistry;
-import com.nedraw.upgrading.disk.HarvesterDisk;
-import com.nedraw.upgrading.disk.MightyMinerDisk;
-import com.nedraw.upgrading.disk.UpgradeDisk;
+import com.nedraw.upgrading.disk.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -36,6 +33,21 @@ public class BlockBreakHandler {
                 if (disk instanceof HarvesterDisk harvester) {
                     harvester.handleCropBreak(player, event.getState(), event.getPos(),
                             diskData.getDiskLevel(diskId), efficiency);
+                }
+            } else if ("block_o_enchanting".equals(diskId)) {
+                var disk = DiskRegistry.getDisk(diskId);
+                if (disk instanceof BlockOEnchantingDisk blockOEnchanting) {
+                    boolean dropsXP = event.getState().getExpDrop(
+                            event.getLevel(),
+                            event.getPos(),
+                            null,
+                            player,
+                            player.getMainHandItem()
+                    ) > 0;
+                    blockOEnchanting.handleBlockBreak(player,
+                            dropsXP,
+                            diskData.getDiskLevel(diskId),
+                            efficiency);
                 }
             }
         }

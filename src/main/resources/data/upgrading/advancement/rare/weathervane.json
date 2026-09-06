@@ -1,0 +1,17 @@
+{
+  "parent": "upgrading:root",
+  "display": {
+    "icon": {"id": "upgrading:weathervane_disk"},
+    "title": {"translate": "advancement.upgrading.rare.weathervane.title"},
+    "description": {"translate": "advancement.upgrading.rare.weathervane.description"},
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "lightning_streak": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

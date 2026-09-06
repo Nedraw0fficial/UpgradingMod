@@ -45,6 +45,8 @@ public class ModAdvancementTriggers {
     public static void EDGE_KNOCKBACK_RESISTED(ServerPlayer p)  { grantWithRoot(p, "rare/iron_grip"); }
     public static void CHEST_DUPLICATED(ServerPlayer p)         { grantWithRoot(p, "rare/treasure_sense"); }
     public static void EMERALDS_KEPT(ServerPlayer p)            { grantWithRoot(p, "rare/pawnbroker"); }
+    public static void LIGHTNING_3_STREAK(ServerPlayer p)       { grantWithRoot(p, "rare/weathervane"); }
+    public static void XP_LEAKS(ServerPlayer p)                 { grantWithRoot(p, "rare/block_o_enchanting"); }
 
     // EPIC
     public static void ALL_8_EFFECTS(ServerPlayer p)            { grantWithRoot(p, "epic/warchemist"); }
@@ -52,6 +54,8 @@ public class ModAdvancementTriggers {
     public static void ABSORPTION_OVERFLOW(ServerPlayer p)      { grantWithRoot(p, "epic/glutton"); }
     public static void FULL_DISARM(ServerPlayer p)              { grantWithRoot(p, "epic/soapy_hands"); }
     public static void WALL_JUMP(ServerPlayer p)                { grantWithRoot(p, "epic/mountain_goat"); }
+    public static void GHOST(ServerPlayer p)                    { grantWithRoot(p, "epic/phantom"); }
+    public static void POTION_HOLIC(ServerPlayer p)             { grantWithRoot(p, "epic/brewmaster"); }
 
     // LEGENDARY
     public static void BERSERKER_RAGE_KILL(ServerPlayer p)      { grantWithRoot(p, "legendary/berserker"); }

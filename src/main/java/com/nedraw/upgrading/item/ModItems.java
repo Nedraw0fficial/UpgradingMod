@@ -245,6 +245,14 @@ public class ModItems {
             "pawnbroker_disk",
             properties -> new DiskItem("pawnbroker", properties)
     );
+    public static final DeferredHolder<Item, DiskItem> WEATHERVANE_DISK = ITEMS.registerItem(
+            "weathervane_disk",
+            properties -> new DiskItem("weathervane", properties)
+    );
+    public static final DeferredHolder<Item, DiskItem> BLOCK_O_ENCHANTING_DISK = ITEMS.registerItem(
+            "block_o_enchanting_disk",
+            properties -> new DiskItem("block_o_enchanting", properties)
+    );
 
     // EPIC
     public static final DeferredHolder<Item, DiskItem> GLUTTON_DISK = ITEMS.registerItem(
@@ -267,6 +275,14 @@ public class ModItems {
             "basher_disk",
             properties -> new DiskItem("basher", properties)
     );
+    public static final DeferredHolder<Item, DiskItem> PHANTOM_DISK = ITEMS.registerItem(
+            "phantom_disk",
+            properties -> new DiskItem("phantom", properties)
+    );
+    public static final DeferredHolder<Item, DiskItem> BREWMASTER_DISK = ITEMS.registerItem(
+            "brewmaster_disk",
+            properties -> new DiskItem("brewmaster", properties)
+    );
 
     // LEGENDARY
     public static final DeferredHolder<Item, DiskItem> BERSERKER_DISK = ITEMS.registerItem(
@@ -280,6 +296,10 @@ public class ModItems {
     public static final DeferredHolder<Item, DiskItem> ARCHITECTS_MIND_DISK = ITEMS.registerItem(
             "architects_mind_disk",
             properties -> new DiskItem("architects_mind", properties)
+    );
+    public static final DeferredHolder<Item, DiskItem> UNDERTAKER_DISK = ITEMS.registerItem(
+            "undertaker_disk",
+            properties -> new DiskItem("undertaker", properties)
     );
 
     // MYTHIC

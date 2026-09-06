@@ -454,7 +454,7 @@ public class DiskMenuScreen extends Screen {
                 if (finalEfficiency != 1.0f) {
                     renderEfficiencyDescription(graphics, line, descX, lineY, finalEfficiency);
                 } else {
-                    String cleanLine = line.replaceAll("\\{([0-9.]+)\\}", "$1");
+                    String cleanLine = line.replaceAll("\\{/?([0-9.]+)\\}", "$1");
                     graphics.drawString(this.font, cleanLine, descX, lineY, 0xCCCCCC, false);
                 }
             }
@@ -513,7 +513,7 @@ public class DiskMenuScreen extends Screen {
     }
 
     private void renderEfficiencyDescription(GuiGraphics graphics, String line, int x, int y, float efficiency) {
-        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\{([0-9.]+)\\}");
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\{/?([0-9.]+)\\}");
         java.util.regex.Matcher matcher = pattern.matcher(line);
 
         net.minecraft.network.chat.MutableComponent result = net.minecraft.network.chat.Component.empty();
@@ -526,8 +526,10 @@ public class DiskMenuScreen extends Screen {
                         .withStyle(s -> s.withColor(0xCCCCCC)));
             }
 
-            float originalValue = Float.parseFloat(matcher.group(1));
-            float scaledValue = originalValue * efficiency;
+            boolean divide = matcher.group(0).startsWith("{/");
+            String numStr = matcher.group(1).replace("/", "");
+            float originalValue = Float.parseFloat(numStr);
+            float scaledValue = divide ? originalValue / efficiency : originalValue * efficiency;
 
             String originalStr = formatValue(originalValue);
             String scaledStr = formatValue(scaledValue);
@@ -559,19 +561,16 @@ public class DiskMenuScreen extends Screen {
     }
 
     private int getEfficiencyLineWidth(String line, float efficiency) {
-        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\{([0-9.]+)\\}");
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\{/?([0-9.]+)\\}");
         java.util.regex.Matcher matcher = pattern.matcher(line);
         int width = 0;
         int last = 0;
 
         while (matcher.find()) {
-            //Plain
             width += this.font.width(line.substring(last, matcher.start()));
-
+            boolean divide = matcher.group(0).startsWith("{/");
             float original = Float.parseFloat(matcher.group(1));
-            float scaled = original * efficiency;
-
-            // Old
+            float scaled = divide ? original / efficiency : original * efficiency;
             width += this.font.width(formatValue(original) + " " + formatValue(scaled));
             last = matcher.end();
         }

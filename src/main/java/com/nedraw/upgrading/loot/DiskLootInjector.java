@@ -240,6 +240,12 @@ public class DiskLootInjector {
         addDiskToLoot("chests/village/village_toolsmith", ModItems.PAWNBROKER_DISK, 0.07f);
         addDiskToLoot("chests/woodland_mansion", ModItems.PAWNBROKER_DISK, 0.07f);
         addDiskToLoot("chests/stronghold_library", ModItems.PAWNBROKER_DISK, 0.06f);
+        addDiskToLoot("chests/simple_dungeon",      ModItems.WEATHERVANE_DISK, 0.08f);
+        addDiskToLoot("chests/abandoned_mineshaft", ModItems.WEATHERVANE_DISK, 0.06f);
+        addDiskToLoot("chests/pillager_outpost",    ModItems.WEATHERVANE_DISK, 0.05f);
+        addDiskToLoot("chests/stronghold_library",  ModItems.BLOCK_O_ENCHANTING_DISK, 0.08f);
+        addDiskToLoot("chests/ancient_city",        ModItems.BLOCK_O_ENCHANTING_DISK, 0.07f);
+        addDiskToLoot("chests/simple_dungeon",      ModItems.BLOCK_O_ENCHANTING_DISK, 0.05f);
 
         // === EPIC DISKS ===
 
@@ -253,12 +259,17 @@ public class DiskLootInjector {
         addDiskToLoot("chests/trial_chambers/reward", ModItems.WARCHEMIST_DISK, 0.04f);
         addDiskToLoot("chests/village/village_toolsmith", ModItems.BASHER_DISK, 0.03f);
         addDiskToLoot("chests/desert_pyramid", ModItems.BASHER_DISK, 0.03f);
+        addDiskToLoot("chests/ancient_city",        ModItems.PHANTOM_DISK, 0.04f);
+        addDiskToLoot("chests/stronghold_library",  ModItems.PHANTOM_DISK, 0.03f);
+        addDiskToLoot("chests/bastion_treasure",    ModItems.BREWMASTER_DISK, 0.04f);
+        addDiskToLoot("chests/nether_bridge",       ModItems.BREWMASTER_DISK, 0.03f);
 
         // === LEGENDARY DISKS ===
 
         addDiskToLoot("chests/end_city_treasure", ModItems.BERSERKER_DISK, 0.02f);
         addDiskToLoot("chests/ancient_city_ice_box", ModItems.PYROCLASM_DISK, 0.015f);
         addDiskToLoot("chests/shipwreck_map", ModItems.ARCHITECTS_MIND_DISK, 0.02f);
+        addDiskToLoot("chests/ancient_city",        ModItems.UNDERTAKER_DISK, 0.02f);
     }
 
     private static void addDiskToLoot(String lootTable, DeferredHolder<Item, ?> item, float chance) {

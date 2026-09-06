@@ -1,0 +1,17 @@
+{
+  "parent": "upgrading:root",
+  "display": {
+    "icon": {"id": "upgrading:brewmaster_disk"},
+    "title": {"translate": "advancement.upgrading.epic.brewmaster.title"},
+    "description": {"translate": "advancement.upgrading.epic.brewmaster.description"},
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "potion_holic": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

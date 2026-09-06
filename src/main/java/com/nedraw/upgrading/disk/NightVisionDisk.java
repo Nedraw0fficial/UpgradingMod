@@ -43,7 +43,6 @@ public class NightVisionDisk extends UpgradeDisk {
         if (level >= 12) {
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 220, 0, false, false, true));
 
-            // Efficiency scales detection radius at L12
             double detectRadius = 20.0 * efficiency;
             List<net.minecraft.world.entity.LivingEntity> invisible = player.level().getEntitiesOfClass(
                     net.minecraft.world.entity.LivingEntity.class,
@@ -59,7 +58,6 @@ public class NightVisionDisk extends UpgradeDisk {
             return;
         }
 
-        // Blink mechanic: efficiency increases ON duration and decreases OFF duration
         int onDuration  = (int)(getOnDuration(level)  * efficiency);
         int offDuration = (int)(getOffDuration(level) / efficiency);
 

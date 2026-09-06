@@ -58,16 +58,21 @@ public class UpgradingMod {
         DiskRegistry.register(new IronGripDisk());
         DiskRegistry.register(new TreasureSenseDisk());
         DiskRegistry.register(new PawnbrokerDisk());
+        DiskRegistry.register(new WeathervaneDisk());
+        DiskRegistry.register(new BlockOEnchantingDisk());
         // - EPIC -
         DiskRegistry.register(new GluttonDisk());
         DiskRegistry.register(new SoapyHandsDisk());
         DiskRegistry.register(new MountainGoatDisk());
         DiskRegistry.register(new WarchemistDisk());
         DiskRegistry.register(new BasherDisk());
+        DiskRegistry.register(new PhantomDisk());
+        DiskRegistry.register(new BrewmasterDisk());
         // - LEGENDARY -
         DiskRegistry.register(new BerserkerDisk());
         DiskRegistry.register(new PyroclasmDisk());
         DiskRegistry.register(new ArchitectsMindDisk());
+        DiskRegistry.register(new UndertakerDisk());
         // - MYTHIC -
         DiskRegistry.register(new NecroArcherDisk());
         // - - - - - - -

@@ -1,0 +1,6 @@
+{
+  "parent": "upgrading:item/disk_item",
+  "textures": {
+    "layer0": "upgrading:item/weathervane_disk"
+  }
+}

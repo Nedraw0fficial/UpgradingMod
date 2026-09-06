@@ -159,11 +159,15 @@ public record ClaimEncryptedFloppyPacket(String rarityName) implements CustomPac
             case "iron_grip"      -> new ItemStack(ModItems.IRON_GRIP_DISK.get());
             case "treasure_sense" -> new ItemStack(ModItems.TREASURE_SENSE_DISK.get());
             case "pawnbroker"     -> new ItemStack(ModItems.PAWNBROKER_DISK.get());
+            case "weathervane"    -> new ItemStack(ModItems.WEATHERVANE_DISK.get());
+            case "block_o_enchanting" -> new ItemStack(ModItems.BLOCK_O_ENCHANTING_DISK.get());
             case "mountain_goat"  -> new ItemStack(ModItems.MOUNTAIN_GOAT_DISK.get());
             case "glutton"        -> new ItemStack(ModItems.GLUTTON_DISK.get());
             case "soapy_hands"    -> new ItemStack(ModItems.SOAPY_HANDS_DISK.get());
             case "warchemist"     -> new ItemStack(ModItems.WARCHEMIST_DISK.get());
             case "basher"         -> new ItemStack(ModItems.BASHER_DISK.get());
+            case "phantom"        -> new ItemStack(ModItems.PHANTOM_DISK.get());
+            case "brewmaster"     -> new ItemStack(ModItems.BREWMASTER_DISK.get());
             case "berserker"      -> new ItemStack(ModItems.BERSERKER_DISK.get());
             case "pyroclasm"      -> new ItemStack(ModItems.PYROCLASM_DISK.get());
             case "architects_mind"-> new ItemStack(ModItems.ARCHITECTS_MIND_DISK.get());

@@ -54,7 +54,7 @@ public class TankyDisk extends UpgradeDisk {
         var healthAttr = player.getAttribute(Attributes.MAX_HEALTH);
         var speedAttr = player.getAttribute(Attributes.MOVEMENT_SPEED);
         float healthBoost = getHealthBoost(level) * efficiency;
-        float speedReduction = getSpeedReduction(level) / efficiency; // efficiency reduces penalty
+        float speedReduction = getSpeedReduction(level) / efficiency;
 
         if (healthAttr != null) {
             healthAttr.removeModifier(HEALTH_MODIFIER_ID);

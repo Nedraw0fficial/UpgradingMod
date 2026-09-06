@@ -1,0 +1,17 @@
+{
+  "parent": "upgrading:root",
+  "display": {
+    "icon": {"id": "upgrading:phantom_disk"},
+    "title": {"translate": "advancement.upgrading.epic.phantom.title"},
+    "description": {"translate": "advancement.upgrading.epic.phantom.description"},
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "ghost": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

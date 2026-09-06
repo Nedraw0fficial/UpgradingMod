@@ -1,0 +1,17 @@
+{
+  "parent": "upgrading:root",
+  "display": {
+    "icon": {"id": "upgrading:block_o_enchanting_disk"},
+    "title": {"translate": "advancement.upgrading.rare.block_o_enchanting.title"},
+    "description": {"translate": "advancement.upgrading.rare.block_o_enchanting.description"},
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "xp_leaks": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}
