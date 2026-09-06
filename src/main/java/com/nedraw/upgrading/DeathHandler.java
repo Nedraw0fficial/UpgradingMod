@@ -7,6 +7,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -39,7 +40,7 @@ public class DeathHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public static void onPlayerDeath(net.neoforged.neoforge.event.entity.living.LivingDeathEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
 
@@ -56,6 +57,9 @@ public class DeathHandler {
                 ItemStack diskItem = getDiskItemStack(diskId);
 
                 if (!diskItem.isEmpty()) {
+
+                    if (UndertakerHandler.shouldSkipDrop(player.getUUID(), diskId)) { continue; }
+
                     ItemEntity itemEntity = new ItemEntity(
                             player.level(),
                             player.getX(),
@@ -129,6 +133,7 @@ public class DeathHandler {
             case "berserker" -> new ItemStack(ModItems.BERSERKER_DISK.get());
             case "pyroclasm" -> new ItemStack(ModItems.PYROCLASM_DISK.get());
             case "architects_mind" -> new ItemStack(ModItems.ARCHITECTS_MIND_DISK.get());
+            case "undertaker" -> new ItemStack(ModItems.UNDERTAKER_DISK.get());
             case "necro_archer" -> new ItemStack(ModItems.NECRO_ARCHER_DISK.get());
             default -> ItemStack.EMPTY;
         };

@@ -1,0 +1,17 @@
+{
+  "parent": "upgrading:root",
+  "display": {
+    "icon": {"id": "upgrading:undertaker_disk"},
+    "title": {"translate": "advancement.upgrading.legendary.undertaker.title"},
+    "description": {"translate": "advancement.upgrading.legendary.undertaker.description"},
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "death_can_wait": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

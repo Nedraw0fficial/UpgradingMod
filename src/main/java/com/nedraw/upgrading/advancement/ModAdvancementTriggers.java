@@ -61,6 +61,7 @@ public class ModAdvancementTriggers {
     public static void BERSERKER_RAGE_KILL(ServerPlayer p)      { grantWithRoot(p, "legendary/berserker"); }
     public static void FIRE_SHIELD_EXPLODED(ServerPlayer p)     { grantWithRoot(p, "legendary/pyroclasm"); }
     public static void MAX_REACH_PLACEMENT(ServerPlayer p)      { grantWithRoot(p, "legendary/architects_mind"); }
+    public static void DEATH_CAN_WAIT(ServerPlayer p)           { grantWithRoot(p, "legendary/undertaker"); }
 
     // MYTHIC
     public static void NECROMISIS_DETONATED_5(ServerPlayer p)   { grantWithRoot(p, "mythic/necro_archer"); }

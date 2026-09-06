@@ -31,6 +31,8 @@
   "disk.upgrading.block_o_enchanting": "Block O' Enchanting",
   "disk.upgrading.phantom": "Phantom",
   "disk.upgrading.brewmaster": "Brewmaster",
+  "disk.upgrading.undertaker": "Undertaker",
+
 
   "_comment1": "See below for descriptions (nice)",
 
@@ -253,6 +255,8 @@
   "advancement.upgrading.legendary.pyroclasm.description": "Trigger the Fire Shield explosion thanks to the Pyroclasm disk.",
   "advancement.upgrading.legendary.architects_mind.title": "I AM A F**KING ARCHITECT!",
   "advancement.upgrading.legendary.architects_mind.description": "Place a block at maximum reach distance thanks to the Architect's Mind disk.",
+  "advancement.upgrading.legendary.undertaker.title": "Death Can Wait",
+  "advancement.upgrading.legendary.undertaker.description": "Keep the Undertaker disk on death... thanks to the Undertaker disk",
   "advancement.upgrading.mythic.necro_archer.title": "Aim. Shoot. Perish.",
   "advancement.upgrading.mythic.necro_archer.description": "Detonate Necromisis on 5 or more enemies simultaneously thanks to the Necro-Archer disk.",
 
@@ -538,6 +542,11 @@
   "description.upgrading.architects_mind.10": "+{2} block reach",
   "description.upgrading.architects_mind.11": "+{3.5} block reach",
   "description.upgrading.architects_mind.12": "+{5.5} block reach and instant block placement",
+
+  "description.upgrading.undertaker.9": "On death, keep {1} random item from your inventory",
+  "description.upgrading.undertaker.10": "On death, keep {2} random items from your inventory",
+  "description.upgrading.undertaker.11": "On death, keep {3} random items from your inventory",
+  "description.upgrading.undertaker.12": "On death, keep {5} random items and {1} random equipped disk",
 
 
 
