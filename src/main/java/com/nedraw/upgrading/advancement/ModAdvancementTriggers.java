@@ -20,9 +20,8 @@ public class ModAdvancementTriggers {
         }
     }
 
-    // Always grants root first so children can be granted
     private static void grantWithRoot(ServerPlayer player, String path) {
-        grant(player, "root"); // ensure root is always granted first
+        grant(player, "root");
         grant(player, path);
     }
 
@@ -62,6 +61,7 @@ public class ModAdvancementTriggers {
     public static void FIRE_SHIELD_EXPLODED(ServerPlayer p)     { grantWithRoot(p, "legendary/pyroclasm"); }
     public static void MAX_REACH_PLACEMENT(ServerPlayer p)      { grantWithRoot(p, "legendary/architects_mind"); }
     public static void DEATH_CAN_WAIT(ServerPlayer p)           { grantWithRoot(p, "legendary/undertaker"); }
+    public static void TRANSMIT_10(ServerPlayer p)              { grantWithRoot(p, "legendary/transmitter"); }
 
     // MYTHIC
     public static void NECROMISIS_DETONATED_5(ServerPlayer p)   { grantWithRoot(p, "mythic/necro_archer"); }
@@ -73,7 +73,7 @@ public class ModAdvancementTriggers {
     public static void UNLOCK_LEGENDARY_DISK(ServerPlayer p)    { grant(p, "root"); grant(p, "tier_legendary"); }
     public static void UNLOCK_MYTHIC_DISK(ServerPlayer p)       { grant(p, "root"); grant(p, "tier_mythic"); }
 
-    // ROOT + HARDCODED — for encrypted floppy pickup
+    // ROOT + HARDCODED
     public static void ROOT(ServerPlayer p)                     { grant(p, "root"); }
     public static void HARDCODED(ServerPlayer p)                { grant(p, "root"); grant(p, "hardcoded"); }
 }

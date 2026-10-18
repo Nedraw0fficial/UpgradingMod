@@ -32,6 +32,7 @@
   "disk.upgrading.phantom": "Phantom",
   "disk.upgrading.brewmaster": "Brewmaster",
   "disk.upgrading.undertaker": "Undertaker",
+  "disk.upgrading.transmitter": "Transmitter",
 
 
   "_comment1": "See below for descriptions (nice)",
@@ -257,6 +258,8 @@
   "advancement.upgrading.legendary.architects_mind.description": "Place a block at maximum reach distance thanks to the Architect's Mind disk.",
   "advancement.upgrading.legendary.undertaker.title": "Death Can Wait",
   "advancement.upgrading.legendary.undertaker.description": "Keep the Undertaker disk on death... thanks to the Undertaker disk",
+  "advancement.upgrading.legendary.transmitter.title": "Double It and Give It to EVERYONE",
+  "advancement.upgrading.legendary.transmitter.description": "Transmit your damage taken onto 10 entities at once thanks to the Transmitter disk",
   "advancement.upgrading.mythic.necro_archer.title": "Aim. Shoot. Perish.",
   "advancement.upgrading.mythic.necro_archer.description": "Detonate Necromisis on 5 or more enemies simultaneously thanks to the Necro-Archer disk.",
 
@@ -547,6 +550,11 @@
   "description.upgrading.undertaker.10": "On death, keep {2} random items from your inventory",
   "description.upgrading.undertaker.11": "On death, keep {3} random items from your inventory",
   "description.upgrading.undertaker.12": "On death, keep {5} random items and {1} random equipped disk",
+
+  "description.upgrading.transmitter.9": "Nearby hostile entities within {6} blocks receive {10}% of the damage you take",
+  "description.upgrading.transmitter.10": "Nearby hostile entities within {7} blocks receive {12.5}% of the damage you take",
+  "description.upgrading.transmitter.11": "Nearby hostile entities within {9} blocks receive {15}% of the damage you take",
+  "description.upgrading.transmitter.12": "Nearby hostile entities within {11} blocks receive {21.5}% of the damage you take. You also receive {12}% less damage",
 
 
 

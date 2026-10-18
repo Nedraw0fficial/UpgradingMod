@@ -1,0 +1,17 @@
+{
+  "parent": "upgrading:root",
+  "display": {
+    "icon": {"id": "upgrading:transmitter_disk"},
+    "title": {"translate": "advancement.upgrading.legendary.transmitter.title"},
+    "description": {"translate": "advancement.upgrading.legendary.transmitter.description"},
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "transmit_10": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

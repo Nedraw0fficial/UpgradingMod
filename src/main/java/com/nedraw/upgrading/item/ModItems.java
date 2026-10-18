@@ -301,6 +301,10 @@ public class ModItems {
             "undertaker_disk",
             properties -> new DiskItem("undertaker", properties)
     );
+    public static final DeferredHolder<Item, DiskItem> TRANSMITTER_DISK = ITEMS.registerItem(
+            "transmitter_disk",
+            properties -> new DiskItem("transmitter", properties)
+    );
 
     // MYTHIC
     public static final DeferredHolder<Item, DiskItem> NECRO_ARCHER_DISK = ITEMS.registerItem(

@@ -270,6 +270,7 @@ public class DiskLootInjector {
         addDiskToLoot("chests/ancient_city_ice_box", ModItems.PYROCLASM_DISK, 0.015f);
         addDiskToLoot("chests/shipwreck_map", ModItems.ARCHITECTS_MIND_DISK, 0.02f);
         addDiskToLoot("chests/ancient_city",        ModItems.UNDERTAKER_DISK, 0.02f);
+        addDiskToLoot("chests/woodland_mansion", ModItems.TRANSMITTER_DISK, 0.02f);
     }
 
     private static void addDiskToLoot(String lootTable, DeferredHolder<Item, ?> item, float chance) {
