@@ -25,6 +25,8 @@ enumExtensions="heart_extensions.json"
 # The modid of the mod
 modId="${mod_id}" #mandatory
 
+logoFile="upgrading_logo_f.png"
+
 # The version number of the mod
 version="${mod_version}" #mandatory
 
