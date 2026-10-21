@@ -1,5 +1,5 @@
 {
-  "parent": "upgrading:root",
+  "parent": "upgrading:tier_epic",
   "display": {
     "icon": {"id": "upgrading:brewmaster_disk"},
     "title": {"translate": "advancement.upgrading.epic.brewmaster.title"},

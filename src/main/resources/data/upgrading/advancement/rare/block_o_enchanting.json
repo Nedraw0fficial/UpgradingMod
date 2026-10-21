@@ -1,5 +1,5 @@
 {
-  "parent": "upgrading:root",
+  "parent": "upgrading:tier_rare",
   "display": {
     "icon": {"id": "upgrading:block_o_enchanting_disk"},
     "title": {"translate": "advancement.upgrading.rare.block_o_enchanting.title"},

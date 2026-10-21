@@ -1,5 +1,5 @@
 {
-  "parent": "upgrading:root",
+  "parent": "upgrading:tier_epic",
   "display": {
     "icon": {"id": "upgrading:phantom_disk"},
     "title": {"translate": "advancement.upgrading.epic.phantom.title"},

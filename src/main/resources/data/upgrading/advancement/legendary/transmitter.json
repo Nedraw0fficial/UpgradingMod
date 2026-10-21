@@ -1,5 +1,5 @@
 {
-  "parent": "upgrading:root",
+  "parent": "upgrading:tier_legendary",
   "display": {
     "icon": {"id": "upgrading:transmitter_disk"},
     "title": {"translate": "advancement.upgrading.legendary.transmitter.title"},
@@ -9,6 +9,7 @@
     "announce_to_chat": true,
     "hidden": false
   },
+
   "criteria": {
     "transmit_10": {
       "trigger": "minecraft:impossible"

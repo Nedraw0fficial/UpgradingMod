@@ -31,7 +31,6 @@ public class EncryptedFloppyScreen extends Screen {
     private int tickCount;
     private final Random random;
 
-    // Dynamic orb hover arrays based on totalChances
     private final float[] orbHoverOffsets;
     private final float[] orbHoverSpeeds;
 
@@ -63,7 +62,6 @@ public class EncryptedFloppyScreen extends Screen {
         this.flashTicks = 0;
         this.bgScrollOffset = 0;
 
-        // Dynamic size based on amountOfChances
         int orbCount = Math.max(1, amountOfChances);
         this.orbHoverOffsets = new float[orbCount];
         this.orbHoverSpeeds = new float[orbCount];

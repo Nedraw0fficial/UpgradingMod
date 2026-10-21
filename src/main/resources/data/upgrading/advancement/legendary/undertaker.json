@@ -1,5 +1,5 @@
 {
-  "parent": "upgrading:root",
+  "parent": "upgrading:tier_legendary",
   "display": {
     "icon": {"id": "upgrading:undertaker_disk"},
     "title": {"translate": "advancement.upgrading.legendary.undertaker.title"},
