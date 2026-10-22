@@ -5,6 +5,7 @@ import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.NecroArcherDisk;
 import com.nedraw.upgrading.effect.ModEffects;
+import com.nedraw.upgrading.particle.ModParticles;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -86,6 +87,19 @@ public class NecroArcherHandler {
         if (endTime == null) return;
 
         long now = System.currentTimeMillis();
+
+        if (now < endTime && player.level() instanceof ServerLevel boostLevel) {
+            for (int i = 0; i < 3; i++) {
+                double t = Math.random();
+                boostLevel.sendParticles(
+                        ModParticles.NECROMISIS.get(),
+                        player.getX(),
+                        player.getY() + (t * t) * 1.8,
+                        player.getZ(),
+                        1, 0, 0, 0, 0
+                );
+            }
+        }
 
         if (now >= endTime && !DETONATION_FIRED.contains(id)) {
             DETONATION_FIRED.add(id);

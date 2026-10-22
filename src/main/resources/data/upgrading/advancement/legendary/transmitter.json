@@ -7,12 +7,14 @@
     "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
-    "hidden": false
+    "hidden": true
   },
-
   "criteria": {
     "transmit_10": {
       "trigger": "minecraft:impossible"
     }
+  },
+  "rewards": {
+    "experience": 450
   }
 }

@@ -26,6 +26,7 @@ public class DeathHandler {
         Set<String> unlockedDisks;
         String slot0, slot1, slot2;
         Map<String, Integer> diskLevels;
+        ItemStack[] zSlots = new ItemStack[3];
 
         DiskBackup(PlayerDiskData data) {
             this.unlockedDisks = Set.copyOf(data.getUnlockedDisks());
@@ -36,6 +37,10 @@ public class DeathHandler {
             this.diskLevels = new HashMap<>();
             for (String diskId : unlockedDisks) {
                 diskLevels.put(diskId, data.getDiskLevel(diskId));
+            }
+
+            for (int i = 0; i < 3; i++) {
+                this.zSlots[i] = data.getZSlot(i).copy();
             }
         }
     }
@@ -96,6 +101,10 @@ public class DeathHandler {
             if (backup.slot0 != null) diskData.equipDisk(backup.slot0, 0);
             if (backup.slot1 != null) diskData.equipDisk(backup.slot1, 1);
             if (backup.slot2 != null) diskData.equipDisk(backup.slot2, 2);
+
+            for (int i = 0; i < 3; i++) {
+                diskData.setZSlot(i, backup.zSlots[i]);
+            }
 
             DISK_BACKUPS.remove(playerId);
 

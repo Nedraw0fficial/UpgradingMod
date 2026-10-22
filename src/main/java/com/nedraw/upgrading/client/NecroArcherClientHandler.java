@@ -1,6 +1,5 @@
 package com.nedraw.upgrading.client;
 
-import com.nedraw.upgrading.NecroArcherHandler;
 import com.nedraw.upgrading.UpgradingMod;
 import com.nedraw.upgrading.effect.ModEffects;
 import com.nedraw.upgrading.particle.ModParticles;
@@ -29,17 +28,8 @@ public class NecroArcherClientHandler {
         LocalPlayer player = mc.player;
         tickCounter++;
 
-        // Boost tornado — only runs when player is boosted, which is rare
-        if (NecroArcherHandler.isPlayerBoosted(player.getUUID())) {
-            spawnBoostTornado(player);
-        }
-
-        // Only scan for Necromisis entities every 4 ticks instead of every tick
-        // AND only if the local player has the Necro-Archer disk equipped
         if (tickCounter % 4 != 0) return;
 
-        // Quick check: does the local player even have Necro-Archer equipped?
-        // If not, skip the expensive entity scan entirely
         boolean hasNecroArcher = false;
         var data = com.nedraw.upgrading.data.PlayerDiskData.get(player);
         for (int slot = 0; slot < 3; slot++) {
@@ -52,26 +42,10 @@ public class NecroArcherClientHandler {
 
         if (!hasNecroArcher) return;
 
-        // Only now do we iterate entities
         for (Entity entity : mc.level.entitiesForRendering()) {
             if (!(entity instanceof LivingEntity living)) continue;
             if (!living.hasEffect(ModEffects.NECROMISIS)) continue;
             spawnNecromisisTornado(living);
-        }
-    }
-
-    private static void spawnBoostTornado(LocalPlayer player) {
-        for (int i = 0; i < 3; i++) {
-            double t = Math.random();
-            double spawnY = player.getY() + (t * t) * 1.8;
-
-            player.level().addParticle(
-                    ModParticles.NECROMISIS.get(),
-                    player.getX(),
-                    spawnY,
-                    player.getZ(),
-                    0, 0, 0
-            );
         }
     }
 

@@ -257,8 +257,8 @@
   "advancement.upgrading.legendary.architects_mind.description": "Placez un bloc à portée maximale grâce au disque Esprit d'Architecte.",
   "advancement.upgrading.legendary.undertaker.title": "La Mort Peut Attendre",
   "advancement.upgrading.legendary.undertaker.description": "Conserver le disque Croque-Mort à la mort... grâce au disque Croque-Mort",
-  "advancement.upgrading.legendary.transmitter.title": "Double It and Give It to EVERYONE",
-  "advancement.upgrading.legendary.transmitter.description": "Transmit your damage taken onto 10 entities at once thanks to the Transmitter disk",
+  "advancement.upgrading.legendary.transmitter.title": "Double-le et donne le à TOUT LE MONDE",
+  "advancement.upgrading.legendary.transmitter.description": "Transmettre les dégâts subis à 10 entités à la fois grâce au disque Transmetteur.",
   "advancement.upgrading.mythic.necro_archer.title": "Vise. Tire. Péris.",
   "advancement.upgrading.mythic.necro_archer.description": "Faites exploser Nécrosis sur 5 ennemis ou plus simultanément grâce au disque Nécro-Archer.",
 
@@ -542,15 +542,15 @@
   "description.upgrading.architects_mind.11": "+{3.5} blocs de portée de placement/cassage de blocs",
   "description.upgrading.architects_mind.12": "+{5.5} blocs de portée de placement/cassage de blocs et placement instantané",
 
-  "description.upgrading.undertaker.9": "On death, keep {1} random item from your inventory",
-  "description.upgrading.undertaker.10": "On death, keep {2} random items from your inventory",
-  "description.upgrading.undertaker.11": "On death, keep {3} random items from your inventory",
-  "description.upgrading.undertaker.12": "On death, keep {5} random items and {1} random equipped disk",
+  "description.upgrading.undertaker.9": "À la mort, conserver {1} objet aléatoire de votre inventaire",
+  "description.upgrading.undertaker.10": "À la mort, conserver {2} objets aléatoires de votre inventaire",
+  "description.upgrading.undertaker.11": "À la mort, conserver {3} objets aléatoires de votre inventaire",
+  "description.upgrading.undertaker.12": "À la mort, conserver {5} objets aléatoires et {1} disque équipé aléatoire",
 
-  "description.upgrading.transmitter.9": "Nearby hostile entities within {6} blocks receive {10}% of the damage you take",
-  "description.upgrading.transmitter.10": "Nearby hostile entities within {7} blocks receive {12.5}% of the damage you take",
-  "description.upgrading.transmitter.11": "Nearby hostile entities within {9} blocks receive {15}% of the damage you take",
-  "description.upgrading.transmitter.12": "Nearby hostile entities within {11} blocks receive {21.5}% of the damage you take. You also receive {12}% less damage",
+  "description.upgrading.transmitter.9": "Les entités à moins de {6} blocs reçoivent {10}% des dégâts que vous subissez",
+  "description.upgrading.transmitter.10": "Les entités à moins de {7} blocs reçoivent {12.5}% des dégâts que vous subissez",
+  "description.upgrading.transmitter.11": "Les entités à moins de {9} blocs reçoivent {15}% des dégâts que vous subissez",
+  "description.upgrading.transmitter.12": "Les entités à moins de {11} blocs reçoivent {21.5}% des dégâts que vous subissez. Vous subissez aussi {12}% de dégâts en moins",
 
 
 

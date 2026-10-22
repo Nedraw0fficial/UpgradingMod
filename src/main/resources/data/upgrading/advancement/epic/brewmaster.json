@@ -7,11 +7,14 @@
     "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
-    "hidden": false
+    "hidden": true
   },
   "criteria": {
     "potion_holic": {
       "trigger": "minecraft:impossible"
     }
+  },
+  "rewards": {
+    "experience": 201
   }
 }

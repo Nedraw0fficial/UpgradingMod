@@ -7,11 +7,14 @@
     "frame": "goal",
     "show_toast": true,
     "announce_to_chat": true,
-    "hidden": false
+    "hidden": true
   },
   "criteria": {
     "xp_leaks": {
       "trigger": "minecraft:impossible"
     }
+  },
+  "rewards": {
+    "experience": 42
   }
 }
