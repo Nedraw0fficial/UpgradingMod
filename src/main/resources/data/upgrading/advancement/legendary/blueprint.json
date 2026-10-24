@@ -1,0 +1,20 @@
+{
+  "parent": "upgrading:tier_legendary",
+  "display": {
+    "icon": {"id": "upgrading:blueprint_disk"},
+    "title": {"translate": "advancement.upgrading.legendary.blueprint.title"},
+    "description": {"translate": "advancement.upgrading.legendary.blueprint.description"},
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "aced": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 450
+  }
+}

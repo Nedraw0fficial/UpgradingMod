@@ -33,6 +33,7 @@
   "disk.upgrading.brewmaster": "Maître Brasseur",
   "disk.upgrading.undertaker": "Undertaker",
   "disk.upgrading.transmitter": "Transmetteur",
+  "disk.upgrading.blueprint": "Schéma",
 
   "_comment1": "See below for descriptions (nice)",
 
@@ -50,6 +51,9 @@
   "tooltip.upgrading.encrypted_floppy.starts_at": "Commence à : ",
   "tooltip.upgrading.encrypted_floppy.guaranteed": "Rareté garantie !",
   "tooltip.upgrading.encrypted_floppy.chances": "%s chance(s) d'amélioration",
+
+  "gui.upgrading.blueprint.compatible": "Compatible",
+  "gui.upgrading.blueprint.incompatible": "Incompatible",
 
   "key.categories.upgrading": "UPGRADING! Mod",
   "key.upgrading.open_disk_menu": "Ouvrir le menu d'équippement des disques",
@@ -232,9 +236,9 @@
   "advancement.upgrading.rare.pawnbroker.title": "C'est le mieux que je puisse faire",
   "advancement.upgrading.rare.pawnbroker.description": "Gardez vos émeraudes après un échange grâce au disque Prêteur sur Gages.",
   "advancement.upgrading.rare.weathervane.title": "Combo par Zeus en Personne",
-  "advancement.upgrading.rare.weathervane.description": "Foudroyer 3 fois de suite la même cible grâce au disque Girouette",
+  "advancement.upgrading.rare.weathervane.description": "Foudroyer 3 fois de suite la même cible grâce au disque Girouette.",
   "advancement.upgrading.rare.block_o_enchanting.title": "Fuites d'XP",
-  "advancement.upgrading.rare.block_o_enchanting.description": "Collecter 3500 XP au total grâce au disque Bloc Enchanteur",
+  "advancement.upgrading.rare.block_o_enchanting.description": "Collecter 3500 XP au total grâce au disque Bloc Enchanteur.",
   "advancement.upgrading.epic.warchemist.title": "Donc on se jette juste n'importe quoi maintenant?!",
   "advancement.upgrading.epic.warchemist.description": "Recevez les 8 effets positifs à la fois grâce au disque Warchemiste.",
   "advancement.upgrading.epic.basher.title": "Référence Alan Becker !",
@@ -246,9 +250,9 @@
   "advancement.upgrading.epic.mountain_goat.title": "The Goat",
   "advancement.upgrading.epic.mountain_goat.description": "Effectuez un saut mural grâce au disque Chèvre des Montagnes.",
   "advancement.upgrading.epic.phantom.title": "Fantôme",
-  "advancement.upgrading.epic.phantom.description": "Rester invisible pendant 60 secondes consécutives grâce au disque Fantôme",
+  "advancement.upgrading.epic.phantom.description": "Rester invisible pendant 60 secondes consécutives grâce au disque Fantôme.",
   "advancement.upgrading.epic.brewmaster.title": "Potion-holic",
-  "advancement.upgrading.epic.brewmaster.description": "Boire une potion avec 4 effets simultanément grâce au disque Maître Brasseur",
+  "advancement.upgrading.epic.brewmaster.description": "Boire une potion avec 4 effets simultanément grâce au disque Maître Brasseur.",
   "advancement.upgrading.legendary.berserker.title": "Doomslayer",
   "advancement.upgrading.legendary.berserker.description": "Tuez un ennemi en dessous de 30% PV avec le bonus de rage grâce au disque Berserker.",
   "advancement.upgrading.legendary.pyroclasm.title": "RECULE !",
@@ -256,9 +260,11 @@
   "advancement.upgrading.legendary.architects_mind.title": "JE SUIS UN P**AIN D'ARCHITECTE !",
   "advancement.upgrading.legendary.architects_mind.description": "Placez un bloc à portée maximale grâce au disque Esprit d'Architecte.",
   "advancement.upgrading.legendary.undertaker.title": "La Mort Peut Attendre",
-  "advancement.upgrading.legendary.undertaker.description": "Conserver le disque Croque-Mort à la mort... grâce au disque Croque-Mort",
+  "advancement.upgrading.legendary.undertaker.description": "Conserver le disque Croque-Mort à la mort... grâce au disque Croque-Mort.",
   "advancement.upgrading.legendary.transmitter.title": "Double-le et donne le à TOUT LE MONDE",
   "advancement.upgrading.legendary.transmitter.description": "Transmettre les dégâts subis à 10 entités à la fois grâce au disque Transmetteur.",
+  "advancement.upgrading.legendary.blueprint.title": "Un Sans-Faute !",
+  "advancement.upgrading.legendary.blueprint.description": "Copier la capacité d'un disque de niveau maximum grâce au disque Plan Directeur.",
   "advancement.upgrading.mythic.necro_archer.title": "Vise. Tire. Péris.",
   "advancement.upgrading.mythic.necro_archer.description": "Faites exploser Nécrosis sur 5 ennemis ou plus simultanément grâce au disque Nécro-Archer.",
 
@@ -551,6 +557,11 @@
   "description.upgrading.transmitter.10": "Les entités à moins de {7} blocs reçoivent {12.5}% des dégâts que vous subissez",
   "description.upgrading.transmitter.11": "Les entités à moins de {9} blocs reçoivent {15}% des dégâts que vous subissez",
   "description.upgrading.transmitter.12": "Les entités à moins de {11} blocs reçoivent {21.5}% des dégâts que vous subissez. Vous subissez aussi {12}% de dégâts en moins",
+
+  "description.upgrading.blueprint.9": "Copie la capacité du disque à sa droite avec {60}% d'efficacité",
+  "description.upgrading.blueprint.10": "Copie la capacité du disque à sa droite avec {70}% d'efficacité",
+  "description.upgrading.blueprint.11": "Copie la capacité du disque à sa droite avec {85}% d'efficacité",
+  "description.upgrading.blueprint.12": "Copie la capacité du disque à sa droite avec {100}% d'efficacité",
 
 
 

@@ -74,6 +74,7 @@ public class UpgradingMod {
         DiskRegistry.register(new ArchitectsMindDisk());
         DiskRegistry.register(new UndertakerDisk());
         DiskRegistry.register(new TransmitterDisk());
+        DiskRegistry.register(new BlueprintDisk());
         // - MYTHIC -
         DiskRegistry.register(new NecroArcherDisk());
         // - - - - - - -

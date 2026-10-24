@@ -2,12 +2,16 @@ package com.nedraw.upgrading;
 
 import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.item.ZSlotItem;
+import com.nedraw.upgrading.disk.BlueprintDisk;
+import com.nedraw.upgrading.disk.DiskRarity;
+import com.nedraw.upgrading.disk.DiskRegistry;
+import com.nedraw.upgrading.disk.UpgradeDisk;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class ZSlotEffects {
 
-    public static float[] calculateAllEfficiencyMultipliers(Player player) {
+    public static float[] calculateBaseEfficiencyMultipliers(Player player) {
         PlayerDiskData data = PlayerDiskData.get(player);
         float[] base = new float[3];
         float[] modifiers = new float[3];
@@ -56,6 +60,42 @@ public class ZSlotEffects {
         }
 
         return result;
+    }
+
+    public static float[] calculateAllEfficiencyMultipliers(Player player) {
+        PlayerDiskData data = PlayerDiskData.get(player);
+        float[] result = calculateBaseEfficiencyMultipliers(player);
+        float[] withBlueprint = result.clone();
+
+        for (int slot = 0; slot < 2; slot++) {
+            if (!"blueprint".equals(data.getEquippedDisk(slot))) continue;
+            if (!isBlueprintCompatible(data, slot)) continue;
+
+            int blueprintLevel = data.getDiskLevel("blueprint");
+            withBlueprint[slot + 1] += result[slot] * BlueprintDisk.getCopyEfficiency(blueprintLevel);
+        }
+
+        return withBlueprint;
+    }
+
+    public static float getBaseEfficiencyMultiplier(Player player, int slot) {
+        return calculateBaseEfficiencyMultipliers(player)[slot];
+    }
+
+    public static float getBlueprintBonus(Player player, int slot) {
+        float[] all = calculateAllEfficiencyMultipliers(player);
+        float[] base = calculateBaseEfficiencyMultipliers(player);
+        return Math.max(0.0f, all[slot] - base[slot]);
+    }
+
+    public static boolean isBlueprintCompatible(PlayerDiskData data, int blueprintSlot) {
+        if (blueprintSlot >= 2) return false;
+
+        String target = data.getEquippedDisk(blueprintSlot + 1);
+        if (target == null || target.equals("blueprint")) return false;
+
+        UpgradeDisk disk = DiskRegistry.getDisk(target);
+        return disk != null && disk.getRarity() != DiskRarity.MYTHIC;
     }
 
     private static float getFrameBonus(String frame, Player player, int slot,

@@ -173,6 +173,7 @@ public record ClaimEncryptedFloppyPacket(String rarityName) implements CustomPac
             case "architects_mind"-> new ItemStack(ModItems.ARCHITECTS_MIND_DISK.get());
             case "undertaker"     -> new ItemStack(ModItems.UNDERTAKER_DISK.get());
             case "transmitter"    -> new ItemStack(ModItems.TRANSMITTER_DISK.get());
+            case "blueprint"      -> new ItemStack(ModItems.BLUEPRINT_DISK.get());
             case "necro_archer"   -> new ItemStack(ModItems.NECRO_ARCHER_DISK.get());
             default -> null;
         };

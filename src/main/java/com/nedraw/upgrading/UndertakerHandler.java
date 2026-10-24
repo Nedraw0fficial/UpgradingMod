@@ -18,11 +18,11 @@ import java.util.*;
 public class UndertakerHandler {
 
     private static final Map<UUID, List<ItemStack>> KEPT_ITEMS = new HashMap<>();
-    private static final Map<UUID, String> KEPT_DISK_ID = new HashMap<>();
-    private static final Map<UUID, Integer> KEPT_DISK_LEVEL = new HashMap<>();
+    private static final Map<UUID, Map<String, Integer>> KEPT_DISKS = new HashMap<>();
 
     public static boolean shouldSkipDrop(UUID playerId, String diskId) {
-        return diskId.equals(KEPT_DISK_ID.get(playerId));
+        Map<String, Integer> kept = KEPT_DISKS.get(playerId);
+        return kept != null && kept.containsKey(diskId);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
@@ -41,8 +41,11 @@ public class UndertakerHandler {
             if (!(disk instanceof UndertakerDisk undertaker)) continue;
 
             int level = diskData.getDiskLevel(diskId);
-            int itemsToKeep = undertaker.getItemsToKeep(level);
-            if (itemsToKeep == 0) return;
+            int baseItems = undertaker.getItemsToKeep(level);
+            if (baseItems == 0) return;
+
+            float bonus = ZSlotEffects.getBlueprintBonus(player, slot);
+            int itemsToKeep = baseItems + Math.round(baseItems * bonus);
 
             UUID playerId = player.getUUID();
 
@@ -66,20 +69,23 @@ public class UndertakerHandler {
                 List<String> equippedDisks = new ArrayList<>();
                 for (int s = 0; s < 3; s++) {
                     String equipped = diskData.getEquippedDisk(s);
-                    if (equipped != null) equippedDisks.add(equipped);
+                    if (equipped != null && !equippedDisks.contains(equipped)) equippedDisks.add(equipped);
                 }
 
-                if (!equippedDisks.isEmpty()) {
-                    String keptDiskId = equippedDisks.get(new Random().nextInt(equippedDisks.size()));
-                    int keptDiskLevel = diskData.getDiskLevel(keptDiskId);
+                Collections.shuffle(equippedDisks);
+                int disksToKeep = 1 + (bonus >= 1.0f ? 1 : 0);
 
-                    KEPT_DISK_ID.put(playerId, keptDiskId);
-                    KEPT_DISK_LEVEL.put(playerId, keptDiskLevel);
+                Map<String, Integer> keptDisks = new HashMap<>();
+                for (int i = 0; i < Math.min(disksToKeep, equippedDisks.size()); i++) {
+                    String keptDiskId = equippedDisks.get(i);
+                    keptDisks.put(keptDiskId, diskData.getDiskLevel(keptDiskId));
 
                     if ("undertaker".equals(keptDiskId)) {
                         ModAdvancementTriggers.DEATH_CAN_WAIT(player);
                     }
                 }
+
+                if (!keptDisks.isEmpty()) KEPT_DISKS.put(playerId, keptDisks);
             }
             return;
         }
@@ -97,12 +103,13 @@ public class UndertakerHandler {
             }
         }
 
-        String keptDiskId = KEPT_DISK_ID.remove(playerId);
-        Integer keptDiskLevel = KEPT_DISK_LEVEL.remove(playerId);
-        if (keptDiskId != null && keptDiskLevel != null) {
+        Map<String, Integer> keptDisks = KEPT_DISKS.remove(playerId);
+        if (keptDisks != null) {
             PlayerDiskData diskData = PlayerDiskData.get(player);
-            diskData.unlockDisk(keptDiskId);
-            diskData.setDiskLevel(keptDiskId, keptDiskLevel);
+            for (Map.Entry<String, Integer> entry : keptDisks.entrySet()) {
+                diskData.unlockDisk(entry.getKey());
+                diskData.setDiskLevel(entry.getKey(), entry.getValue());
+            }
             ServerEvents.syncDiskData(player);
         }
     }

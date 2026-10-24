@@ -369,7 +369,6 @@ public class DiskMenuScreen extends Screen {
             RenderSystem.disableBlend();
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-            // Render Z-Slot item layers inside socket at 2x scale
             if (hasZSlot) {
                 String frame = ZSlotItem.getFrame(zSlot);
                 String board = ZSlotItem.getBoard(zSlot);
@@ -419,7 +418,7 @@ public class DiskMenuScreen extends Screen {
         float efficiency = 1.0f;
         for (int s = 0; s < 3; s++) {
             if (diskId.equals(diskData.getEquippedDisk(s))) {
-                efficiency = com.nedraw.upgrading.ZSlotEffects.getEfficiencyMultiplier(minecraft.player, s);
+                efficiency = com.nedraw.upgrading.ZSlotEffects.getBaseEfficiencyMultiplier(minecraft.player, s);
                 break;
             }
         }
@@ -441,6 +440,20 @@ public class DiskMenuScreen extends Screen {
         for (String paragraph : rawDescription.split("\n")) {
             descLines.addAll(manualWrap(paragraph, DESC_W, finalEfficiency));
         }
+
+        if ("blueprint".equals(diskId)) {
+            for (int s = 0; s < 3; s++) {
+                if (diskId.equals(diskData.getEquippedDisk(s))) {
+                    boolean compatible = com.nedraw.upgrading.ZSlotEffects.isBlueprintCompatible(diskData, s);
+                    String key = compatible ? "gui.upgrading.blueprint.compatible" : "gui.upgrading.blueprint.incompatible";
+                    String symbol = compatible ? " ✔" : " ✖";
+                    String colorCode = compatible ? "\u00a7a" : "\u00a7c";
+                    descLines.add(colorCode + net.minecraft.client.resources.language.I18n.get(key) + symbol);
+                    break;
+                }
+            }
+        }
+
         descMaxScroll = Math.max(0, (descLines.size() * 10) - DESC_H);
 
         int descX = leftPos + INFO_X;

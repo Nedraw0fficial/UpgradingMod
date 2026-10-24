@@ -2,6 +2,7 @@ package com.nedraw.upgrading;
 
 import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.item.ModItems;
+import com.nedraw.upgrading.item.DiskItem;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
@@ -64,6 +65,8 @@ public class DeathHandler {
                 if (!diskItem.isEmpty()) {
 
                     if (UndertakerHandler.shouldSkipDrop(player.getUUID(), diskId)) { continue; }
+
+                    DiskItem.setXpLvl(diskItem, Math.min(diskData.getDiskLevel(diskId), 11));
 
                     ItemEntity itemEntity = new ItemEntity(
                             player.level(),
@@ -143,7 +146,8 @@ public class DeathHandler {
             case "pyroclasm" -> new ItemStack(ModItems.PYROCLASM_DISK.get());
             case "architects_mind" -> new ItemStack(ModItems.ARCHITECTS_MIND_DISK.get());
             case "undertaker" -> new ItemStack(ModItems.UNDERTAKER_DISK.get());
-            case "transmitter"    -> new ItemStack(ModItems.TRANSMITTER_DISK.get());
+            case "transmitter" -> new ItemStack(ModItems.TRANSMITTER_DISK.get());
+            case "blueprint" -> new ItemStack(ModItems.BLUEPRINT_DISK.get());
             case "necro_archer" -> new ItemStack(ModItems.NECRO_ARCHER_DISK.get());
             default -> ItemStack.EMPTY;
         };

@@ -33,6 +33,7 @@
   "disk.upgrading.brewmaster": "Brewmaster",
   "disk.upgrading.undertaker": "Undertaker",
   "disk.upgrading.transmitter": "Transmitter",
+  "disk.upgrading.blueprint": "Blueprint",
 
 
   "_comment1": "See below for descriptions (nice)",
@@ -51,6 +52,9 @@
   "tooltip.upgrading.encrypted_floppy.starts_at": "Starts at: ",
   "tooltip.upgrading.encrypted_floppy.guaranteed": "Guaranteed rarity!",
   "tooltip.upgrading.encrypted_floppy.chances": "%s upgrade chance(s)",
+
+  "gui.upgrading.blueprint.compatible": "Compatible",
+  "gui.upgrading.blueprint.incompatible": "Incompatible",
 
   "key.categories.upgrading": "UPGRADING! Mod",
   "key.upgrading.open_disk_menu": "Open Disk Menu",
@@ -233,9 +237,9 @@
   "advancement.upgrading.rare.pawnbroker.title": "It's the Best I can Do",
   "advancement.upgrading.rare.pawnbroker.description": "Keep your emeralds after a trade thanks to the Pawnbroker disk.",
   "advancement.upgrading.rare.weathervane.title": "Got Comboed by Zeus Himself",
-  "advancement.upgrading.rare.weathervane.description": "Strike lightning 3 times in a row on the same target thanks to the Weathervane disk",
+  "advancement.upgrading.rare.weathervane.description": "Strike lightning 3 times in a row on the same target thanks to the Weathervane disk.",
   "advancement.upgrading.rare.block_o_enchanting.title": "XP Leaks",
-  "advancement.upgrading.rare.block_o_enchanting.description": "Collect a total of 3500 XP thanks to the Block O' Enchanting disk",
+  "advancement.upgrading.rare.block_o_enchanting.description": "Collect a total of 3500 XP thanks to the Block O' Enchanting disk.",
   "advancement.upgrading.epic.warchemist.title": "So We're Just Throwing Sh*t Now?!",
   "advancement.upgrading.epic.warchemist.description": "Receive all 8 positive effects at once thanks to the Warchemist disk.",
   "advancement.upgrading.epic.basher.title": "Alan Becker Reference!",
@@ -247,9 +251,9 @@
   "advancement.upgrading.epic.mountain_goat.title": "The Goat",
   "advancement.upgrading.epic.mountain_goat.description": "Perform a wall jump thanks to the Mountain Goat disk.",
   "advancement.upgrading.epic.phantom.title": "Ghost",
-  "advancement.upgrading.epic.phantom.description": "Stay fully invisible for 60 consecutive seconds thanks to the Phantom disk",
+  "advancement.upgrading.epic.phantom.description": "Stay fully invisible for 60 consecutive seconds thanks to the Phantom disk.",
   "advancement.upgrading.epic.brewmaster.title": "Potion-holic",
-  "advancement.upgrading.epic.brewmaster.description": "Drink a potion with 4 effects simultaneously thanks to the Brewmaster disk",
+  "advancement.upgrading.epic.brewmaster.description": "Drink a potion with 4 effects simultaneously thanks to the Brewmaster disk.",
   "advancement.upgrading.legendary.berserker.title": "Doomslayer",
   "advancement.upgrading.legendary.berserker.description": "Kill an enemy while below 30% HP with the rage bonus active thanks to the Berserker disk.",
   "advancement.upgrading.legendary.pyroclasm.title": "BACK OFF!",
@@ -257,9 +261,11 @@
   "advancement.upgrading.legendary.architects_mind.title": "I AM A F**KING ARCHITECT!",
   "advancement.upgrading.legendary.architects_mind.description": "Place a block at maximum reach distance thanks to the Architect's Mind disk.",
   "advancement.upgrading.legendary.undertaker.title": "Death Can Wait",
-  "advancement.upgrading.legendary.undertaker.description": "Keep the Undertaker disk on death... thanks to the Undertaker disk",
+  "advancement.upgrading.legendary.undertaker.description": "Keep the Undertaker disk on death... thanks to the Undertaker disk.",
   "advancement.upgrading.legendary.transmitter.title": "Double It and Give It to EVERYONE",
   "advancement.upgrading.legendary.transmitter.description": "Transmit your damage taken onto 10 entities at once thanks to the Transmitter disk",
+  "advancement.upgrading.legendary.blueprint.title": "You Aced it!",
+  "advancement.upgrading.legendary.blueprint.description": "Copy the ability of a maxed level disk thanks to the Blueprint disk.",
   "advancement.upgrading.mythic.necro_archer.title": "Aim. Shoot. Perish.",
   "advancement.upgrading.mythic.necro_archer.description": "Detonate Necromisis on 5 or more enemies simultaneously thanks to the Necro-Archer disk.",
 
@@ -555,6 +561,11 @@
   "description.upgrading.transmitter.10": "Nearby hostile entities within {7} blocks receive {12.5}% of the damage you take",
   "description.upgrading.transmitter.11": "Nearby hostile entities within {9} blocks receive {15}% of the damage you take",
   "description.upgrading.transmitter.12": "Nearby hostile entities within {11} blocks receive {21.5}% of the damage you take. You also receive {12}% less damage",
+
+  "description.upgrading.blueprint.9": "Copies the ability of the disk to its right at {60}% efficiency",
+  "description.upgrading.blueprint.10": "Copies the ability of the disk to its right at {70}% efficiency",
+  "description.upgrading.blueprint.11": "Copies the ability of the disk to its right at {85}% efficiency",
+  "description.upgrading.blueprint.12": "Copies the ability of the disk to its right at {100}% efficiency",
 
 
 

@@ -3,6 +3,8 @@ package com.nedraw.upgrading;
 import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.UpgradeDisk;
+import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -17,6 +19,7 @@ public class PlayerTickHandler {
 
     private static final Map<UUID, String[]> LAST_DISK_IDS   = new HashMap<>();
     private static final Map<UUID, int[]>    LAST_DISK_LEVELS = new HashMap<>();
+    private static final Map<UUID, float[]>  LAST_EFFICIENCIES = new HashMap<>();
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
@@ -28,6 +31,7 @@ public class PlayerTickHandler {
 
         String[] lastIds   = LAST_DISK_IDS.computeIfAbsent(playerId, k -> new String[3]);
         int[]    lastLevels = LAST_DISK_LEVELS.computeIfAbsent(playerId, k -> new int[3]);
+        float[]  lastEfficiencies = LAST_EFFICIENCIES.computeIfAbsent(playerId, k -> new float[3]);
 
         float[] efficiencies = ZSlotEffects.calculateAllEfficiencyMultipliers(player);
 
@@ -43,6 +47,7 @@ public class PlayerTickHandler {
                 if (oldDisk != null) oldDisk.removeEffect(player);
                 lastIds[slot] = null;
                 lastLevels[slot] = 0;
+                lastEfficiencies[slot] = 0.0f;
                 continue;
             }
 
@@ -51,14 +56,32 @@ public class PlayerTickHandler {
             UpgradeDisk disk = DiskRegistry.getDisk(diskId);
             if (disk == null) continue;
 
-            if (!diskId.equals(lastId) || currentLevel != lastLevel) {
+            boolean efficiencyChanged = Math.abs(efficiency - lastEfficiencies[slot]) > 0.0001f;
+
+            if (!diskId.equals(lastId) || currentLevel != lastLevel || efficiencyChanged) {
                 if (lastId != null && !lastId.equals(diskId)) {
                     UpgradeDisk oldDisk = DiskRegistry.getDisk(lastId);
                     if (oldDisk != null) oldDisk.removeEffect(player);
+                } else if (efficiencyChanged && diskId.equals(lastId) && currentLevel == lastLevel) {
+                    disk.removeEffect(player);
                 }
                 disk.applyEffect(player, currentLevel, slot, efficiency);
                 lastIds[slot] = diskId;
                 lastLevels[slot] = currentLevel;
+                lastEfficiencies[slot] = efficiency;
+
+                disk.applyEffect(player, currentLevel, slot, efficiency);
+                lastIds[slot] = diskId;
+                lastLevels[slot] = currentLevel;
+                lastEfficiencies[slot] = efficiency;
+
+                if (slot > 0
+                        && currentLevel >= 12
+                        && "blueprint".equals(diskData.getEquippedDisk(slot - 1))
+                        && ZSlotEffects.isBlueprintCompatible(diskData, slot - 1)
+                        && player instanceof ServerPlayer serverPlayer) {
+                    ModAdvancementTriggers.BLUEPRINT_MAXED_COPY(serverPlayer);
+                }
             }
 
             disk.applyTickEffect(player, currentLevel, slot, efficiency);

@@ -305,6 +305,10 @@ public class ModItems {
             "transmitter_disk",
             properties -> new DiskItem("transmitter", properties)
     );
+    public static final DeferredHolder<Item, DiskItem> BLUEPRINT_DISK = ITEMS.registerItem(
+            "blueprint_disk",
+            properties -> new DiskItem("blueprint", properties)
+    );
 
     // MYTHIC
     public static final DeferredHolder<Item, DiskItem> NECRO_ARCHER_DISK = ITEMS.registerItem(

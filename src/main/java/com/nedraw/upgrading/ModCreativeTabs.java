@@ -59,6 +59,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.PYROCLASM_DISK.get());
                         output.accept(ModItems.UNDERTAKER_DISK.get());
                         output.accept(ModItems.TRANSMITTER_DISK.get());
+                        output.accept(ModItems.BLUEPRINT_DISK.get());
 
                         // MYTHIC disks
                         output.accept(ModItems.NECRO_ARCHER_DISK.get());

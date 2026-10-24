@@ -62,11 +62,12 @@ public class ModAdvancementTriggers {
     public static void MAX_REACH_PLACEMENT(ServerPlayer p)      { grantWithRoot(p, "legendary/architects_mind"); }
     public static void DEATH_CAN_WAIT(ServerPlayer p)           { grantWithRoot(p, "legendary/undertaker"); }
     public static void TRANSMIT_10(ServerPlayer p)              { grantWithRoot(p, "legendary/transmitter"); }
+    public static void BLUEPRINT_MAXED_COPY(ServerPlayer p)     { grantWithRoot(p, "legendary/blueprint"); }
 
     // MYTHIC
     public static void NECROMISIS_DETONATED_5(ServerPlayer p)   { grantWithRoot(p, "mythic/necro_archer"); }
 
-    // TIER UNLOCKS — also grant root first, then tier, then check if it's first of that tier
+    // TIER
     public static void UNLOCK_BASIC_DISK(ServerPlayer p)        { grant(p, "root"); grant(p, "tier_basic"); }
     public static void UNLOCK_RARE_DISK(ServerPlayer p)         { grant(p, "root"); grant(p, "tier_rare"); }
     public static void UNLOCK_EPIC_DISK(ServerPlayer p)         { grant(p, "root"); grant(p, "tier_epic"); }
