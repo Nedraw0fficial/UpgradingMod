@@ -14,7 +14,7 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-version = '1.0.0'
+version = '1.1.1'
 group = 'com.nedraw.upgrading'
 
 repositories {
