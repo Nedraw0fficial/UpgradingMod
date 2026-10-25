@@ -3,9 +3,9 @@ package com.nedraw.upgrading.fx;
 public enum DiskFxType {
 
     // 2/32
-    EFFICIENT("efficient", Motion.RISE, Audience.SELF, 8, 0.6f, 1.0, 8),
-    FEATHER_FALL("feather_fall", Motion.RING, Audience.NEARBY, 10, 0.7f, 0.1, 20);
-
+    EFFICIENT("efficient", Motion.RISE, Audience.SELF, 8, 0.75f, 1.0, 8),
+    FEATHER_FALL("feather_fall", Motion.RING, Audience.NEARBY, 10, 0.95f, 0.1, 20),
+    LIGHTWEIGHT("lightweight", Motion.SPIRAL, Audience.SELF, 6, 0.5f, 0.2, 20);
 
     public enum Motion {
         BURST, RISE, SPIRAL, FALL, RING, IMPLODE, ZIGZAG

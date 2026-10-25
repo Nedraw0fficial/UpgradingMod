@@ -1,6 +1,8 @@
 package com.nedraw.upgrading;
 
 import com.nedraw.upgrading.data.PlayerDiskData;
+import com.nedraw.upgrading.fx.DiskFx;
+import com.nedraw.upgrading.fx.DiskFxType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -25,13 +27,13 @@ public class LightweightHandler {
                 int level = diskData.getDiskLevel(diskId);
 
                 if (level >= 12) {
-                    // Add 15% bonus saturation
                     FoodData foodData = player.getFoodData();
 
                     float baseSaturation = foodProperties.saturation();
                     float bonusSaturation = baseSaturation * 0.15f;
 
                     foodData.setSaturation(Math.min(20.0f, foodData.getSaturationLevel() + bonusSaturation));
+                    DiskFx.play(player, DiskFxType.LIGHTWEIGHT, 3);
                 }
 
                 return;

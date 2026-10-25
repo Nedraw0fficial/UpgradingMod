@@ -5,6 +5,8 @@ import com.nedraw.upgrading.data.PlayerDiskData;
 import com.nedraw.upgrading.disk.DiskRegistry;
 import com.nedraw.upgrading.disk.FeatherFallDisk;
 import com.nedraw.upgrading.disk.UpgradeDisk;
+import com.nedraw.upgrading.fx.DiskFx;
+import com.nedraw.upgrading.fx.DiskFxType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.player.Player;
@@ -33,6 +35,10 @@ public class FeatherFallHandler {
                     float originalDamage = event.getOriginalDamage();
                     float newDamage = featherFallDisk.reduceFallDamage(originalDamage, level, efficiency);
                     event.setNewDamage(newDamage);
+
+                    if (newDamage < originalDamage) {
+                        DiskFx.play(player, DiskFxType.FEATHER_FALL);
+                    }
 
                     if (originalDamage >= player.getHealth() && newDamage < player.getHealth()
                             && player instanceof ServerPlayer sp) {

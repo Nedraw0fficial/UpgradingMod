@@ -5,5 +5,19 @@
       "upgrading:disk/efficient/efficient_2",
       "upgrading:disk/efficient/efficient_3"
     ]
+  },
+  "disk.feather_fall": {
+    "sounds": [
+      "upgrading:disk/feather_fall/feather_fall_1",
+      "upgrading:disk/feather_fall/feather_fall_2",
+      "upgrading:disk/feather_fall/feather_fall_3"
+    ]
+  },
+  "disk.lightweight": {
+    "sounds": [
+      "upgrading:disk/lightweight/lightweight_1",
+      "upgrading:disk/lightweight/lightweight_2",
+      "upgrading:disk/lightweight/lightweight_3"
+    ]
   }
 }
