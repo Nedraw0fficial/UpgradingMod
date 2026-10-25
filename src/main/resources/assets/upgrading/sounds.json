@@ -1,0 +1,9 @@
+{
+  "disk.efficient": {
+    "sounds": [
+      "upgrading:disk/efficient/efficient_1",
+      "upgrading:disk/efficient/efficient_2",
+      "upgrading:disk/efficient/efficient_3"
+    ]
+  }
+}

@@ -1,6 +1,8 @@
 package com.nedraw.upgrading.disk;
 
 import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
+import com.nedraw.upgrading.fx.DiskFx;
+import com.nedraw.upgrading.fx.DiskFxType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -53,6 +55,7 @@ public class EfficientDisk extends UpgradeDisk {
         }
 
         if (savedThisTick) {
+            DiskFx.play(player, DiskFxType.EFFICIENT);
             long now = System.currentTimeMillis();
             List<Long> timestamps = SAVE_TIMESTAMPS.computeIfAbsent(playerId, k -> new ArrayList<>());
             timestamps.add(now);

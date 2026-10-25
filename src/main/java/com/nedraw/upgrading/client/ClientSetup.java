@@ -2,8 +2,10 @@ package com.nedraw.upgrading.client;
 
 import com.nedraw.upgrading.UpgradingMod;
 import com.nedraw.upgrading.item.ModItems;
+import com.nedraw.upgrading.particle.DiskParticle;
 import com.nedraw.upgrading.particle.ModParticles;
 import com.nedraw.upgrading.particle.NecromisisParticle;
+import com.nedraw.upgrading.fx.DiskFxType;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -39,6 +41,12 @@ public class ClientSetup {
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticles.NECROMISIS.get(), NecromisisParticle.Provider::new);
+
+        for (DiskFxType type : DiskFxType.values()) {
+            event.registerSpriteSet(
+                    ModParticles.DISK_PARTICLES.get(type).get(),
+                    sprites -> new DiskParticle.Provider(sprites, type.getMotion()));
+        }
     }
 
     public static void onRegisterAdditionalModels(ModelEvent.RegisterAdditional event) {

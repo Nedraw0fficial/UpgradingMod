@@ -12,6 +12,7 @@ import com.nedraw.upgrading.loot.ModLootFunctions;
 import com.nedraw.upgrading.network.ModNetwork;
 import com.nedraw.upgrading.particle.ModParticles;
 import com.nedraw.upgrading.recipe.ModRecipes;
+import com.nedraw.upgrading.sound.ModSounds;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -37,7 +38,6 @@ public class UpgradingMod {
         ModLootFunctions.LOOT_FUNCTIONS.register(modEventBus);
         ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
 
-        // Registerng disks FIRST
         LOGGER.info("Registering Upgrade Disks...");
         // --- DISKS ---
         // - BASIC -
@@ -80,29 +80,23 @@ public class UpgradingMod {
         // - - - - - - -
         LOGGER.info("Registered {} disks", DiskRegistry.getAllDisks().size());
 
-        // Register items
         ModItems.ITEMS.register(modEventBus);
 
-        // Register effects
         ModEffects.MOB_EFFECTS.register(modEventBus);
 
-        // Register particles
         ModParticles.PARTICLE_TYPES.register(modEventBus);
 
-        // Register tabs
+        ModSounds.SOUNDS.register(modEventBus);
+
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
 
-        // Register advancements
         //ModAdvancementTriggers.TRIGGERS.register(modEventBus);
         //no registry needed here
 
-        // Register data attachments
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
 
-        // Register network packets
         modEventBus.addListener(ModNetwork::register);
 
-        // Register common setup
         modEventBus.addListener(this::commonSetup);
     }
 
