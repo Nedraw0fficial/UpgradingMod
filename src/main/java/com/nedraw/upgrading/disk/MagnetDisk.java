@@ -1,6 +1,8 @@
 package com.nedraw.upgrading.disk;
 
 import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
+import com.nedraw.upgrading.fx.DiskFx;
+import com.nedraw.upgrading.fx.DiskFxType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -65,6 +67,9 @@ public class MagnetDisk extends UpgradeDisk {
             itemsAffected++;
         }
 
+        if (itemsAffected > 0) {
+            DiskFx.play(player, DiskFxType.MAGNET);
+        }
         if (itemsAffected >= 20 && player instanceof ServerPlayer sp) {
             ModAdvancementTriggers.MAGNET_PICKUP_20(sp);
         }

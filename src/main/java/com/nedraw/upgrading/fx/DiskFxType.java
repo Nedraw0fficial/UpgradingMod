@@ -5,7 +5,10 @@ public enum DiskFxType {
     // 2/32
     EFFICIENT("efficient", Motion.RISE, Audience.SELF, 8, 0.75f, 1.0, 8),
     FEATHER_FALL("feather_fall", Motion.RING, Audience.NEARBY, 10, 0.95f, 0.1, 20),
-    LIGHTWEIGHT("lightweight", Motion.SPIRAL, Audience.SELF, 6, 0.5f, 0.2, 20);
+    LIGHTWEIGHT("lightweight", Motion.SPIRAL, Audience.SELF, 6, 0.75f, 0.2, 20),
+    MAGNET("magnet", Motion.IMPLODE, Audience.SELF, 6, 0.65f, 0.1, 30);
+
+
 
     public enum Motion {
         BURST, RISE, SPIRAL, FALL, RING, IMPLODE, ZIGZAG

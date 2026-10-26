@@ -19,5 +19,12 @@
       "upgrading:disk/lightweight/lightweight_2",
       "upgrading:disk/lightweight/lightweight_3"
     ]
+  },
+  "disk.magnet": {
+    "sounds": [
+      "upgrading:disk/magnet/magnet_1",
+      "upgrading:disk/magnet/magnet_2",
+      "upgrading:disk/magnet/magnet_3"
+    ]
   }
 }
