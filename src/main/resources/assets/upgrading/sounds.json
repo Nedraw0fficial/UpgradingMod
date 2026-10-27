@@ -26,5 +26,26 @@
       "upgrading:disk/magnet/magnet_2",
       "upgrading:disk/magnet/magnet_3"
     ]
+  },
+  "disk.mighty_miner": {
+    "sounds": [
+      "upgrading:disk/mighty_miner/mighty_miner_1",
+      "upgrading:disk/mighty_miner/mighty_miner_2",
+      "upgrading:disk/mighty_miner/mighty_miner_3"
+    ]
+  },
+  "disk.night_vision": {
+    "sounds": [
+      "upgrading:disk/night_vision/night_vision_1",
+      "upgrading:disk/night_vision/night_vision_2",
+      "upgrading:disk/night_vision/night_vision_3"
+    ]
+  },
+  "disk.sea_fish": {
+    "sounds": [
+      "upgrading:disk/sea_fish/sea_fish_1",
+      "upgrading:disk/sea_fish/sea_fish_2",
+      "upgrading:disk/sea_fish/sea_fish_3"
+    ]
   }
 }

@@ -45,7 +45,7 @@ public class ClientSetup {
         for (DiskFxType type : DiskFxType.values()) {
             event.registerSpriteSet(
                     ModParticles.DISK_PARTICLES.get(type).get(),
-                    sprites -> new DiskParticle.Provider(sprites, type.getMotion()));
+                    sprites -> new DiskParticle.Provider(sprites, type));
         }
     }
 

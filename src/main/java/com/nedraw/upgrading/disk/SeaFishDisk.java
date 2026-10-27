@@ -1,6 +1,8 @@
 package com.nedraw.upgrading.disk;
 
 import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
+import com.nedraw.upgrading.fx.DiskFx;
+import com.nedraw.upgrading.fx.DiskFxType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -58,6 +60,7 @@ public class SeaFishDisk extends UpgradeDisk {
                 int bonusSeconds = getAirBonus(level);
                 player.setAirSupply((int)(bonusSeconds * 20 * efficiency));
                 BONUS_AIR_USED.put(playerId, true);
+                DiskFx.play(player, DiskFxType.SEA_FISH);
             }
         } else {
             UNDERWATER_TICKS.put(playerId, 0);

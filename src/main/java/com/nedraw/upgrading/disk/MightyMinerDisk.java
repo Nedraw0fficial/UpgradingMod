@@ -1,6 +1,8 @@
 package com.nedraw.upgrading.disk;
 
 import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
+import com.nedraw.upgrading.fx.DiskFx;
+import com.nedraw.upgrading.fx.DiskFxType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -65,13 +67,13 @@ public class MightyMinerDisk extends UpgradeDisk {
         };
     }
 
-    public void handleBlockBreak(Player player, BlockState state, BlockPos pos, int level) {
+    public void handleBlockBreak(Player player, BlockState state, BlockPos pos, int level, float efficiency) {
         if (!(player.level() instanceof ServerLevel serverLevel)) return;
         if (level >= 12) {
             Block block = state.getBlock();
             if (block == Blocks.STONE || block == Blocks.DEEPSLATE ||
                     block == Blocks.COBBLESTONE || block == Blocks.COBBLED_DEEPSLATE) {
-                if (RANDOM.nextDouble() < 0.01) {
+                if (RANDOM.nextDouble() < 0.03 * efficiency) {
                     int roll = RANDOM.nextInt(100);
                     Item selectedOre;
                     if (roll < 30)      selectedOre = Items.COAL;
@@ -83,6 +85,7 @@ public class MightyMinerDisk extends UpgradeDisk {
                     else if (roll < 99) selectedOre = Items.EMERALD;
                     else                selectedOre = Items.DIAMOND;
                     Block.popResource(serverLevel, pos, new ItemStack(selectedOre));
+                    DiskFx.playAt(serverLevel, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, DiskFxType.MIGHTY_MINER);
                     if (player instanceof ServerPlayer sp) ModAdvancementTriggers.BONUS_ORE_FOUND(sp);
                 }
             }

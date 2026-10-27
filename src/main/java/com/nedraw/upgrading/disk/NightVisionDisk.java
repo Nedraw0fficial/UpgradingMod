@@ -1,6 +1,8 @@
 package com.nedraw.upgrading.disk;
 
 import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
+import com.nedraw.upgrading.fx.DiskFx;
+import com.nedraw.upgrading.fx.DiskFxType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -53,6 +55,7 @@ public class NightVisionDisk extends UpgradeDisk {
             if (!invisible.isEmpty()) {
                 invisible.forEach(entity -> entity.addEffect(
                         new MobEffectInstance(MobEffects.GLOWING, 40, 0, false, false, false)));
+                DiskFx.play(player, DiskFxType.NIGHT_VISION);
                 if (player instanceof ServerPlayer sp) ModAdvancementTriggers.SEE_INVISIBLE(sp);
             }
             return;
@@ -64,6 +67,7 @@ public class NightVisionDisk extends UpgradeDisk {
         if (!BLINK_TIMERS.containsKey(playerId)) {
             BLINK_TIMERS.put(playerId, 0);
             IS_BLINK_ON.put(playerId, true);
+            DiskFx.play(player, DiskFxType.NIGHT_VISION, 0);
         }
 
         int timer = BLINK_TIMERS.get(playerId);
@@ -83,6 +87,7 @@ public class NightVisionDisk extends UpgradeDisk {
             if (timer >= offDuration) {
                 IS_BLINK_ON.put(playerId, true);
                 BLINK_TIMERS.put(playerId, 0);
+                DiskFx.play(player, DiskFxType.NIGHT_VISION, 0);
             } else {
                 BLINK_TIMERS.put(playerId, timer + 1);
             }

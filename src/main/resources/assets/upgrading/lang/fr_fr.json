@@ -321,7 +321,7 @@
   "description.upgrading.mighty_miner.9": "+{25}% de vitesse de minage",
   "description.upgrading.mighty_miner.10": "+{34}% de vitesse de minage",
   "description.upgrading.mighty_miner.11": "+{43}% de vitesse de minage",
-  "description.upgrading.mighty_miner.12": "+{55}% de vitesse de minage et 1% de chance de trouver des minerais dans la pierre",
+  "description.upgrading.mighty_miner.12": "+{55}% de vitesse de minage et {3}% de chance de trouver des minerais dans la pierre",
 
   "description.upgrading.night_vision.1": "Vision nocturne clignote dans le noir : {2}s allumé, {/8}s éteint",
   "description.upgrading.night_vision.2": "Vision nocturne clignote dans le noir : {3}s allumé, {/7}s éteint",

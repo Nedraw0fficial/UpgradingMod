@@ -3,12 +3,15 @@ package com.nedraw.upgrading.particle;
 import com.nedraw.upgrading.fx.DiskFxType;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
 
 public class DiskParticle extends TextureSheetParticle {
 
     private final SpriteSet sprites;
+    private final DiskFxType type;
     private final DiskFxType.Motion motion;
+    private final int frameCount;
     private final double originX;
     private final double originY;
     private final double originZ;
@@ -21,10 +24,12 @@ public class DiskParticle extends TextureSheetParticle {
     private double velZ;
 
     protected DiskParticle(ClientLevel level, double x, double y, double z,
-                           DiskFxType.Motion motion, SpriteSet sprites) {
+                           DiskFxType type, SpriteSet sprites) {
         super(level, x, y, z, 0, 0, 0);
         this.sprites = sprites;
-        this.motion = motion;
+        this.type = type;
+        this.motion = type.getMotion();
+        this.frameCount = countFrames(sprites);
 
         this.phase = Math.random() * Math.PI * 2;
         this.elevation = (Math.random() - 0.5) * Math.PI;
@@ -46,7 +51,7 @@ public class DiskParticle extends TextureSheetParticle {
         this.yo = this.y;
         this.zo = this.z;
 
-        this.lifetime = 22 + (int) (Math.random() * 10);
+        this.lifetime = Math.max(2, Math.round(type.getDisplayDuration() * (0.9f + (float) Math.random() * 0.2f)));
         this.hasPhysics = false;
         this.gravity = 0.0f;
         this.quadSize = 0.12f + (float) Math.random() * 0.05f;
@@ -58,7 +63,33 @@ public class DiskParticle extends TextureSheetParticle {
             this.velZ = Math.sin(phase) * Math.cos(elevation) * speed;
         }
 
-        this.setSpriteFromAge(sprites);
+        this.updateSprite();
+    }
+
+    private static int countFrames(SpriteSet sprites) {
+        TextureAtlasSprite previous = sprites.get(0, 64);
+        int count = 1;
+        for (int k = 1; k <= 64; k++) {
+            TextureAtlasSprite current = sprites.get(k, 64);
+            if (current != previous) {
+                count++;
+                previous = current;
+            }
+        }
+        return count;
+    }
+
+    private void updateSprite() {
+        int frame;
+        if (type.getFrameSpeed() <= 0) {
+            frame = Math.min(frameCount - 1, (int) ((float) age / (float) lifetime * frameCount));
+        } else {
+            frame = age / type.getFrameSpeed();
+            if (frame >= frameCount) {
+                frame = type.isLoops() ? frame % frameCount : frameCount - 1;
+            }
+        }
+        this.setSprite(sprites.get(frame, Math.max(1, frameCount - 1)));
     }
 
     @Override
@@ -128,8 +159,8 @@ public class DiskParticle extends TextureSheetParticle {
         }
 
         this.setPos(nx, ny, nz);
-        this.alpha = 1.0f - progress * progress;
-        this.setSpriteFromAge(sprites);
+        this.alpha = Math.max(0.0f, 1.0f - type.getFadeOutSpeed() * progress * progress);
+        this.updateSprite();
     }
 
     @Override
@@ -139,16 +170,17 @@ public class DiskParticle extends TextureSheetParticle {
 
     @Override
     public int getLightColor(float partialTick) {
-        return 15728880;
+        if (type.isGlow()) return 15728880;
+        return super.getLightColor(partialTick);
     }
 
-    public record Provider(SpriteSet sprites, DiskFxType.Motion motion)
+    public record Provider(SpriteSet sprites, DiskFxType type)
             implements ParticleProvider<SimpleParticleType> {
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level,
+        public Particle createParticle(SimpleParticleType particleType, ClientLevel level,
                                        double x, double y, double z,
                                        double dx, double dy, double dz) {
-            return new DiskParticle(level, x, y, z, motion, sprites);
+            return new DiskParticle(level, x, y, z, type, sprites);
         }
     }
 }

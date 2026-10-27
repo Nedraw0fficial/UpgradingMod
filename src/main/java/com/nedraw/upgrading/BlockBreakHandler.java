@@ -26,7 +26,7 @@ public class BlockBreakHandler {
                 UpgradeDisk disk = DiskRegistry.getDisk(diskId);
                 if (disk instanceof MightyMinerDisk mightyMiner) {
                     mightyMiner.handleBlockBreak(player, event.getState(), event.getPos(),
-                            diskData.getDiskLevel(diskId));
+                            diskData.getDiskLevel(diskId), efficiency);
                 }
             } else if ("harvester".equals(diskId)) {
                 UpgradeDisk disk = DiskRegistry.getDisk(diskId);

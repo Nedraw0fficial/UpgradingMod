@@ -1,14 +1,13 @@
 package com.nedraw.upgrading.fx;
 
 public enum DiskFxType {
-
-    // 2/32
-    EFFICIENT("efficient", Motion.RISE, Audience.SELF, 8, 0.75f, 1.0, 8),
-    FEATHER_FALL("feather_fall", Motion.RING, Audience.NEARBY, 10, 0.95f, 0.1, 20),
-    LIGHTWEIGHT("lightweight", Motion.SPIRAL, Audience.SELF, 6, 0.75f, 0.2, 20),
-    MAGNET("magnet", Motion.IMPLODE, Audience.SELF, 6, 0.65f, 0.1, 30);
-
-
+    EFFICIENT("efficient", Motion.RISE, Audience.SELF, 8, 0.75f, 1.0, 8, 27, 0, false, 1.0f, false),
+    FEATHER_FALL("feather_fall", Motion.RING, Audience.NEARBY, 10, 0.95f, 0.1, 20, 27, 0, false, 1.0f, false),
+    LIGHTWEIGHT("lightweight", Motion.SPIRAL, Audience.SELF, 6, 0.75f, 0.2, 20, 27, 0, false, 1.0f, false),
+    MAGNET("magnet", Motion.IMPLODE, Audience.SELF, 6, 0.65f, 0.1, 30, 27, 0, false, 1.0f, false),
+    MIGHTY_MINER("mighty_miner", Motion.BURST, Audience.NEARBY, 10, 0.8f, 0.5, 0, 27, 0, false, 1.0f, true),
+    NIGHT_VISION("night_vision", Motion.RING, Audience.SELF, 8, 0.85f, 0.1, 60, 27, 0, false, 1.0f, true),
+    SEA_FISH("sea_fish", Motion.SPIRAL, Audience.NEARBY, 10, 0.85f, 1.8, 100, 27, 0, false, 1.0f, false);
 
     public enum Motion {
         BURST, RISE, SPIRAL, FALL, RING, IMPLODE, ZIGZAG
@@ -25,9 +24,15 @@ public enum DiskFxType {
     private final float volume;
     private final double height;
     private final int cooldownTicks;
+    private final int displayDuration;
+    private final int frameSpeed;
+    private final boolean loops;
+    private final float fadeOutSpeed;
+    private final boolean glow;
 
-    DiskFxType(String id, Motion motion, Audience audience, int particleCount,
-               float volume, double height, int cooldownTicks) {
+    DiskFxType(String id, Motion motion, Audience audience, int particleCount, float volume,
+               double height, int cooldownTicks, int displayDuration, int frameSpeed,
+               boolean loops, float fadeOutSpeed, boolean glow) {
         this.id = id;
         this.motion = motion;
         this.audience = audience;
@@ -35,6 +40,11 @@ public enum DiskFxType {
         this.volume = volume;
         this.height = height;
         this.cooldownTicks = cooldownTicks;
+        this.displayDuration = displayDuration;
+        this.frameSpeed = frameSpeed;
+        this.loops = loops;
+        this.fadeOutSpeed = fadeOutSpeed;
+        this.glow = glow;
     }
 
     public String getId() {
@@ -63,5 +73,25 @@ public enum DiskFxType {
 
     public int getCooldownTicks() {
         return cooldownTicks;
+    }
+
+    public int getDisplayDuration() {
+        return displayDuration;
+    }
+
+    public int getFrameSpeed() {
+        return frameSpeed;
+    }
+
+    public boolean isLoops() {
+        return loops;
+    }
+
+    public float getFadeOutSpeed() {
+        return fadeOutSpeed;
+    }
+
+    public boolean isGlow() {
+        return glow;
     }
 }

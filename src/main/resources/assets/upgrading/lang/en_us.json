@@ -325,7 +325,7 @@
   "description.upgrading.mighty_miner.9": "+{25}% mining speed",
   "description.upgrading.mighty_miner.10": "+{34}% mining speed",
   "description.upgrading.mighty_miner.11": "+{43}% mining speed",
-  "description.upgrading.mighty_miner.12": "+{55}% mining speed and 1% chance of finding ores in stones",
+  "description.upgrading.mighty_miner.12": "+{55}% mining speed and {3}% chance of finding ores in stones",
 
   "description.upgrading.night_vision.1": "Night vision blinks in darkness: {2}s on, {/8}s off",
   "description.upgrading.night_vision.2": "Night vision blinks in darkness: {3}s on, {/7}s off",
