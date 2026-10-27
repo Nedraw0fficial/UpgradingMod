@@ -1,6 +1,8 @@
 package com.nedraw.upgrading.disk;
 
 import com.nedraw.upgrading.advancement.ModAdvancementTriggers;
+import com.nedraw.upgrading.fx.DiskFx;
+import com.nedraw.upgrading.fx.DiskFxType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -56,6 +58,7 @@ public class SwiftFeetDisk extends UpgradeDisk {
                     speedAttribute.addPermanentModifier(new AttributeModifier(
                             SPRINT_MODIFIER_ID, 0.20 * efficiency,
                             AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+                    DiskFx.play(player, DiskFxType.SWIFT_FEET);
                 }
                 UUID id = player.getUUID();
                 int ticks = SPRINT_TICKS.getOrDefault(id, 0) + 1;

@@ -47,5 +47,12 @@
       "upgrading:disk/sea_fish/sea_fish_2",
       "upgrading:disk/sea_fish/sea_fish_3"
     ]
+  },
+  "disk.swift_feet": {
+    "sounds": [
+      "upgrading:disk/swift_feet/swift_feet_1",
+      "upgrading:disk/swift_feet/swift_feet_2",
+      "upgrading:disk/swift_feet/swift_feet_3"
+    ]
   }
 }
